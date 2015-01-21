@@ -8,6 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.math.MathUtils;
 
 public class MyGdxGame extends Game {
 	SpriteBatch batch;
@@ -20,8 +24,8 @@ public class MyGdxGame extends Game {
 
         batch = new SpriteBatch();
         font = new BitmapFont();
-        font.setColor(Color.RED);
-        font.setScale(12);
+        font.setColor(Color.BLACK);
+        font.setScale(2);
         
 	}
 
@@ -33,16 +37,19 @@ public class MyGdxGame extends Game {
 
     @Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-        if (Gdx.input.isTouched()) {
-            i++;
-            font.draw(batch, "hello"+i, 200, 200);
+
+        if(Gdx.input.isTouched()) {
+            Vector3 touchPos = new Vector3();
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            font.draw(batch, "x:"+touchPos.x+" y:"+touchPos.y, touchPos.x,480-touchPos.y);
         }
         batch.end();
 
 
 
     }
+
 }
