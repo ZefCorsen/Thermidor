@@ -1,47 +1,16 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.screens.GameScreen;
+import com.mygdx.world.World;
 
 public class MyGdxGame extends Game {
-	SpriteBatch batch;
-	Texture img;
-    private BitmapFont font;
-    int i=0;
-	
-	@Override
-	public void create () {
+    private World world;
 
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.setColor(Color.RED);
-        font.setScale(12);
-	}
 
     @Override
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
+    public void create() {
+        setScreen(new GameScreen());
     }
 
-    @Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-        if (Gdx.input.isTouched()) {
-            i++;
-            font.draw(batch, "hello"+i, 200, 200);
-        }
-        batch.end();
-
-
-
-    }
 }
