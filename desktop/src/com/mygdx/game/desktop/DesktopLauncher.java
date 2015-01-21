@@ -6,7 +6,12 @@ import com.mygdx.game.MyGdxGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		//LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new MyGdxGame());
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "my-gdx-game";
+        cfg.useGL30 = false;
+        cfg.width = 1920;
+        cfg.height = 1080;
+
+        new LwjglApplication(new MyGdxGame(), cfg);
 	}
 }
