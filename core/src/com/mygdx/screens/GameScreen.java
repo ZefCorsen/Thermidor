@@ -1,10 +1,10 @@
 package com.mygdx.screens;
+
 import com.badlogic.gdx.Screen;
 /**
  * Created by Whole lotta love on 21/01/2015.
  */
-public class MainMenuScreen implements Screen {
-
+public class GameScreen implements Screen {
     @Override
     public void show() {
 

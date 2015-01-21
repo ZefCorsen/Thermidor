@@ -22,6 +22,7 @@ public class MyGdxGame extends Game {
         font = new BitmapFont();
         font.setColor(Color.RED);
         font.setScale(12);
+        
 	}
 
     @Override
