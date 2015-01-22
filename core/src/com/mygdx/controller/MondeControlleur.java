@@ -4,7 +4,9 @@ package com.mygdx.controller;
  * Created by Jerem on 21/01/2015.
  */
 
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.player.Player;
+import com.mygdx.world.Assets;
 import com.mygdx.world.World;
 
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class MondeControlleur {
 
 
     enum Keys {
-        LEFT, RIGHT, JUMP, FIRE
+        LEFT, RIGHT, JUMP, FIRE, TOP, DOWN
     }
 
     private World world;
@@ -26,6 +28,8 @@ public class MondeControlleur {
     static {
         keys.put(Keys.LEFT, false);
         keys.put(Keys.RIGHT, false);
+        keys.put(Keys.TOP, false);
+        keys.put(Keys.DOWN, false);
         keys.put(Keys.JUMP, false);
         keys.put(Keys.FIRE, false);
     }
@@ -46,6 +50,15 @@ public class MondeControlleur {
         keys.get(keys.put(Keys.RIGHT, true));
     }
 
+    public void topPressed() {
+        keys.get(keys.put(Keys.TOP, true));
+    }
+
+    public void downPressed() {
+        keys.get(keys.put(Keys.DOWN, true));
+    }
+
+
     public void jumpPressed() {
         keys.get(keys.put(Keys.JUMP, true));
     }
@@ -62,6 +75,14 @@ public class MondeControlleur {
         keys.get(keys.put(Keys.RIGHT, false));
     }
 
+    public void topReleased() {
+        keys.get(keys.put(Keys.TOP, false));
+    }
+
+    public void downReleased() {
+        keys.get(keys.put(Keys.DOWN, false));
+    }
+
     public void jumpReleased() {
         keys.get(keys.put(Keys.JUMP, false));
     }
@@ -71,28 +92,22 @@ public class MondeControlleur {
     }
 
     public void update(float delta) {
-        processInput();
         player.update(delta);
     }
 
-    private void processInput() {
-        if (keys.get(Keys.LEFT)) {
-            player.setFacingLeft(true);
-            player.setState(Player.State.WALKING);
-            player.getVelocity().x = -Player.SPEED;
-        }
+    public boolean setPlayerInPosition(float x, float y) {
 
-        if (keys.get(Keys.RIGHT)) {
-            player.setFacingLeft(false);
-            player.setState(Player.State.WALKING);
-            player.getVelocity().x = Player.SPEED;
-        }
-
-        if ((keys.get(Keys.LEFT) && keys.get(Keys.RIGHT)) ||
-                (!keys.get(Keys.LEFT) && !(keys.get(Keys.RIGHT)))) {
-            player.setState(Player.State.IDLE);
-            player.getAcceleration().x = 0;
-            player.getVelocity().x = 0;
-        }
+        player.setWantedPosition(new Vector2(x,y));
+        return true;
     }
+
+    public void dontMove() {
+        player.setState(Player.State.IDLE);
+        player.getVelocity().y = 0;
+        player.getAcceleration().y = 0;
+        player.getVelocity().x = 0;
+        player.getAcceleration().x = 0;
+
+    }
+
 }

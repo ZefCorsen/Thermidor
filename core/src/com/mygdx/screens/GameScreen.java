@@ -4,23 +4,30 @@ package com.mygdx.screens;
  * Created by Jerem on 21/01/2015.
  */
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.controller.MondeControlleur;
+import com.mygdx.game.MyGdxGame;
+import com.mygdx.world.Assets;
 import com.mygdx.world.MondeRenderTexture;
 import com.mygdx.world.World;
 
 public class GameScreen implements Screen, InputProcessor {
 
     private World monde;
+    private MyGdxGame game;
     // private MondeRender mondeRender;
     private MondeRenderTexture mondeRender;
     private MondeControlleur controller;
     private int width, height;
+
+    public GameScreen(MyGdxGame game) {
+        this.game = game;
+        Gdx.input.setCatchBackKey(true);
+    }
 
     @Override
     public void render(float delta) {
@@ -41,7 +48,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void show() {
         monde = new World();
         //mondeRender = new MondeRender(monde);
-        mondeRender = new MondeRenderTexture(monde, true);
+        mondeRender = new MondeRenderTexture(monde, false);
         controller = new MondeControlleur(monde);
         Gdx.input.setInputProcessor(this);
         // TODO Auto-generated method stub
@@ -71,38 +78,15 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case (Input.Keys.LEFT):
-                controller.leftPressed();
-                break;
-            case (Input.Keys.RIGHT):
-                controller.rightPressed();
-                break;
-            case (Input.Keys.Z):
-                controller.jumpPressed();
-                break;
-            case (Input.Keys.S):
-                controller.firePressed();
-                break;
-        }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        switch (keycode) {
-            case (Input.Keys.LEFT):
-                controller.leftReleased();
-                break;
-            case (Input.Keys.RIGHT):
-                controller.rightReleased();
-                break;
-            case (Input.Keys.Z):
-                controller.jumpReleased();
-                break;
-            case (Input.Keys.S):
-                controller.fireReleased();
-                break;
+        if (keycode == Input.Keys.BACK) {
+            this.dispose();
+            game.setScreen(new MainMenu(game));
+
         }
         return true;
     }
@@ -114,36 +98,24 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        if (screenX < width / 2 && screenY > height / 2) {
-            controller.leftPressed();
-        }
-        if (screenX > width / 2 && screenY > height / 2) {
-            controller.rightPressed();
-        }
+        float x, y;
+        x = screenX / (width / Assets.CAMERA_WIDTH);
+        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
+        controller.setPlayerInPosition(x, y);
         return true;
+
+
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        if (screenX < width / 2 && screenY > height / 2) {
-            controller.leftReleased();
-        }
-        if (screenX > width / 2 && screenY > height / 2) {
-            controller.rightReleased();
-        }
+        controller.dontMove();
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (screenX < width / 2 && screenY > height / 2) {
-            controller.leftPressed();
-        }
-        if (screenX > width / 2 && screenY > height / 2) {
-            controller.rightPressed();
-        }
+
         return true;
     }
 

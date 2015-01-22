@@ -1,7 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.screens.GameScreen;
+import com.mygdx.screens.MainMenu;
+import com.mygdx.world.Assets;
 import com.mygdx.world.World;
 
 public class MyGdxGame extends Game {
@@ -10,7 +11,8 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new GameScreen());
+        Assets.load();
+        setScreen(new MainMenu(this));
     }
 
 }

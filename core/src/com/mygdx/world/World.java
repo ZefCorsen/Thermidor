@@ -31,8 +31,8 @@ public class World {
     }
 
     private void createDemoWorld() {
-        player = new Player(new Vector2(0, 1));
-
+        player = new Player(new Vector2(1, 1));
+/*
         for (int col = 0; col < 10; col++) {
             blocks.add(new Block(new Vector2(col, 0)));
             blocks.add(new Block(new Vector2(col, 6)));
@@ -48,5 +48,6 @@ public class World {
         blocks.add(new Block(new Vector2(6, 3)));
         blocks.add(new Block(new Vector2(6, 4)));
         blocks.add(new Block(new Vector2(6, 5)));
+        */
     }
 }
