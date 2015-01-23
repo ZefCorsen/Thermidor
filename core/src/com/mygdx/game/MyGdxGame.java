@@ -43,12 +43,9 @@ public class MyGdxGame extends Game {
         batch.end();
     }
 
-<<<<<<< HEAD
+
     public void refresh() {
         font.draw(batch, "GUY", 50, 100);
-=======
 
-
->>>>>>> origin/Sprint-1
     }
 }
