@@ -99,12 +99,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        float x, y;
-        x = screenX / (width / Assets.CAMERA_WIDTH);
-        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
-        controller.setPlayerInPosition(x, y);
-        return true;
 
+        return true;
 
     }
 
@@ -116,6 +112,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        float x, y;
+        x = screenX / (width / Assets.CAMERA_WIDTH);
+        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
+        controller.setPlayerInPosition(x, y);
 
         return true;
     }
