@@ -1,5 +1,6 @@
 package com.mygdx.screens;
 
+
 /**
  * Created by Jerem on 21/01/2015.
  */
@@ -127,5 +128,6 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+
     }
 }

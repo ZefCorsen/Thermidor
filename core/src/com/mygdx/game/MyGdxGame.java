@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+
 import com.badlogic.gdx.Game;
 import com.mygdx.screens.MainMenu;
 import com.mygdx.world.Assets;
@@ -9,10 +10,12 @@ public class MyGdxGame extends Game {
     private World world;
 
 
+
     @Override
     public void create() {
         Assets.load();
         setScreen(new MainMenu(this));
     }
+
 
 }
