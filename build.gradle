@@ -24,6 +24,7 @@ allprojects {
         aiVersion = '1.4.0'
     }
 
+
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }

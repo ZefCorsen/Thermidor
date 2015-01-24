@@ -28,6 +28,8 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(MyGdxGame game) {
         this.game = game;
         Gdx.input.setCatchBackKey(true);
+
+
     }
 
     @Override
