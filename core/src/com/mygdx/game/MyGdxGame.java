@@ -6,6 +6,8 @@ import com.mygdx.screens.MainMenu;
 import com.mygdx.world.Assets;
 import com.mygdx.world.World;
 
+import org.jgroups.JChannel;
+
 public class MyGdxGame extends Game {
     private World world;
 
@@ -14,6 +16,7 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
         Assets.load();
+        JChannel
         setScreen(new MainMenu(this));
     }
 
