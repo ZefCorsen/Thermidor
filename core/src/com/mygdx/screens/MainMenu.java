@@ -43,9 +43,9 @@ public class MainMenu implements Screen {
     private int width;
     private int height;
     private int bord;
-    Server server;
+   /* Server server;
     Client client;
-
+*/
     public MainMenu(MyGdxGame game) {
         bord = (320 - 120) / 2;
         this.game = game;
@@ -60,8 +60,8 @@ public class MainMenu implements Screen {
         font.setColor(Color.ORANGE);
         Gdx.input.setCatchBackKey(false);
 
-        server = new Server();
-        client = new Client();
+        /*server = new Server();
+        client = new Client();*/
 
 
 
@@ -78,7 +78,7 @@ public class MainMenu implements Screen {
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                 game.setScreen(new GameScreen(game));
 
-                Kryo kryo = server.getKryo();
+              /*  Kryo kryo = server.getKryo();
                 kryo.register(SomeRequest.class);
                 kryo.register(SomeResponse.class);
                 server.start();
@@ -99,7 +99,7 @@ public class MainMenu implements Screen {
                             connection.sendUDP(response);
                         }
                     }
-                });
+                });*/
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -112,7 +112,7 @@ public class MainMenu implements Screen {
                     System.out.println("Touch Screen Join");
                     System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
 
-                    Kryo kryo = client.getKryo();
+                   /* Kryo kryo = client.getKryo();
                     kryo.register(SomeRequest.class);
                     kryo.register(SomeResponse.class);
                     client.start();
@@ -139,7 +139,7 @@ public class MainMenu implements Screen {
                             System.out.println(response.text);
                         }
                     }
-                });
+                });*/
 
 
                     return;
