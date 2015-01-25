@@ -12,8 +12,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.models.SomeRequest;
+import com.mygdx.models.SomeResponse;
 import com.mygdx.world.Assets;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 
 /**
@@ -33,6 +43,8 @@ public class MainMenu implements Screen {
     private int width;
     private int height;
     private int bord;
+    Server server;
+    Client client;
 
     public MainMenu(MyGdxGame game) {
         bord = (320 - 120) / 2;
@@ -47,6 +59,12 @@ public class MainMenu implements Screen {
         font = new BitmapFont();
         font.setColor(Color.ORANGE);
         Gdx.input.setCatchBackKey(false);
+
+        server = new Server();
+        client = new Client();
+
+
+
     }
 
     public void update() {
@@ -59,6 +77,29 @@ public class MainMenu implements Screen {
                 System.out.println("Touch Screen GAME");
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                 game.setScreen(new GameScreen(game));
+
+                Kryo kryo = server.getKryo();
+                kryo.register(SomeRequest.class);
+                kryo.register(SomeResponse.class);
+                server.start();
+                try {
+                    server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                server.addListener(new Listener() {
+                    public void received (Connection connection, Object object) {
+                        if (object instanceof SomeRequest) {
+                            SomeRequest request = (SomeRequest)object;
+                            System.out.println(request.text);
+
+                            SomeResponse response = new SomeResponse();
+                            response.text = "Rep";
+                            connection.sendUDP(response);
+                        }
+                    }
+                });
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -68,10 +109,40 @@ public class MainMenu implements Screen {
                 return;
             }
             if (joinGame.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Touch Screen Join");
-                System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                //   game.setScreen(new StartMultiplayerScreen(game));
-                return;
+                    System.out.println("Touch Screen Join");
+                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
+
+                    Kryo kryo = client.getKryo();
+                    kryo.register(SomeRequest.class);
+                    kryo.register(SomeResponse.class);
+                    client.start();
+                    InetAddress addr = client.discoverHost(MyGdxGame.UDP, 10000);
+                    System.out.println(addr);
+                    if(addr == null) {
+                        System.exit(0);
+                    }
+                    try {
+                        client.connect(5000, addr, MyGdxGame.TCP, MyGdxGame.UDP);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    SomeRequest request = new SomeRequest();
+                    request.text = "Polling server";
+                    client.sendUDP(request);
+
+                client.addListener(new Listener() {
+                    public void received (Connection connection, Object object) {
+                        if (object instanceof SomeResponse) {
+                            SomeResponse response = (SomeResponse)object;
+                            System.out.println(response.text);
+                        }
+                    }
+                });
+
+
+                    return;
             }
         }
     }
@@ -131,5 +202,7 @@ int log = 320-68;
     @Override
     public void dispose() {
     }
+
+
 
 }
