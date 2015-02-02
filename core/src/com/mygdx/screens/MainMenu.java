@@ -63,10 +63,7 @@ public class MainMenu implements Screen {
 
         /*server = new Server();
         client = new Client();*/
-
-
-
-    }
+ }
 
     public void update() {
         if (Gdx.input.justTouched()) {
@@ -79,6 +76,7 @@ public class MainMenu implements Screen {
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                 game.setScreen(new GameScreen(game));
 
+<<<<<<< HEAD
                 NetworkController.getInstance().startReceiver();
                 NetworkController.getInstance().getLocalPeer();
               /*  Kryo kryo = server.getKryo();
@@ -90,19 +88,10 @@ public class MainMenu implements Screen {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+=======
+               NetworkController.getInstance().startReceiver();
+>>>>>>> origin/Sprint-1_GameZoneAndControls
 
-                server.addListener(new Listener() {
-                    public void received (Connection connection, Object object) {
-                        if (object instanceof SomeRequest) {
-                            SomeRequest request = (SomeRequest)object;
-                            System.out.println(request.text);
-
-                            SomeResponse response = new SomeResponse();
-                            response.text = "Rep";
-                            connection.sendUDP(response);
-                        }
-                    }
-                });*/
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -121,36 +110,6 @@ public class MainMenu implements Screen {
 
                         NetworkController.getInstance().sendMessage("Mess  "+i);
                 }
-
-                   /* Kryo kryo = client.getKryo();
-                    kryo.register(SomeRequest.class);
-                    kryo.register(SomeResponse.class);
-                    client.start();
-                    InetAddress addr = client.discoverHost(MyGdxGame.UDP, 10000);
-                    System.out.println(addr);
-                    if(addr == null) {
-                        System.exit(0);
-                    }
-                    try {
-                        client.connect(5000, addr, MyGdxGame.TCP, MyGdxGame.UDP);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    SomeRequest request = new SomeRequest();
-                    request.text = "Polling server";
-                    client.sendUDP(request);
-
-                client.addListener(new Listener() {
-                    public void received (Connection connection, Object object) {
-                        if (object instanceof SomeResponse) {
-                            SomeResponse response = (SomeResponse)object;
-                            System.out.println(response.text);
-                        }
-                    }
-                });*/
-
 
                     return;
             }

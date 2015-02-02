@@ -1,9 +1,17 @@
 package com.mygdx.controller;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/Sprint-1_GameZoneAndControls
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+<<<<<<< HEAD
+=======
+import com.esotericsoftware.minlog.Log;
+>>>>>>> origin/Sprint-1_GameZoneAndControls
 import com.mygdx.models.Peer;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
@@ -66,7 +74,9 @@ public class NetworkController {
             SomeResponse sent = new SomeResponse();
             sent.text = message;
             try {
+                if(!client.isConnected())
                 client.connect(5000,peer.IP,TCP,UDP);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -76,7 +86,7 @@ public class NetworkController {
     }
 
     public void startEmitter() {
-        client.start();
+        client.start() ;
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof SomeRequest) {
@@ -96,7 +106,9 @@ public class NetworkController {
 
         server.start();
         try {
+            Log.info("Trying to bind reicever at these ports, UDP: "+UDP+"///TCP: "+TCP);
             server.bind(TCP, UDP);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,8 +132,19 @@ public class NetworkController {
     }
 
     public void discoverPeers(){
-
-        InetAddress addr = client.discoverHost(UDP, 10000);
+        InetAddress addr= null;
+      /*  try {
+            addr = InetAddress.getByName("172.22.201.136");
+            //addr = InetAddress.getByName("192.168.56.1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }*/
+        try {
+            Log.info("Trying to discover host at port " + UDP);
+            addr = client.discoverHost(UDP, 10000);
+        }catch(Exception e){
+            Log.info(e.toString());
+        }
         System.out.println(addr);
         if(addr == null) {
             System.exit(0);
