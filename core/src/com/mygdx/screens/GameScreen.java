@@ -50,7 +50,6 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         monde = new World();
-        //mondeRender = new MondeRender(monde);
         mondeRender = new MondeRenderTexture(monde, false);
         controller = new MondeControlleur(monde);
         Gdx.input.setInputProcessor(this);
@@ -101,14 +100,16 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
+        float x, y;
+        x = screenX / (width / Assets.CAMERA_WIDTH);
+        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
+        controller.setPlayerInPosition(game.id ,x, y);
         return true;
 
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        controller.dontMove();
         return true;
     }
 
@@ -117,7 +118,7 @@ public class GameScreen implements Screen, InputProcessor {
         float x, y;
         x = screenX / (width / Assets.CAMERA_WIDTH);
         y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
-        controller.setPlayerInPosition(x, y);
+        controller.setPlayerInPosition(game.id, x, y);
 
         return true;
     }

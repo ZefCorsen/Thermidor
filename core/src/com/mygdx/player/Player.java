@@ -6,6 +6,7 @@ package com.mygdx.player;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.models.Peer;
 import com.mygdx.world.Assets;
 
 public class Player {
@@ -14,15 +15,47 @@ public class Player {
     public static final float SPEED = 4f;
     public static final float SIZE = 0.5f; // Demi unité
 
-    Vector2 position = new Vector2();
-    Vector2 wantedPosition = new Vector2();
-    Vector2 acceleration = new Vector2();
-    Vector2 velocity = new Vector2();
-    Rectangle bounds = new Rectangle();
-    State state = State.IDLE;
-    boolean facingLeft = true;
+
+
+    private String id;
+    private Peer peer;
+    private   Vector2 position = new Vector2();
+    private  Vector2 wantedPosition = new Vector2();
+    private  Vector2 velocity = new Vector2();
+    private  Rectangle bounds = new Rectangle();
+    private   State state = State.IDLE;
 
     public Player(Vector2 position) {
+        this.position = position;
+        this.wantedPosition = position;
+        this.bounds.height = SIZE;
+        this.bounds.width = SIZE;
+        this.bounds.x = this.position.x;
+        this.bounds.y = this.position.y;
+    }
+
+    public Player(Vector2 position, String id) {
+        this.id = id;
+        this.position = position;
+        this.wantedPosition = position;
+        this.bounds.height = SIZE;
+        this.bounds.width = SIZE;
+        this.bounds.x = this.position.x;
+        this.bounds.y = this.position.y;
+    }
+
+    public Player(Vector2 position, Peer peer) {
+        this.peer = peer;
+        this.position = position;
+        this.wantedPosition = position;
+        this.bounds.height = SIZE;
+        this.bounds.width = SIZE;
+        this.bounds.x = this.position.x;
+        this.bounds.y = this.position.y;
+    }
+    public Player(Vector2 position, String id, Peer peer) {
+        this.id = id;
+        this.peer = peer;
         this.position = position;
         this.wantedPosition = position;
         this.bounds.height = SIZE;
@@ -39,33 +72,31 @@ public class Player {
         return position;
     }
 
-    public void setFacingLeft(boolean facingLeft) {
-        this.facingLeft = facingLeft;
-    }
 
     public Vector2 getVelocity() {
         return velocity;
     }
+    public String getId() {
+        return id;
+    }
 
-    public Vector2 getAcceleration() {
-        return acceleration;
+    public Peer getPeer() {
+        return peer;
     }
 
     public enum State {
-        IDLE, WALKING, DYING
-    }
+        IDLE, WALKING    }
 
     public void setState(State newState) {
         this.state = newState;
     }
 
-    public Vector2 getWantedPosition() {
-        return wantedPosition;
-    }
-
     public void setWantedPosition(Vector2 wantedPosition) {
         this.wantedPosition = wantedPosition;
     }
+
+
+
 
     public void update(float delta) {
         boolean sapX = false;

@@ -7,47 +7,47 @@ package com.mygdx.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.models.Peer;
 import com.mygdx.player.Player;
 
 public class World {
 
 
     private Array<Block> blocks = new Array();
+    private Array<Player> players = new Array();
 
-    private Player player;
 
-    // Getters -----------
     public Array<Block> getBlocks() {
         return blocks;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Array<Player> getPlayers() {
+        return players;
     }
-    // --------------------
+
+    public Player getPlayer(Peer peer) throws Exception {
+        for(Player player : players){
+            if (player.getPeer().equals(peer)){ return player;}
+        }
+        throw new Exception("Players missing");
+    }
+
+    public Player getPlayer(String id) throws Exception {
+        for(Player player : players) {
+            if (player.getId().equals(id)) {
+                return player;
+            }
+        }
+        throw new Exception("Players missing");
+    }
 
     public World() {
         createDemoWorld();
     }
 
     private void createDemoWorld() {
-        player = new Player(new Vector2(1, 1));
-/*
-        for (int col = 0; col < 10; col++) {
-            blocks.add(new Block(new Vector2(col, 0)));
-            blocks.add(new Block(new Vector2(col, 6)));
-            if (col > 2)
-                blocks.add(new Block(new Vector2(col, 1)));
-        }
+        Player player = new Player(new Vector2(1, 1));
+        players.add(player);
 
-        blocks.add(new Block(new Vector2(9, 2)));
-        blocks.add(new Block(new Vector2(9, 3)));
-        blocks.add(new Block(new Vector2(9, 4)));
-        blocks.add(new Block(new Vector2(9, 5)));
-
-        blocks.add(new Block(new Vector2(6, 3)));
-        blocks.add(new Block(new Vector2(6, 4)));
-        blocks.add(new Block(new Vector2(6, 5)));
-        */
     }
 }

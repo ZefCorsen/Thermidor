@@ -36,12 +36,13 @@ public class MondeRender {
             debugRenderer.rect(x1, y1, rect.width, rect.height);
         }
         // Rendu de Bob
-        Player player = world.getPlayer();
-        Rectangle rect = player.getBounds();
-        float x1 = player.getPosition().x;
-        float y1 = player.getPosition().y;
-        debugRenderer.setColor(new Color(0, 1, 0, 1));
-        debugRenderer.rect(x1, y1, rect.width, rect.height);
-        debugRenderer.end();
+        for (Player player : world.getPlayers()) {
+            Rectangle rect = player.getBounds();
+            float x1 = player.getPosition().x;
+            float y1 = player.getPosition().y;
+            debugRenderer.setColor(new Color(0, 1, 0, 1));
+            debugRenderer.rect(x1, y1, rect.width, rect.height);
+            debugRenderer.end();
+        }
     }
 }

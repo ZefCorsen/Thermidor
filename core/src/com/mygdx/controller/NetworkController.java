@@ -1,19 +1,22 @@
 package com.mygdx.controller;
-
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.mygdx.game.MyGdxGame;
 import com.mygdx.models.Peer;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by Julie on 25/01/2015.
@@ -39,6 +42,7 @@ public class NetworkController {
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
         kryo.register(Peer.class);
+
 
     }
 
@@ -130,4 +134,30 @@ public class NetworkController {
         }
 
     }
+    public Peer getLocalPeer(){
+        List<String> addresses = new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            for(NetworkInterface ni : Collections.list(interfaces)){
+                for(InetAddress address : Collections.list(ni.getInetAddresses()))
+                {
+                    if(address instanceof Inet4Address){
+                        addresses.add(address.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
+        String ipAddress = new String("");
+        for(String str:addresses)
+        {
+            ipAddress = ipAddress + str + "\n";
+        }
+        System.out.println(ipAddress);
+        return null;
+    }
+
 }

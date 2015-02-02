@@ -67,8 +67,10 @@ public class MondeRenderTexture {
     }
 
     private void drawPlayer() {
-        Player player = world.getPlayer();
-        spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
+
+        for (Player player : world.getPlayers()) {
+            spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
+        }
     }
 
     private void drawDebug() {
@@ -85,12 +87,15 @@ public class MondeRenderTexture {
             debugRenderer.rect(x1, y1, rect.width, rect.height);
         }
         // Rendre Bob
-        Player player = world.getPlayer();
-        Rectangle rect = player.getBounds();
-        float x1 = player.getPosition().x + rect.x;
-        float y1 = player.getPosition().y + rect.y;
-        debugRenderer.setColor(new Color(0, 1, 0, 1));
-        debugRenderer.rect(x1, y1, rect.width, rect.height);
-        debugRenderer.end();
+        for (Player player : world.getPlayers()) {
+            Rectangle rect = player.getBounds();
+            float x1 = player.getPosition().x + rect.x;
+            float y1 = player.getPosition().y + rect.y;
+            debugRenderer.setColor(new Color(0, 1, 0, 1));
+            debugRenderer.rect(x1, y1, rect.width, rect.height);
+            debugRenderer.end();
+        }
+
+
     }
 }

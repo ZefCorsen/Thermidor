@@ -80,6 +80,7 @@ public class MainMenu implements Screen {
                 game.setScreen(new GameScreen(game));
 
                 NetworkController.getInstance().startReceiver();
+                NetworkController.getInstance().getLocalPeer();
               /*  Kryo kryo = server.getKryo();
                 kryo.register(SomeRequest.class);
                 kryo.register(SomeResponse.class);
@@ -105,8 +106,7 @@ public class MainMenu implements Screen {
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Touch Screen HELP");
-                System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
+             //TODO Help Screen
                 //game.setScreen(new HelpScreen(game));
                 return;
             }
@@ -173,7 +173,7 @@ public class MainMenu implements Screen {
         batcher.draw(Assets.start, bord, 280, 120, 60);
         batcher.draw(Assets.joinGame, bord, 210, 120, 60);
         batcher.draw(Assets.help, bord, 140, 120, 60);
-int log = 320-68;
+        int log = 320-68;
         batcher.draw(Assets.logo, log, 3,65,50);
 
         batcher.end();

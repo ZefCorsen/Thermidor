@@ -2,6 +2,7 @@ package com.mygdx.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -21,6 +22,7 @@ public class Assets {
     public static Texture help;
     public static TextureRegion ready;
     public static float round = 0.02f;
+    public static BitmapFont buton;
 
     public static Texture loadTexture(String file) {
         return new Texture(Gdx.files.internal(file));
@@ -32,7 +34,7 @@ public class Assets {
     public static void load() {
         background = loadTexture(prefix + "images/arriereplan.png");
         backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
-
+        buton = new BitmapFont();
         logo = loadTexture(prefix + "images/logo.png");
         start = loadTexture(prefix + "images/buton.png");
         help = loadTexture(prefix + "images/buton3.png");
