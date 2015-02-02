@@ -93,6 +93,7 @@ public class NetworkController {
         server.start();
         try {
             server.bind(TCP, UDP);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
