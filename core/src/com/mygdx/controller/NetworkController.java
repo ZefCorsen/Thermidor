@@ -60,7 +60,9 @@ public class NetworkController {
             SomeResponse sent = new SomeResponse();
             sent.text = message;
             try {
+                if(!client.isConnected())
                 client.connect(5000,peer.IP,TCP,UDP);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,7 +72,7 @@ public class NetworkController {
     }
 
     public void startEmitter() {
-        client.start();
+        client.start() ;
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof SomeRequest) {
