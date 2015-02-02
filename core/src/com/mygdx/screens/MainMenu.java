@@ -63,10 +63,7 @@ public class MainMenu implements Screen {
 
         /*server = new Server();
         client = new Client();*/
-
-
-
-    }
+ }
 
     public void update() {
         if (Gdx.input.justTouched()) {
@@ -80,28 +77,7 @@ public class MainMenu implements Screen {
                 game.setScreen(new GameScreen(game));
 
                NetworkController.getInstance().startReceiver();
-              /*  Kryo kryo = server.getKryo();
-                kryo.register(SomeRequest.class);
-                kryo.register(SomeResponse.class);
-                server.start();
-                try {
-                    server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                server.addListener(new Listener() {
-                    public void received (Connection connection, Object object) {
-                        if (object instanceof SomeRequest) {
-                            SomeRequest request = (SomeRequest)object;
-                            System.out.println(request.text);
-
-                            SomeResponse response = new SomeResponse();
-                            response.text = "Rep";
-                            connection.sendUDP(response);
-                        }
-                    }
-                });*/
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -121,36 +97,6 @@ public class MainMenu implements Screen {
 
                         NetworkController.getInstance().sendMessage("Mess  "+i);
                 }
-
-                   /* Kryo kryo = client.getKryo();
-                    kryo.register(SomeRequest.class);
-                    kryo.register(SomeResponse.class);
-                    client.start();
-                    InetAddress addr = client.discoverHost(MyGdxGame.UDP, 10000);
-                    System.out.println(addr);
-                    if(addr == null) {
-                        System.exit(0);
-                    }
-                    try {
-                        client.connect(5000, addr, MyGdxGame.TCP, MyGdxGame.UDP);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    SomeRequest request = new SomeRequest();
-                    request.text = "Polling server";
-                    client.sendUDP(request);
-
-                client.addListener(new Listener() {
-                    public void received (Connection connection, Object object) {
-                        if (object instanceof SomeResponse) {
-                            SomeResponse response = (SomeResponse)object;
-                            System.out.println(response.text);
-                        }
-                    }
-                });*/
-
 
                     return;
             }
@@ -173,7 +119,7 @@ public class MainMenu implements Screen {
         batcher.draw(Assets.start, bord, 280, 120, 60);
         batcher.draw(Assets.joinGame, bord, 210, 120, 60);
         batcher.draw(Assets.help, bord, 140, 120, 60);
-int log = 320-68;
+        int log = 320-68;
         batcher.draw(Assets.logo, log, 3,65,50);
 
         batcher.end();

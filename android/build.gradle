@@ -115,5 +115,5 @@ idea {
     }
 }
 dependencies {
-    compile files('libs/kryonet-debug-2.21.jar')
+    compile files('libs/kryonet-2.21-all.jar')
 }

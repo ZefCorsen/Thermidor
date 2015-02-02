@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import com.mygdx.models.Peer;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
@@ -66,7 +67,7 @@ public class NetworkController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client.sendTCP(sent);
+            client.sendUDP(sent);
         }
 
     }
@@ -81,7 +82,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendTCP(response);
+                    connection.sendUDP(response);
                 }
             }
 
@@ -92,6 +93,7 @@ public class NetworkController {
 
         server.start();
         try {
+            Log.info("Trying to bind reicever at these ports, UDP: "+UDP+"///TCP: "+TCP);
             server.bind(TCP, UDP);
 
         } catch (IOException e) {
@@ -106,7 +108,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendTCP(response);
+                    connection.sendUDP(response);
                 }
 
 
@@ -117,8 +119,19 @@ public class NetworkController {
     }
 
     public void discoverPeers(){
-
-        InetAddress addr = client.discoverHost(UDP, 10000);
+        InetAddress addr= null;
+      /*  try {
+            addr = InetAddress.getByName("172.22.201.136");
+            //addr = InetAddress.getByName("192.168.56.1");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }*/
+        try {
+            Log.info("Trying to discover host at port " + UDP);
+            addr = client.discoverHost(UDP, 10000);
+        }catch(Exception e){
+            Log.info(e.toString());
+        }
         System.out.println(addr);
         if(addr == null) {
             System.exit(0);
