@@ -66,7 +66,7 @@ public class NetworkController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client.sendTCP(sent);
+            client.sendUDP(sent);
         }
 
     }
@@ -81,7 +81,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendTCP(response);
+                    connection.sendUDP(response);
                 }
             }
 
@@ -106,7 +106,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendTCP(response);
+                    connection.sendUDP(response);
                 }
 
 
