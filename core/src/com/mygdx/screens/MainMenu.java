@@ -79,7 +79,7 @@ public class MainMenu implements Screen {
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                 game.setScreen(new GameScreen(game));
 
-                NetworkController.getInstance().startReceiver();
+               // NetworkController.getInstance().startReceiver();
               /*  Kryo kryo = server.getKryo();
                 kryo.register(SomeRequest.class);
                 kryo.register(SomeResponse.class);

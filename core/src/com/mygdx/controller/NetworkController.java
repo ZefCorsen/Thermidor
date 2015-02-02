@@ -1,12 +1,10 @@
 package com.mygdx.controller;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.mygdx.game.MyGdxGame;
 import com.mygdx.models.Peer;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
@@ -66,7 +64,7 @@ public class NetworkController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            client.sendUDP(sent);
+            client.sendTCP(sent);
         }
 
     }
@@ -81,7 +79,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendUDP(response);
+                    connection.sendTCP(response);
                 }
             }
 
@@ -105,7 +103,7 @@ public class NetworkController {
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
-                    connection.sendUDP(response);
+                    connection.sendTCP(response);
                 }
 
 
