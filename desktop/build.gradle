@@ -38,5 +38,5 @@ task afterEclipseImport(description: "Post processing after project generation",
     }
 }
 dependencies {
-    compile files('C:/Users/Whole lotta love/Documents/GitHub/Thermidor/core/src/jgroups-3.6.1.Final.jar')
+    compile files('kryonet-2.21-all.jar')
 }
