@@ -48,23 +48,12 @@ public class MondeRenderTexture {
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(Assets.background,0,0,width,height);
-        drawBlocks();
         drawPlayer();
         spriteBatch.end();
-        if (debug)
-            drawDebug();
+
     }
 
-    private void drawBlocks() {
-        for (Block block : world.getBlocks()) {
-            spriteBatch.draw(
-                    Assets.block,
-                    block.getPosition().x * ppuX,
-                    block.getPosition().y * ppuY,
-                    Block.SIZE * ppuX,
-                    Block.SIZE * ppuY);
-        }
-    }
+
 
     private void drawPlayer() {
 
@@ -73,29 +62,5 @@ public class MondeRenderTexture {
         }
     }
 
-    private void drawDebug() {
-        // Démarrage du renderer
-        debugRenderer.setProjectionMatrix(cam.combined);
-        debugRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        // render blocks
-        for (Block block : world.getBlocks()) {
-            Rectangle rect = block.getBounds();
-            float x1 = block.getPosition().x + rect.x;
-            float y1 = block.getPosition().y + rect.y;
-            debugRenderer.setColor(new Color(1, 0, 0, 1));
-            debugRenderer.rect(x1, y1, rect.width, rect.height);
-        }
-        // Rendre Bob
-        for (Player player : world.getPlayers()) {
-            Rectangle rect = player.getBounds();
-            float x1 = player.getPosition().x + rect.x;
-            float y1 = player.getPosition().y + rect.y;
-            debugRenderer.setColor(new Color(0, 1, 0, 1));
-            debugRenderer.rect(x1, y1, rect.width, rect.height);
-            debugRenderer.end();
-        }
-
-
-    }
 }

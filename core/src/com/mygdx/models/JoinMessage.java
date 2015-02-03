@@ -5,6 +5,9 @@ package com.mygdx.models;
  */
 public class JoinMessage {
     String id;
+    public JoinMessage(String id){
+        this.id=id;
+    }
     public JoinMessage(){
 
     }

@@ -88,7 +88,6 @@ public class MainMenu implements Screen {
                 //} catch (IOException e) {
                 //e.printStackTrace();
                 //}
-                //NetworkController.getInstance().startReceiver();
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -102,10 +101,10 @@ public class MainMenu implements Screen {
                     NetworkController.getInstance().startEmitter();
                     NetworkController.getInstance().discoverPeers();
                     NetworkController.getInstance().sendMessage("Trouvé");
-                    NetworkController.getInstance().sendJoinMessage();
+                    NetworkController.getInstance().sendJoinMessage(game.id);
 
 
-                    System.out.println("Touch Screen GAME");
+                System.out.println("Touch Screen GAME");
                     System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                     game.setScreen(new GameScreen(game));
 

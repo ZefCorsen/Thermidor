@@ -5,24 +5,21 @@ package com.mygdx.world;
  */
 
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.models.Peer;
 import com.mygdx.player.Player;
+
+import java.util.ArrayList;
 
 
 public class World {
 
 
-    private Array<Block> blocks = new Array();
-    private Array<Player> players = new Array();
+    private ArrayList<Player> players = new ArrayList<Player>();
 
 
-    public Array<Block> getBlocks() {
-        return blocks;
-    }
 
-    public Array<Player> getPlayers() {
+
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
@@ -35,10 +32,12 @@ public class World {
 
     public Player getPlayer(String id) throws Exception {
         for(Player player : players) {
-            if (player.getId().equals(id)) {
-                return player;
+
+                if (player.getId().equals(id)) {
+                    return player;
+                }
             }
-        }
+
         throw new Exception("Players missing");
     }
 

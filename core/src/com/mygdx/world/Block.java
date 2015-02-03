@@ -20,6 +20,9 @@ public class Block {
         this.bounds.x = this.position.x;
         this.bounds.y = this.position.y;
     }
+    public Block(){
+
+    }
 
     public Vector2 getPosition() {
         return position;

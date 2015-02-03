@@ -7,6 +7,7 @@ package com.mygdx.player;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.models.Peer;
+import com.mygdx.models.State;
 import com.mygdx.world.Assets;
 
 public class Player {
@@ -63,6 +64,9 @@ public class Player {
         this.bounds.x = this.position.x;
         this.bounds.y = this.position.y;
     }
+    public Player() {
+
+    }
 
     public Rectangle getBounds() {
         return bounds;
@@ -84,8 +88,7 @@ public class Player {
         return peer;
     }
 
-    public enum State {
-        IDLE, WALKING    }
+
 
     public void setState(State newState) {
         this.state = newState;
@@ -105,11 +108,11 @@ public class Player {
         if (!position.epsilonEquals(wantedPosition, Assets.round)) {
             if (Math.abs(position.x - wantedPosition.x) > Assets.round) {
                 if (position.x > wantedPosition.x) {
-                    setState(Player.State.WALKING);
+                    setState(State.WALKING);
                     getVelocity().x = -Player.SPEED;
 
                 } else if (position.x < wantedPosition.x) {
-                    setState(Player.State.WALKING);
+                    setState(State.WALKING);
                     getVelocity().x = Player.SPEED;
                 }
             }else{
@@ -118,10 +121,10 @@ public class Player {
 
             if (Math.abs(position.y - wantedPosition.y) > Assets.round) {
                 if (position.y > wantedPosition.y) {
-                    setState(Player.State.WALKING);
+                    setState(State.WALKING);
                     getVelocity().y = -Player.SPEED;
                 } else if (position.y < wantedPosition.y) {
-                    setState(Player.State.WALKING);
+                    setState(State.WALKING);
                     getVelocity().y = Player.SPEED;
                 }
             }else{

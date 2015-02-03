@@ -23,7 +23,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     private World monde;
     private MyGdxGame game;
-    // private MondeRender mondeRender;
     private MondeRenderTexture mondeRender;
     private MondeControlleur controller;
     private int width, height;
@@ -41,6 +40,7 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
         mondeRender.render();
+
         NetworkController.getInstance().sendPosition(game.id);
     }
 
@@ -57,6 +57,9 @@ public class GameScreen implements Screen, InputProcessor {
         NetworkController.getInstance().startReceiver(monde);
         mondeRender = new MondeRenderTexture(monde, false);
         controller = new MondeControlleur(monde);
+        if (NetworkController.getInstance().myWorld==null){
+            NetworkController.getInstance().myWorld=monde;
+        }
 
         Player player = new Player(new Vector2(1, 1), game.id);
         monde.addPlayer(player);
