@@ -26,8 +26,8 @@ public class MondeRenderTexture {
     private boolean debug = false;
     private int width;
     private int height;
-    public float ppuX; // pixels par unité pour X
-    public float ppuY; // pixels par unité pour Y
+    public float ppuX;
+    public float ppuY;
 
     public void setSize(int w, int h) {
         this.width = w;
@@ -47,9 +47,17 @@ public class MondeRenderTexture {
 
     public void render() {
         spriteBatch.begin();
+<<<<<<< HEAD
         spriteBatch.draw(Assets.background,0,0,width,height);
         drawPlayer();
         spriteBatch.end();
+=======
+        spriteBatch.draw(Assets.background, 0, 0, width, height);
+        drawBlocks();
+        drawPlayer();
+        spriteBatch.end();
+    }
+>>>>>>> origin/Sprint-1_GameZoneAndControls
 
     }
 
@@ -61,6 +69,9 @@ public class MondeRenderTexture {
             spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
         }
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/Sprint-1_GameZoneAndControls
 }

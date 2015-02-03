@@ -18,6 +18,7 @@ import com.mygdx.models.PositionMessage;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
 import com.mygdx.models.State;
+
 import com.mygdx.player.Player;
 import com.mygdx.world.Block;
 import com.mygdx.world.World;
@@ -248,7 +249,7 @@ public class NetworkController {
 
                     myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
                     connection.sendTCP(myWorld);
-                    System.out.print("Player Joining "+messageJoin.getId());
+                    System.out.print("Player Joining " + messageJoin.getId());
                     sendGameState(myWorld);
 
                 }

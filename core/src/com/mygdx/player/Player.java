@@ -23,54 +23,24 @@ public class Player {
     private   Vector2 position = new Vector2();
     private  Vector2 wantedPosition = new Vector2();
     private  Vector2 velocity = new Vector2();
-    private  Rectangle bounds = new Rectangle();
     private   State state = State.IDLE;
 
     public Player(Vector2 position) {
         this.position = position;
         this.wantedPosition = position;
-        this.bounds.height = SIZE;
-        this.bounds.width = SIZE;
-        this.bounds.x = this.position.x;
-        this.bounds.y = this.position.y;
+
     }
 
     public Player(Vector2 position, String id) {
         this.id = id;
         this.position = position;
         this.wantedPosition = position;
-        this.bounds.height = SIZE;
-        this.bounds.width = SIZE;
-        this.bounds.x = this.position.x;
-        this.bounds.y = this.position.y;
-    }
 
-    public Player(Vector2 position, Peer peer) {
-        this.peer = peer;
-        this.position = position;
-        this.wantedPosition = position;
-        this.bounds.height = SIZE;
-        this.bounds.width = SIZE;
-        this.bounds.x = this.position.x;
-        this.bounds.y = this.position.y;
-    }
-    public Player(Vector2 position, String id, Peer peer) {
-        this.id = id;
-        this.peer = peer;
-        this.position = position;
-        this.wantedPosition = position;
-        this.bounds.height = SIZE;
-        this.bounds.width = SIZE;
-        this.bounds.x = this.position.x;
-        this.bounds.y = this.position.y;
     }
     public Player() {
 
     }
 
-    public Rectangle getBounds() {
-        return bounds;
-    }
 
     public Vector2 getPosition() {
         return position;
