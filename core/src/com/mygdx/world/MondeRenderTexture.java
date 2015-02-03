@@ -47,17 +47,11 @@ public class MondeRenderTexture {
 
     public void render() {
         spriteBatch.begin();
-<<<<<<< HEAD
+
         spriteBatch.draw(Assets.background,0,0,width,height);
         drawPlayer();
         spriteBatch.end();
-=======
-        spriteBatch.draw(Assets.background, 0, 0, width, height);
-        drawBlocks();
-        drawPlayer();
-        spriteBatch.end();
-    }
->>>>>>> origin/Sprint-1_GameZoneAndControls
+
 
     }
 
@@ -69,9 +63,5 @@ public class MondeRenderTexture {
             spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
         }
     }
-<<<<<<< HEAD
 
-
-=======
->>>>>>> origin/Sprint-1_GameZoneAndControls
 }
