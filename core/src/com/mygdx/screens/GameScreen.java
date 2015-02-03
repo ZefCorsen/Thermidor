@@ -12,6 +12,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.controller.MondeControlleur;
+import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.player.Player;
 import com.mygdx.world.Assets;
@@ -40,6 +41,7 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
         mondeRender.render();
+        NetworkController.getInstance().sendPosition(game.id);
     }
 
     @Override
@@ -52,6 +54,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         monde = new World();
+        NetworkController.getInstance().startReceiver(monde);
         mondeRender = new MondeRenderTexture(monde, false);
         controller = new MondeControlleur(monde);
 

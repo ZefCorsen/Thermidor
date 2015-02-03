@@ -78,7 +78,7 @@ public class MainMenu implements Screen {
                 game.setScreen(new GameScreen(game));
 
 
-                NetworkController.getInstance().startReceiver();
+
                 //  Kryo kryo = server.getKryo();
                 //kryo.register(SomeRequest.class);
                 //kryo.register(SomeResponse.class);
@@ -102,11 +102,14 @@ public class MainMenu implements Screen {
                     NetworkController.getInstance().startEmitter();
                     NetworkController.getInstance().discoverPeers();
                     NetworkController.getInstance().sendMessage("Trouvé");
-                    NetworkController.getInstance().startReceiver();
-                    for(int i=0;i<100;i++){
+                    NetworkController.getInstance().sendJoinMessage();
 
-                        NetworkController.getInstance().sendMessage("Mess  "+i);
-                }
+
+                    System.out.println("Touch Screen GAME");
+                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
+                    game.setScreen(new GameScreen(game));
+
+
 
                     return;
             }
