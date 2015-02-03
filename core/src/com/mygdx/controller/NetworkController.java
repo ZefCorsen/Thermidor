@@ -1,6 +1,7 @@
 package com.mygdx.controller;
 
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -153,9 +154,14 @@ public class NetworkController {
 
     }
     public String getLocalPeer(){
+        System.out.println("============================================Builder=================================:");
+
         StringBuilder sb = new StringBuilder();
         try {
+            System.out.println("Interfaces :");
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            server.toString();
+            System.out.println(interfaces.hasMoreElements());
            NetworkInterface ni= interfaces.nextElement();
             byte[] mac = ni.getHardwareAddress();
                 for (int i = 0; i < mac.length; i++) {

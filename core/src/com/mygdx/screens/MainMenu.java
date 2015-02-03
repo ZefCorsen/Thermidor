@@ -62,10 +62,8 @@ public class MainMenu implements Screen {
         font.setColor(Color.ORANGE);
         Gdx.input.setCatchBackKey(false);
 
-        game.setId(NetworkController.getInstance().getLocalPeer());
+      //  game.setId(NetworkController.getInstance().getLocalPeer());
 
-        /*server = new Server();
-        client = new Client();*/
  }
 
     public void update() {

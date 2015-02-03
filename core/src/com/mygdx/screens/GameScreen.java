@@ -10,8 +10,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.player.Player;
 import com.mygdx.world.Assets;
 import com.mygdx.world.MondeRenderTexture;
 import com.mygdx.world.World;
@@ -52,6 +54,9 @@ public class GameScreen implements Screen, InputProcessor {
         monde = new World();
         mondeRender = new MondeRenderTexture(monde, false);
         controller = new MondeControlleur(monde);
+
+        Player player = new Player(new Vector2(1, 1), game.id);
+        monde.addPlayer(player);
         Gdx.input.setInputProcessor(this);
         // TODO Auto-generated method stub
     }

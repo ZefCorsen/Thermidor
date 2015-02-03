@@ -7,11 +7,9 @@ package com.mygdx.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.controller.NetworkController;
 import com.mygdx.models.Peer;
 import com.mygdx.player.Player;
 
-import java.lang.management.ManagementFactory;
 
 public class World {
 
@@ -48,9 +46,10 @@ public class World {
         createDemoWorld();
     }
 
-    private void createDemoWorld() {
-        Player player = new Player(new Vector2(1, 1), NetworkController.getInstance().getLocalPeer());
+    public void addPlayer(Player player){
         players.add(player);
+    }
+    private void createDemoWorld() {
 
     }
 }

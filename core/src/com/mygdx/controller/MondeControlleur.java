@@ -41,6 +41,9 @@ public class MondeControlleur {
         }
         return true;
     }
+    public void addPlayerToWorld(Player player){
+        world.addPlayer(player);
+    }
 
 
 }

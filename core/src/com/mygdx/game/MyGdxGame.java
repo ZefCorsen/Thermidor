@@ -1,7 +1,13 @@
 package com.mygdx.game;
 
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.models.Peer;
 import com.mygdx.screens.MainMenu;
 import com.mygdx.world.Assets;
@@ -18,15 +24,28 @@ public class MyGdxGame extends Game {
     public Peer peer;
 
 
+    boolean block = true;
 
     public MyGdxGame() {
+
     }
 
-    @Override
     public void create() {
         Assets.load();
 
-       // setScreen(new TextScreen(this));
+
+            Gdx.input.getTextInput(new Input.TextInputListener() {
+
+                @Override
+                public void input(String texteSaisi) {
+                    id=texteSaisi;
+                }
+
+                @Override
+                public void canceled() {
+                }
+            }, "Bonjour", "Pseudo", "");
+
         setScreen(new MainMenu(this));
     }
 
