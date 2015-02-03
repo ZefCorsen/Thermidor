@@ -115,9 +115,6 @@ idea {
     }
 }
 dependencies {
-<<<<<<< HEAD
-    compile 'com.esotericsoftware:kryonet:2.22.0-RC1'
-=======
+    //compile 'com.esotericsoftware:kryonet:2.22.0-RC1'
     compile files('libs/kryonet-2.21-all.jar')
->>>>>>> origin/Sprint-1_GameZoneAndControls
 }

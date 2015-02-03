@@ -1,17 +1,12 @@
 package com.mygdx.controller;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/Sprint-1_GameZoneAndControls
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-<<<<<<< HEAD
-=======
 import com.esotericsoftware.minlog.Log;
->>>>>>> origin/Sprint-1_GameZoneAndControls
 import com.mygdx.models.Peer;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
@@ -157,30 +152,21 @@ public class NetworkController {
         }
 
     }
-    public Peer getLocalPeer(){
-        List<String> addresses = new ArrayList<String>();
+    public String getLocalPeer(){
+        StringBuilder sb = new StringBuilder();
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            for(NetworkInterface ni : Collections.list(interfaces)){
-                for(InetAddress address : Collections.list(ni.getInetAddresses()))
-                {
-                    if(address instanceof Inet4Address){
-                        addresses.add(address.getHostAddress());
-                    }
+           NetworkInterface ni= interfaces.nextElement();
+            byte[] mac = ni.getHardwareAddress();
+                for (int i = 0; i < mac.length; i++) {
+                   sb.append( String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
                 }
-            }
+
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
-        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
-        String ipAddress = new String("");
-        for(String str:addresses)
-        {
-            ipAddress = ipAddress + str + "\n";
-        }
-        System.out.println(ipAddress);
-        return null;
+        return sb.toString();
     }
 
 }

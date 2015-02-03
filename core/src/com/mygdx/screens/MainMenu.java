@@ -24,6 +24,7 @@ import com.mygdx.models.SomeResponse;
 import com.mygdx.world.Assets;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 
 
@@ -61,6 +62,8 @@ public class MainMenu implements Screen {
         font.setColor(Color.ORANGE);
         Gdx.input.setCatchBackKey(false);
 
+        game.setId(NetworkController.getInstance().getLocalPeer());
+
         /*server = new Server();
         client = new Client();*/
  }
@@ -76,22 +79,18 @@ public class MainMenu implements Screen {
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                 game.setScreen(new GameScreen(game));
 
-<<<<<<< HEAD
-                NetworkController.getInstance().startReceiver();
-                NetworkController.getInstance().getLocalPeer();
-              /*  Kryo kryo = server.getKryo();
-                kryo.register(SomeRequest.class);
-                kryo.register(SomeResponse.class);
-                server.start();
-                try {
-                    server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-=======
-               NetworkController.getInstance().startReceiver();
->>>>>>> origin/Sprint-1_GameZoneAndControls
 
+                NetworkController.getInstance().startReceiver();
+                //  Kryo kryo = server.getKryo();
+                //kryo.register(SomeRequest.class);
+                //kryo.register(SomeResponse.class);
+                //server.start();
+                //try {
+                //server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
+                //} catch (IOException e) {
+                //e.printStackTrace();
+                //}
+                //NetworkController.getInstance().startReceiver();
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
