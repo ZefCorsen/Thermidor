@@ -40,7 +40,7 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
         mondeRender.render();
-
+        NetworkController.getInstance().myWorld=monde;
         NetworkController.getInstance().sendPosition(game.id);
     }
 
