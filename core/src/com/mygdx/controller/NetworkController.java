@@ -270,7 +270,8 @@ public class NetworkController {
         }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
-            addr = InetAddress.getByName("127.0.0.1");
+             addr = client.discoverHost(UDP, 10000);
+            //addr = InetAddress.getByName("192.168.1.1");
         }catch(Exception e){
             Log.info(e.toString());
         }
