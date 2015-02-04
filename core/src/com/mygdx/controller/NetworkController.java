@@ -43,6 +43,7 @@ public class NetworkController {
     private ArrayList<Peer> peers;
     private ArrayList<Client> clients;
     public World myWorld;
+    public String myId;
 
 
     private NetworkController() {
@@ -250,6 +251,7 @@ public class NetworkController {
                     myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
                     connection.sendTCP(myWorld);
                     System.out.print("Player Joining " + messageJoin.getId());
+                    sendJoinMessage(myId);
                     sendGameState(myWorld);
 
 

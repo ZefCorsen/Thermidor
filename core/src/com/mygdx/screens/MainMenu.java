@@ -75,6 +75,7 @@ public class MainMenu implements Screen {
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Touch Screen GAME");
                 System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
+                NetworkController.getInstance().myId=game.id;
                 game.setScreen(new GameScreen(game));
 
 
