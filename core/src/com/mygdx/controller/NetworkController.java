@@ -226,7 +226,6 @@ public class NetworkController {
                     System.out.println("Get initial position");
                     World request = (World) object;
                     myWorld=request;
-                    client.stop();
 
                 }
 
