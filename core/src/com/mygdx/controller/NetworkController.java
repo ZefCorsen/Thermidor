@@ -233,7 +233,7 @@ public class NetworkController {
                 if (object instanceof PositionMessage) {
                     PositionMessage positionMessage = (PositionMessage) object;
                     String id = positionMessage.getId();
-                    System.out.println("Position reiceived" + positionMessage.getPosition().toString());
+                    System.out.println("From "+positionMessage.getId()+" Position reiceived" + positionMessage.getPosition().toString());
 
                     try {
                        Player player;
