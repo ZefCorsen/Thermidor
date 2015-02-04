@@ -242,7 +242,7 @@ public class NetworkController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    connection.sendTCP(myWorld);
+                    //connection.sendTCP(myWorld);
                 }
                 if (object instanceof JoinMessage) {
                     JoinMessage messageJoin = (JoinMessage) object;
