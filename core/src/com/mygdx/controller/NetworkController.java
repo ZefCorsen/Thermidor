@@ -29,6 +29,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by Julie on 25/01/2015.
@@ -246,11 +247,12 @@ public class NetworkController {
                 if (object instanceof JoinMessage) {
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
-
+                    discoverPeers();
                     myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
                     connection.sendTCP(myWorld);
                     System.out.print("Player Joining " + messageJoin.getId());
                     sendGameState(myWorld);
+
 
                 }
 
@@ -261,7 +263,8 @@ public class NetworkController {
     }
 
     public void discoverPeers(){
-        InetAddress addr= null;
+       List<InetAddress> addr;
+        addr = null;
       /*  try {
             addr = InetAddress.getByName("172.22.201.136");
 
@@ -270,7 +273,7 @@ public class NetworkController {
         }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
-             addr = client.discoverHost(UDP, 10000);
+             addr = client.discoverHosts(UDP, 10000);
             //addr = InetAddress.getByName("192.168.1.1");
         }catch(Exception e){
             Log.info(e.toString());
@@ -279,8 +282,11 @@ public class NetworkController {
         if(addr == null) {
             System.exit(0);
         }
+            for(InetAddress adress:addr){
 
-            peers.add(new Peer(addr));
+                peers.add(new Peer(adress));
+            }
+
 
     }
     public String getLocalPeer(){
