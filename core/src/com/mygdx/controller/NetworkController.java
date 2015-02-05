@@ -177,14 +177,6 @@ public class NetworkController {
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (object instanceof SomeRequest) {
-                    SomeRequest request = (SomeRequest) object;
-                    System.out.println(request.text);
-                    startEmitter();
-                    SomeResponse response = new SomeResponse();
-                    response.text = "Rep";
-                    connection.sendTCP(response);
-                }
                 if (object instanceof World) {
                     World messageWorld = (World) object;
                     myWorld = messageWorld;

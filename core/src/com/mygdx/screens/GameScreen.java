@@ -41,7 +41,6 @@ public class GameScreen implements Screen, InputProcessor {
         controller.update(delta);
         mondeRender.render();
         NetworkController.getInstance().myWorld=monde;
-        NetworkController.getInstance().sendPosition(game.id);
     }
 
     @Override
@@ -115,6 +114,8 @@ public class GameScreen implements Screen, InputProcessor {
         x = screenX / (width / Assets.CAMERA_WIDTH);
         y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
         controller.setPlayerInPosition(game.id ,x, y);
+        NetworkController.getInstance().sendPosition(game.id);
+
         return true;
 
     }
@@ -130,6 +131,8 @@ public class GameScreen implements Screen, InputProcessor {
         x = screenX / (width / Assets.CAMERA_WIDTH);
         y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
         controller.setPlayerInPosition(game.id, x, y);
+        NetworkController.getInstance().sendPosition(game.id);
+
 
         return true;
     }
