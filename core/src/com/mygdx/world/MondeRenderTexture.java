@@ -1,10 +1,8 @@
 package com.mygdx.world;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.player.Player;
 
 /**
@@ -13,54 +11,26 @@ import com.mygdx.player.Player;
 public class MondeRenderTexture {
 
 
-    private World world;
-    private OrthographicCamera cam;
-
-    /**
-     * debug
-     */
-    ShapeRenderer debugRenderer = new ShapeRenderer();
-
-
+    private WorldImpl world;
     private SpriteBatch spriteBatch;
-    private boolean debug = false;
-    private int width;
-    private int height;
-    public float ppuX;
-    public float ppuY;
 
-    public void setSize(int w, int h) {
-        this.width = w;
-        this.height = h;
-        ppuX = (float) width / Assets.CAMERA_WIDTH;
-        ppuY = (float) height / Assets.CAMERA_HEIGHT;
-    }
 
-    public MondeRenderTexture(World world, boolean debug) {
+    public MondeRenderTexture(WorldImpl world, SpriteBatch spriteBatch) {
         this.world = world;
-        this.cam = new OrthographicCamera(Assets.CAMERA_WIDTH, Assets.CAMERA_HEIGHT);
-        this.cam.position.set(Assets.CAMERA_WIDTH / 2f, Assets.CAMERA_HEIGHT / 2f, 0);
-        this.cam.update();
-        this.debug = debug;
-        spriteBatch = new SpriteBatch();
+      this.spriteBatch = spriteBatch;
+
     }
 
     public void render() {
-        spriteBatch.begin();
-
-        spriteBatch.draw(Assets.background,0,0,width,height);
+        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2, -Assets.ppuY/2, Assets.ppuX, Assets.ppuY);
         drawPlayer();
-        spriteBatch.end();
-
 
     }
 
 
-
-    private void drawPlayer() {
-
+    public void drawPlayer() {
         for (Player player : world.getPlayers()) {
-            spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
+            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), Assets.SIZE * Assets.ppuX, Assets.SIZE * Assets.ppuY);
         }
     }
 

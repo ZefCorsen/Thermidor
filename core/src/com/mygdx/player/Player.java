@@ -1,109 +1,146 @@
 package com.mygdx.player;
 
-/**
- * Created by Jerem on 21/01/2015.
- */
-
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.models.Peer;
-import com.mygdx.models.State;
+import com.mygdx.models.PositionMessage;
 import com.mygdx.world.Assets;
+import com.mygdx.world.WorldImpl;
 
+/**
+ * Created by Jerem on 04/02/2015.
+ */
 public class Player {
 
-
-    public static final float SPEED = 4f;
-    public static final float SIZE = 0.5f; // Demi unité
-
-
-
+    private Sprite sprite;
+    private Body body;
+    private WorldImpl world;
+    private Vector2 wantedPosition;
     private String id;
-    private Peer peer;
-    private   Vector2 position = new Vector2();
-    private  Vector2 wantedPosition = new Vector2();
-    private  Vector2 velocity = new Vector2();
-    private   State state = State.IDLE;
 
-    public Player(Vector2 position) {
-        this.position = position;
-        this.wantedPosition = position;
-
+    /**
+     *Construit un joueur, ces limites, ses collision
+     * @param px position x
+     * @param py position y
+     * @param world WorldImp dans lequel sera créé le body du joueur
+     */
+    public Player(float px, float py, WorldImpl world) {
+        this.world = world;
+        sprite = Assets.sprite;
+        sprite.setPosition(px, py);
+        setBodyDef();
+        setFixture();
+        wantedPosition = body.getPosition();
+        world.addPlayer(this);
     }
 
-    public Player(Vector2 position, String id) {
+    /**
+     * Construit un joueur, ces limites, ses collision
+     * @param vectorPosition Vector2 de la position du joueur
+     * @param world WorldImp dans lequel sera créé le body du joueur
+     * @param id Id du joueur à ajouter
+     */
+    public Player(Vector2 vectorPosition, WorldImpl world, String id) {
+        this.world = world;
         this.id = id;
-        this.position = position;
-        this.wantedPosition = position;
-
+        sprite = Assets.sprite;
+        sprite.setPosition(vectorPosition.x,vectorPosition.y);
+        setBodyDef();
+        setFixture();
+        wantedPosition = body.getPosition();
+        world.addPlayer(this);
     }
-    public Player() {
-
+    /**
+     * Defini le corp du joueur
+     */
+    private void setBodyDef() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
+                (sprite.getY() + sprite.getHeight() / 2));
+        body = world.getWorld().createBody(bodyDef);
+    }
+    /**
+     * Defini les collision,la masse, d'un joueur
+     */
+    private void setFixture() {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight()
+                / 2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        fixtureDef.restitution = 0.0f;
+        fixtureDef.friction = 0.0f;
+        fixtureDef.filter.categoryBits = Assets.PHYSICS_ENTITY;
+        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY;
+        body.createFixture(fixtureDef);
+        shape.dispose();
     }
 
-
-    public Vector2 getPosition() {
-        return position;
+    public Body getBody() {
+        return body;
     }
-
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public Peer getPeer() {
-        return peer;
-    }
-
-
-
-    public void setState(State newState) {
-        this.state = newState;
-    }
-
+    /**
+     * Donne la position voulu d'un joueur
+     * @param wantedPosition
+     */
     public void setWantedPosition(Vector2 wantedPosition) {
         this.wantedPosition = wantedPosition;
     }
 
 
-
-
     public void update(float delta) {
-        boolean sapX = false;
-        boolean sapY = false;
-        Assets.round = Player.SPEED * delta;
-        if (!position.epsilonEquals(wantedPosition, Assets.round)) {
-            if (Math.abs(position.x - wantedPosition.x) > Assets.round) {
-                if (position.x > wantedPosition.x) {
-                    setState(State.WALKING);
-                    getVelocity().x = -Player.SPEED;
+        float round = 2f;
+        System.out.println("Update position");
+        if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
+            System.out.println("Set position x :"+getPosition().x+" => "+wantedPosition.x);
+            System.out.println("Set position y :"+getPosition().y+" => "+wantedPosition.y);
 
-                } else if (position.x < wantedPosition.x) {
-                    setState(State.WALKING);
-                    getVelocity().x = Player.SPEED;
+            body.setActive(true);
+            body.setType(BodyDef.BodyType.DynamicBody);
+            if (body.getPosition().x > wantedPosition.x) {
+                if (body.getPosition().y > wantedPosition.y) {
+                    body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                } else if (body.getPosition().y < wantedPosition.y) {
+                    body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                } else {
+                    body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
                 }
-            }else{
-                sapX = true;
-            }
 
-            if (Math.abs(position.y - wantedPosition.y) > Assets.round) {
-                if (position.y > wantedPosition.y) {
-                    setState(State.WALKING);
-                    getVelocity().y = -Player.SPEED;
-                } else if (position.y < wantedPosition.y) {
-                    setState(State.WALKING);
-                    getVelocity().y = Player.SPEED;
+            } else if (body.getPosition().x < wantedPosition.x) {
+                if (body.getPosition().y > wantedPosition.y) {
+                    body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                } else if (body.getPosition().y < wantedPosition.y) {
+                    body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                } else {
+                    body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
                 }
-            }else{
-                sapY = true;
             }
-
-            position.add(new Vector2(velocity.x * delta, velocity.y * delta));
+        } else {
+            body.setLinearVelocity(0f, 0f);
+            body.setActive(false);
         }
-        if(sapX)position.x = wantedPosition.x;
-        if(sapY)position.y = wantedPosition.y;
+
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Vector2 getPosition(){
+        return body.getPosition();
+    }
+    public Peer getPeer(){
+        return null;
     }
 }

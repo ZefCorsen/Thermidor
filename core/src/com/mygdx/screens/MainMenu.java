@@ -1,9 +1,7 @@
 package com.mygdx.screens;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,20 +10,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.models.SomeRequest;
-import com.mygdx.models.SomeResponse;
 import com.mygdx.world.Assets;
-
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
 
 
 /**
@@ -45,73 +32,48 @@ public class MainMenu implements Screen {
     private int width;
     private int height;
     private int bord;
-   /* Server server;
-    Client client;
-*/
+
+    /* Server server;
+     Client client;
+ */
     public MainMenu(MyGdxGame game) {
-        bord = (320 - 120) / 2;
+        bord = -60;
         this.game = game;
-        guiCam = new OrthographicCamera(320, 480);
-        guiCam.position.set(320 / 2, 480 / 2, 0);
+        guiCam = new OrthographicCamera(Assets.ppuY, Assets.ppuX);
         batcher = new SpriteBatch();
-        playBounds = new Rectangle(bord, 280, 120, 60);
-        helpBounds = new Rectangle(bord, 210, 120, 60);
-        joinGame = new Rectangle(bord, 140, 120, 60);
+        batcher.setProjectionMatrix(guiCam.combined);
+        playBounds = new Rectangle( bord, -60, 120, 60);
+        joinGame = new Rectangle(bord, -130, 120, 60);
+        helpBounds = new Rectangle( bord, -200, 120, 60);
         touchPoint = new Vector3();
         font = new BitmapFont();
         font.setColor(Color.ORANGE);
         Gdx.input.setCatchBackKey(false);
 
-      //  game.setId(NetworkController.getInstance().getLocalPeer());
-
- }
+    }
 
     public void update() {
         if (Gdx.input.justTouched()) {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            System.out.println("Touch Screen");
-            System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Touch Screen GAME");
-                System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                NetworkController.getInstance().myId=game.id;
+                NetworkController.getInstance().myId = game.id;
                 game.setScreen(new GameScreen(game));
 
-
-
-                //  Kryo kryo = server.getKryo();
-                //kryo.register(SomeRequest.class);
-                //kryo.register(SomeResponse.class);
-                //server.start();
-                //try {
-                //server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
-                //} catch (IOException e) {
-                //e.printStackTrace();
-                //}
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
-             //TODO Help Screen
-                //game.setScreen(new HelpScreen(game));
+                //TODO Help Screen
                 return;
             }
             if (joinGame.contains(touchPoint.x, touchPoint.y)) {
-                    System.out.println("Touch Screen Join");
-                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                    NetworkController.getInstance().startEmitter();
-                    NetworkController.getInstance().discoverPeers();
-                    NetworkController.getInstance().sendMessage("Trouvé");
-                    NetworkController.getInstance().sendJoinMessage(game.id);
+                NetworkController.getInstance().startEmitter();
+                NetworkController.getInstance().discoverPeers();
+                NetworkController.getInstance().sendMessage("Trouvé");
+                NetworkController.getInstance().sendJoinMessage(game.id);
+                game.setScreen(new GameScreen(game));
 
 
-                System.out.println("Touch Screen GAME");
-                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                    game.setScreen(new GameScreen(game));
-
-
-
-                    return;
+                return;
             }
         }
     }
@@ -126,14 +88,14 @@ public class MainMenu implements Screen {
         batcher.setProjectionMatrix(guiCam.combined);
         batcher.disableBlending();
         batcher.begin();
-        batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
-        int bord = (320 - 120) / 2;
-        // System.out.println(bord);
-        batcher.draw(Assets.start, bord, 280, 120, 60);
-        batcher.draw(Assets.joinGame, bord, 210, 120, 60);
-        batcher.draw(Assets.help, bord, 140, 120, 60);
-        int log = 320-68;
-        batcher.draw(Assets.logo, log, 3,65,50);
+        batcher.draw(Assets.backgroundRegionMain, -Assets.ppuY/2 ,-Assets.ppuX/2, Assets.ppuY,Assets.ppuX);
+        int bord = -60;
+        batcher.draw(Assets.start, bord, -60, 120, 60);
+        batcher.draw(Assets.joinGame, bord, -130, 120, 60);
+        batcher.draw(Assets.help, bord, -200, 120, 60);
+        float logX = 240 - 60.5f;
+        float logY = -419;
+        batcher.draw(Assets.logo, logX, logY, 60, 80);
 
         batcher.end();
 
@@ -161,7 +123,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void pause() {
-        //     Settings.save();
     }
 
     @Override
@@ -171,7 +132,6 @@ public class MainMenu implements Screen {
     @Override
     public void dispose() {
     }
-
 
 
 }

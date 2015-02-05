@@ -2,11 +2,7 @@ package com.mygdx.controller;
 
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.Serializer;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -18,11 +14,8 @@ import com.mygdx.models.PositionMessage;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
 import com.mygdx.models.State;
-
 import com.mygdx.player.Player;
-import com.mygdx.world.Block;
-import com.mygdx.world.World;
-
+import com.mygdx.world.WorldImpl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -42,7 +35,7 @@ public class NetworkController {
     private Client client;
     private ArrayList<Peer> peers;
     private ArrayList<Client> clients;
-    public World myWorld;
+    public WorldImpl myWorld;
     public String myId;
 
 
@@ -54,11 +47,10 @@ public class NetworkController {
         Kryo kryo = server.getKryo();
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
-        kryo.register(com.mygdx.world.Block.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
-        kryo.register(com.mygdx.world.World.class);
+        kryo.register(WorldImpl.class);
         kryo.register(JoinMessage.class);
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);
@@ -123,7 +115,7 @@ public class NetworkController {
 
 
     }
-    public void sendGameState(World world){
+    public void sendGameState(WorldImpl world){
 
         for (Peer peer:peers){
 
@@ -185,8 +177,8 @@ public class NetworkController {
                     response.text = "Rep";
                     connection.sendTCP(response);
                 }
-                if (object instanceof World) {
-                    World messageWorld = (World) object;
+                if (object instanceof WorldImpl) {
+                    WorldImpl messageWorld = (WorldImpl) object;
                     myWorld = messageWorld;
                     connection.sendTCP(myWorld);
                 }
@@ -195,7 +187,7 @@ public class NetworkController {
         });
     }
 
-    public void startReceiver(World world) {
+    public void startReceiver(WorldImpl world) {
         this.myWorld=world;
         server.start();
         try {
@@ -223,9 +215,9 @@ public class NetworkController {
                     response.text = "Rep";
                     connection.sendTCP(response);
                 }
-                if (object instanceof World) {
+                if (object instanceof WorldImpl) {
                     System.out.println("Get initial position");
-                    World request = (World) object;
+                    WorldImpl request = (WorldImpl) object;
                     myWorld=request;
 
                 }
@@ -248,7 +240,8 @@ public class NetworkController {
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
                     discoverPeers();
-                    myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
+
+                    myWorld.addPlayer(new Player(new Vector2(0,0),myWorld,messageJoin.getId()));
                     connection.sendTCP(myWorld);
                     System.out.print("Player Joining " + messageJoin.getId());
                     sendJoinMessage(myId);
@@ -317,11 +310,10 @@ public class NetworkController {
         Kryo kryo = client.getKryo();
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
-        kryo.register(com.mygdx.world.Block.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
-        kryo.register(com.mygdx.world.World.class);
+        kryo.register(WorldImpl.class);
         kryo.register(JoinMessage.class);
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);

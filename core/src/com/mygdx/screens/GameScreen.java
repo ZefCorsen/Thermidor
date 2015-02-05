@@ -10,27 +10,45 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.player.Player;
-import com.mygdx.world.Assets;
 import com.mygdx.world.MondeRenderTexture;
-import com.mygdx.world.World;
+import com.mygdx.world.WorldImpl;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    private World monde;
     private MyGdxGame game;
     private MondeRenderTexture mondeRender;
     private MondeControlleur controller;
     private int width, height;
+    private WorldImpl worldImpl;
+    private Player player1;
+    SpriteBatch spriteBatch;
+    OrthographicCamera camera;
+
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
+        spriteBatch = new SpriteBatch();
         Gdx.input.setCatchBackKey(true);
+        worldImpl = new WorldImpl();
+        mondeRender = new MondeRenderTexture(worldImpl, spriteBatch);
+        controller = new MondeControlleur(worldImpl);
+        player1 = new Player(100, 110, worldImpl);
+        player1.setId(game.id);
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.
+                getHeight());
+        NetworkController.getInstance().startReceiver(worldImpl);
+        if (NetworkController.getInstance().myWorld == null) {
+            NetworkController.getInstance().myWorld = worldImpl;
+        }
 
+        Gdx.input.setInputProcessor(this);
+        // TODO Auto-generated method stub
 
     }
 
@@ -38,33 +56,26 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        camera.update();
+        worldImpl.getWorld().step(1f / 60f, 6, 2);
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
         controller.update(delta);
         mondeRender.render();
-        NetworkController.getInstance().myWorld=monde;
-        NetworkController.getInstance().sendPosition(game.id);
+        spriteBatch.end();
     }
+
 
     @Override
     public void resize(int width, int height) {
-        mondeRender.setSize(width, height);
         this.width = width;
         this.height = height;
     }
 
     @Override
     public void show() {
-        monde = new World();
-        NetworkController.getInstance().startReceiver(monde);
-        mondeRender = new MondeRenderTexture(monde, false);
-        controller = new MondeControlleur(monde);
-        if (NetworkController.getInstance().myWorld==null){
-            NetworkController.getInstance().myWorld=monde;
-        }
 
-        Player player = new Player(new Vector2(1, 1), game.id);
-        monde.addPlayer(player);
-        Gdx.input.setInputProcessor(this);
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -86,6 +97,8 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         Gdx.input.setInputProcessor(null);
+        worldImpl.getWorld().dispose();
+
         // TODO Auto-generated method stub
     }
 
@@ -112,9 +125,10 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         float x, y;
-        x = screenX / (width / Assets.CAMERA_WIDTH);
-        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
-        controller.setPlayerInPosition(game.id ,x, y);
+        x = (screenX - width / 2);
+        y = height - screenY - height / 2;
+        controller.setPlayerInPosition(game.id, x, y);
+
         return true;
 
     }
@@ -127,10 +141,9 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x, y;
-        x = screenX / (width / Assets.CAMERA_WIDTH);
-        y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
+        x = (screenX - width / 2);
+        y = height - screenY - height / 2;
         controller.setPlayerInPosition(game.id, x, y);
-
         return true;
     }
 
