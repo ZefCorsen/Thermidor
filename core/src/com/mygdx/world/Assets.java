@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Jerem on 22/01/2015.
  */
 public class Assets {
-    public static final float PLAYER_SPEED = 1000f;
+    public static final float PLAYER_SPEED = 4f;
+    public static final float PIXELS_TO_METERS = 100f;
     public static Texture backgroundMain;
     public static TextureRegion backgroundRegionMain;
     public static Texture backgroundGame;
@@ -53,7 +54,7 @@ public class Assets {
         player = loadTexture(prefix + "images/bonhomme.png");
         mainMenu = new TextureRegion(start);
         sprite = new Sprite(player);
-        sprite.setSize(SIZE * ppuX, SIZE * ppuY);
+        sprite.setSize((SIZE * ppuX)/Assets.PIXELS_TO_METERS, (SIZE * ppuY)/Assets.PIXELS_TO_METERS);
 
     }
 

@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * Contient l'ensemble des informations sur la partie
  */
 public class WorldImpl {
-    float w = Gdx.graphics.getWidth();
-    float h = Gdx.graphics.getHeight();
+    float w = Assets.ppuX/Assets.PIXELS_TO_METERS;
+    float h = Assets.ppuY/Assets.PIXELS_TO_METERS;
     private FixtureDef fixtureDef;
     private ChainShape myChain;
     private World world;
@@ -28,7 +28,7 @@ public class WorldImpl {
     private ArrayList<Player> players = new ArrayList();
 
     public WorldImpl() {
-        world = new World(new Vector2(0.2f, 0), false);
+        world = new World(new Vector2(0f, 0f), false);
         setBody();
         setFixture();
         setEdge();
@@ -72,6 +72,7 @@ public class WorldImpl {
     }
 
     public void addPlayer(Player player) {
+
         players.add(player);
     }
 
@@ -81,11 +82,8 @@ public class WorldImpl {
 
     public Player getPlayer(String id) throws Exception {
         if(id == null ||id.isEmpty())throw new Exception("Id passer vide");
-        System.out.println(players.size());
         for (Player player : players) {
-            System.out.println(player.getId());
             if (player.getId().equals(id)) {
-                System.out.println("return player :" + player.getId());
                 return player;
             }
         }

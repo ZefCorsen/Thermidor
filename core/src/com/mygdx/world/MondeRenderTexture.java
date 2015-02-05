@@ -22,7 +22,7 @@ public class MondeRenderTexture {
     }
 
     public void render() {
-        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2, -Assets.ppuY/2, Assets.ppuX, Assets.ppuY);
+        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2/Assets.PIXELS_TO_METERS, -Assets.ppuY/2/Assets.PIXELS_TO_METERS, Assets.ppuX/Assets.PIXELS_TO_METERS, Assets.ppuY/Assets.PIXELS_TO_METERS);
         drawPlayer();
 
     }
@@ -30,7 +30,7 @@ public class MondeRenderTexture {
 
     public void drawPlayer() {
         for (Player player : world.getPlayers()) {
-            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), Assets.SIZE * Assets.ppuX, Assets.SIZE * Assets.ppuY);
+            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), (Assets.SIZE * Assets.ppuX)/Assets.PIXELS_TO_METERS, (Assets.SIZE * Assets.ppuY)/Assets.PIXELS_TO_METERS);
         }
     }
 

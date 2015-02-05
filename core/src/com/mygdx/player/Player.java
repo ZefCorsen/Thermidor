@@ -6,8 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mygdx.models.Peer;
-import com.mygdx.models.PositionMessage;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
@@ -23,9 +21,10 @@ public class Player {
     private String id;
 
     /**
-     *Construit un joueur, ces limites, ses collision
-     * @param px position x
-     * @param py position y
+     * Construit un joueur, ces limites, ses collision
+     *
+     * @param px    position x
+     * @param py    position y
      * @param world WorldImp dans lequel sera créé le body du joueur
      */
     public Player(float px, float py, WorldImpl world) {
@@ -40,20 +39,22 @@ public class Player {
 
     /**
      * Construit un joueur, ces limites, ses collision
+     *
      * @param vectorPosition Vector2 de la position du joueur
-     * @param world WorldImp dans lequel sera créé le body du joueur
-     * @param id Id du joueur à ajouter
+     * @param world          WorldImp dans lequel sera créé le body du joueur
+     * @param id             Id du joueur à ajouter
      */
     public Player(Vector2 vectorPosition, WorldImpl world, String id) {
         this.world = world;
         this.id = id;
         sprite = Assets.sprite;
-        sprite.setPosition(vectorPosition.x,vectorPosition.y);
+        sprite.setPosition(vectorPosition.x, vectorPosition.y);
         setBodyDef();
         setFixture();
         wantedPosition = body.getPosition();
         world.addPlayer(this);
     }
+
     /**
      * Defini le corp du joueur
      */
@@ -64,6 +65,7 @@ public class Player {
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
     }
+
     /**
      * Defini les collision,la masse, d'un joueur
      */
@@ -85,40 +87,62 @@ public class Player {
     public Body getBody() {
         return body;
     }
+
     /**
      * Donne la position voulu d'un joueur
+     *
      * @param wantedPosition
      */
     public void setWantedPosition(Vector2 wantedPosition) {
         this.wantedPosition = wantedPosition;
     }
 
-
+    /**
+     * Met à jour la velocité d'un joueur si la position voulu n'est pas encore atteinte
+     *
+     * @param delta
+     */
     public void update(float delta) {
-        float round = 2f;
-        System.out.println("Update position");
-        if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
-            System.out.println("Set position x :"+getPosition().x+" => "+wantedPosition.x);
-            System.out.println("Set position y :"+getPosition().y+" => "+wantedPosition.y);
+        float round = (delta * Assets.PLAYER_SPEED) / Assets.PIXELS_TO_METERS;
 
+        if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
             body.setActive(true);
             body.setType(BodyDef.BodyType.DynamicBody);
             if (body.getPosition().x > wantedPosition.x) {
-                if (body.getPosition().y > wantedPosition.y) {
-                    body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                } else if (body.getPosition().y < wantedPosition.y) {
-                    body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
+                    if (body.getPosition().y > wantedPosition.y) {
+                        body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                    } else if (body.getPosition().y < wantedPosition.y) {
+                        body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                    } else {
+                        body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+                    }
                 } else {
-                    body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+                    if (body.getPosition().y > wantedPosition.y) {
+                        body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
+                    } else if (body.getPosition().y < wantedPosition.y) {
+                        body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
+                    }
                 }
-
             } else if (body.getPosition().x < wantedPosition.x) {
-                if (body.getPosition().y > wantedPosition.y) {
-                    body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                } else if (body.getPosition().y < wantedPosition.y) {
-                    body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
+
+                    if (body.getPosition().y > wantedPosition.y) {
+                        body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                    } else if (body.getPosition().y < wantedPosition.y) {
+                        body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                    } else {
+                        body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
+                    }
+
                 } else {
-                    body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
+
+                    if (body.getPosition().y > wantedPosition.y) {
+                        body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
+                    } else if (body.getPosition().y < wantedPosition.y) {
+                        body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
+                    }
+
                 }
             }
         } else {
@@ -137,10 +161,7 @@ public class Player {
         this.id = id;
     }
 
-    public Vector2 getPosition(){
+    public Vector2 getPosition() {
         return body.getPosition();
-    }
-    public Peer getPeer(){
-        return null;
     }
 }
