@@ -237,10 +237,11 @@ public class NetworkController {
                     //connection.sendTCP(myWorld);
                 }
                 if (object instanceof JoinMessage) {
+
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
-                    discoverPeers();
-                    myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
+                    peers.add(new Peer(connection.getRemoteAddressTCP().getAddress()));
+                    myWorld.addPlayer(new Player(new Vector2(0, 0), messageJoin.getId()));
                     connection.sendTCP(myWorld);
                     System.out.print("Player Joining " + messageJoin.getId());
                     sendJoinMessage(myId);
