@@ -130,8 +130,12 @@ public class NetworkController {
         for (Peer peer:peers.getPeerList()){
 
             try {
-                if(!client.isConnected())
-                    client.connect(5000,peer.IP,TCP,UDP);
+
+                if(!client.isConnected()) {
+                    System.out.print("Peer connection is " + peer.IP);
+                    client.connect(5000, peer.IP, TCP, UDP);
+
+                }
                 Log.info("peers number is : "+peers.getPeerList().size());
                 System.out.println("peers number is : " + peers.getPeerList().size());
 
@@ -235,7 +239,7 @@ public class NetworkController {
                     //connection.sendTCP(myWorld);
                 }
                 if (object instanceof JoinMessage) {
-
+                    startEmitter();
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
                     connection.sendTCP(peers);
