@@ -45,6 +45,9 @@ public class Player {
     public Vector2 getPosition() {
         return position;
     }
+    public Vector2 getWantedPosition() {
+        return position;
+    }
 
 
     public Vector2 getVelocity() {

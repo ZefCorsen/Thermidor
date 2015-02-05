@@ -151,7 +151,7 @@ public class NetworkController {
             PositionMessage pos = null;
             try {
                 if (myWorld!=null){
-                pos = new PositionMessage(id,myWorld.getPlayer(id).getPosition());}
+                pos = new PositionMessage(id,myWorld.getPlayer(id).getWantedPosition());}
             } catch (Exception e) {
                 e.printStackTrace();
             }
