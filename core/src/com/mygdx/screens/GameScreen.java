@@ -37,6 +37,8 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         monde=NetworkController.getInstance().myWorld;
+        System.out.print("monde : "+monde.toString());
+        System.out.print("myWorld : "+monde.toString());
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
