@@ -228,13 +228,11 @@ public class NetworkController {
                     System.out.println("From "+positionMessage.getId()+" Position reiceived" + positionMessage.getPosition().toString());
 
                     try {
-                       Player player;
-                       player = myWorld.getPlayer(id);
-                       player.setWantedPosition(positionMessage.getPosition());
+                        myWorld.getPlayer(id).setWantedPosition(positionMessage.getPosition());
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //connection.sendTCP(myWorld);
                 }
                 if (object instanceof JoinMessage) {
                     startEmitter();
