@@ -24,5 +24,8 @@ public class Peer {
 
     }
 
+    public String toString(){
+        return IP.toString();
+    }
 
 }

@@ -106,4 +106,5 @@ public class Player {
         if(sapX)position.x = wantedPosition.x;
         if(sapY)position.y = wantedPosition.y;
     }
+
 }

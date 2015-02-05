@@ -189,7 +189,7 @@ public class NetworkController {
                 if (object instanceof PeerList) {
                     PeerList peerMessage = (PeerList) object;
                     peers.MergePeerList(peerMessage);
-                    System.out.println("Peer reiceived : "+peers.getPeerList().toString());
+                    System.out.println("Peer received : "+peers.getPeerList().toString());
                 }
             }
 
@@ -217,6 +217,7 @@ public class NetworkController {
                     System.out.println("Get initial position");
                     World request = (World) object;
                     myWorld=request;
+                    System.out.println(myWorld.toString());
 
                 }
 
@@ -265,7 +266,7 @@ public class NetworkController {
         }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
-             addr = client.discoverHosts(UDP, 10000);
+             addr = client.discoverHosts(UDP, 1000);
             //addr = InetAddress.getByName("192.168.1.1");
         }catch(Exception e){
             Log.info(e.toString());
