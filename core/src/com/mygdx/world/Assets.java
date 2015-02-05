@@ -25,12 +25,14 @@ public class Assets {
     public static Texture help;
     public static float round = 0.001f;
     public static BitmapFont buton;
-    public static float SIZE = 0.06f;
+    public static float SIZE = 0.03f;
     public static Sprite sprite;
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
     public static final short PHYSICS_ENTITY = 0x1;    // 0001
     public static final short WORLD_ENTITY = 0x1 << 1; // 0010 or 0x2 in hex
+    public static  float widthPlayer =(SIZE * ppuX) / Assets.PIXELS_TO_METERS;
+    public static  float heightPlayer = (SIZE * ppuY) / Assets.PIXELS_TO_METERS;
 
 
     public static Texture loadTexture(String file) {
@@ -42,7 +44,9 @@ public class Assets {
 
     public static void load() {
         backgroundMain = loadTexture(prefix + "images/MainBackground.jpg");
-        backgroundGame = loadTexture(prefix + "images/arriereplan.png");
+        // backgroundGame = loadTexture(prefix + "images/herbe2.png");
+        // backgroundGame = loadTexture(prefix + "images/herbe4.png");
+        backgroundGame = loadTexture(prefix + "images/herbe5.png");
         backgroundRegionMain = new TextureRegion(backgroundMain);
         backgroundRegionGame = new TextureRegion(backgroundGame);
         buton = new BitmapFont();
@@ -51,10 +55,12 @@ public class Assets {
         help = loadTexture(prefix + "images/buton3.png");
         block = loadTexture(prefix + "images/block.png");
         joinGame = loadTexture(prefix + "images/buton2.png");
-        player = loadTexture(prefix + "images/bonhomme.png");
+        //player = loadTexture(prefix + "images/bonhomme.png");
+        player = loadTexture(prefix + "images/fanTran.png");
         mainMenu = new TextureRegion(start);
         sprite = new Sprite(player);
-        sprite.setSize((SIZE * ppuX)/Assets.PIXELS_TO_METERS, (SIZE * ppuY)/Assets.PIXELS_TO_METERS);
+        heightPlayer = (widthPlayer*sprite.getHeight())/sprite.getWidth();
+        sprite.setSize(widthPlayer, heightPlayer);
 
     }
 

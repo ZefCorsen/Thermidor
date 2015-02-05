@@ -103,7 +103,7 @@ public class Player {
      * @param delta
      */
     public void update(float delta) {
-        float round = 0.033f;//((1f/60f) * Assets.PLAYER_SPEED);
+        float round = 0.02f;//((1f/60f) * Assets.PLAYER_SPEED);
 
         if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
             if (Math.abs(body.getPosition().x - wantedPosition.x) > round) {

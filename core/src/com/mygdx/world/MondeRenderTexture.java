@@ -18,6 +18,7 @@ public class MondeRenderTexture {
     public MondeRenderTexture(WorldImpl world, SpriteBatch spriteBatch) {
         this.world = world;
       this.spriteBatch = spriteBatch;
+      spriteBatch.enableBlending();
 
     }
 
@@ -30,7 +31,7 @@ public class MondeRenderTexture {
 
     public void drawPlayer() {
         for (Player player : world.getPlayers()) {
-            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), (Assets.SIZE * Assets.ppuX)/Assets.PIXELS_TO_METERS, (Assets.SIZE * Assets.ppuY)/Assets.PIXELS_TO_METERS);
+            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), Assets.widthPlayer, Assets.heightPlayer);
         }
     }
 
