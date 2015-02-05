@@ -95,9 +95,7 @@ public class NetworkController {
             try {
                 if(!client.isConnected())
                 client.connect(5000,peer.IP,TCP,UDP);
-               // Log.info("peers number is : "+peers.size());
                 if(myWorld!=null) {
-                 //   System.out.println(": peers number is : " + peers.size());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -188,6 +186,11 @@ public class NetworkController {
                     myWorld = messageWorld;
                     connection.sendTCP(myWorld);
                 }
+                if (object instanceof PeerList) {
+                    PeerList peerMessage = (PeerList) object;
+                    peers.MergePeerList(peerMessage);
+                    System.out.println("Peer reiceived : "+peers.getPeerList().toString());
+                }
             }
 
         });
@@ -217,12 +220,6 @@ public class NetworkController {
 
                 }
 
-                if (object instanceof PeerList) {
-                    System.out.println("Get initial position");
-                    World request = (World) object;
-                    myWorld=request;
-
-                }
 
                 if (object instanceof PositionMessage) {
                     PositionMessage positionMessage = (PositionMessage) object;

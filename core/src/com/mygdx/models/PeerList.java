@@ -43,5 +43,11 @@ public class PeerList {
 
 
     }
+    public void MergePeerList( PeerList pl) {
+
+        this.getPeerList().removeAll(pl.getPeerList());
+        this.getPeerList().addAll(pl.getPeerList());
+
+    }
 
 }
