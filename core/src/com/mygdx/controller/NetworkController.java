@@ -233,6 +233,7 @@ public class NetworkController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    System.out.println("myWorld after receiving position" +myWorld.toString());
                 }
                 if (object instanceof JoinMessage) {
                     startEmitter();

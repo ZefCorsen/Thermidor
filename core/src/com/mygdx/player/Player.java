@@ -46,7 +46,7 @@ public class Player {
         return position;
     }
     public Vector2 getWantedPosition() {
-        return position;
+        return wantedPosition;
     }
 
 
