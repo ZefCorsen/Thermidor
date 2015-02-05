@@ -43,8 +43,8 @@ public class MainMenu implements Screen {
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(guiCam.combined);
         playBounds = new Rectangle( bord, -60, 120, 60);
-        joinGame = new Rectangle(bord, -130, 120, 60);
-        helpBounds = new Rectangle( bord, -200, 120, 60);
+        helpBounds = new Rectangle(bord, -130, 120, 60);
+        joinGame = new Rectangle( bord, -200, 120, 60);
         touchPoint = new Vector3();
         font = new BitmapFont();
         font.setColor(Color.ORANGE);
@@ -56,16 +56,19 @@ public class MainMenu implements Screen {
         if (Gdx.input.justTouched()) {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
+                System.out.println("Click on Play");
                 NetworkController.getInstance().myId = game.id;
                 game.setScreen(new GameScreen(game));
 
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
+                System.out.println("Click on Help");
                 //TODO Help Screen
                 return;
             }
             if (joinGame.contains(touchPoint.x, touchPoint.y)) {
+                System.out.println("Click on Join");
                 NetworkController.getInstance().startEmitter();
                 NetworkController.getInstance().discoverPeers();
                 NetworkController.getInstance().sendMessage("Trouvé");

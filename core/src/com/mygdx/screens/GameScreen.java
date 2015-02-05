@@ -20,6 +20,9 @@ import com.mygdx.world.Assets;
 import com.mygdx.world.MondeRenderTexture;
 import com.mygdx.world.WorldImpl;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 public class GameScreen implements Screen, InputProcessor {
 
     private MyGdxGame game;
@@ -34,15 +37,20 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
+        if (game.id == null || game.id.isEmpty()) {
+            SecureRandom random = new SecureRandom();
+            game.id = (new BigInteger(130, random)).toString(32);
+        }
+
         spriteBatch = new SpriteBatch();
         Gdx.input.setCatchBackKey(true);
         worldImpl = new WorldImpl();
         mondeRender = new MondeRenderTexture(worldImpl, spriteBatch);
         controller = new MondeControlleur(worldImpl);
-        player1 = new Player(100/Assets.PIXELS_TO_METERS, 110/Assets.PIXELS_TO_METERS, worldImpl);
+        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl);
         player1.setId(game.id);
-        camera = new OrthographicCamera(Gdx.graphics.getWidth()/Assets.PIXELS_TO_METERS, Gdx.graphics.
-                getHeight()/Assets.PIXELS_TO_METERS);
+        camera = new OrthographicCamera(Gdx.graphics.getWidth() / Assets.PIXELS_TO_METERS, Gdx.graphics.
+                getHeight() / Assets.PIXELS_TO_METERS);
         NetworkController.getInstance().startReceiver(worldImpl);
         if (NetworkController.getInstance().myWorld == null) {
             NetworkController.getInstance().myWorld = worldImpl;
@@ -126,8 +134,8 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         float x, y;
-        x = (screenX - width / 2)/Assets.PIXELS_TO_METERS;
-        y = (height - screenY - height / 2)/Assets.PIXELS_TO_METERS;
+        x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
+        y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
         controller.setPlayerInPosition(game.id, x, y);
 
         return true;
@@ -142,8 +150,8 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x, y;
-        x = (screenX - width / 2)/Assets.PIXELS_TO_METERS;
-        y = (height - screenY - height / 2)/Assets.PIXELS_TO_METERS;
+        x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
+        y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
         controller.setPlayerInPosition(game.id, x, y);
         return true;
     }
