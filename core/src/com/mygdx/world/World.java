@@ -58,7 +58,7 @@ public class World {
 
         for(Player player : players){
 
-            chaine=chaine+"///"+player.getId();
+            chaine=chaine+"///"+player.getId()+player.getPosition().toString();
         }
 
         return chaine;
