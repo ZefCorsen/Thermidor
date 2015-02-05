@@ -189,7 +189,7 @@ public class NetworkController {
                 if (object instanceof PeerList) {
                     PeerList peerMessage = (PeerList) object;
                     peers.MergePeerList(peerMessage);
-                    System.out.println("Peer received : "+peers.getPeerList().toString());
+                    System.out.println("Peer received : " + peers.getPeerList().toString());
                 }
             }
 
@@ -253,8 +253,8 @@ public class NetworkController {
 
     }
 
-    public void discoverPeers(){
-       List<InetAddress> addr;
+    public void discoverPeers() {
+        InetAddress addr;
         addr = null;
       /*  try {
             addr = InetAddress.getByName("172.22.201.136");
@@ -264,21 +264,18 @@ public class NetworkController {
         }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
-             addr = client.discoverHosts(UDP, 1000);
+            addr = client.discoverHost(UDP, 1000);
             //addr = InetAddress.getByName("192.168.1.1");
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.info(e.toString());
         }
         System.out.println(addr);
-        if(addr == null) {
+        if (addr == null) {
             System.exit(0);
         }
-            for(InetAddress adress:addr){
-
-                peers.getPeerList().add(new Peer(adress));
-            }
 
 
+        peers.getPeerList().add(new Peer(addr));
     }
     public String getLocalPeer(){
         System.out.println("============================================Builder=================================:");
