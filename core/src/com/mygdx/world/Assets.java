@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Jerem on 22/01/2015.
  */
 public class Assets {
-    public static final float PLAYER_SPEED = 4f;
+    public static final float PLAYER_SPEED = 2.5f;
     public static final float PIXELS_TO_METERS = 100f;
     public static Texture backgroundMain;
     public static TextureRegion backgroundRegionMain;

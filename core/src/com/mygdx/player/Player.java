@@ -103,47 +103,43 @@ public class Player {
      * @param delta
      */
     public void update(float delta) {
-        float round = (delta * Assets.PLAYER_SPEED) / Assets.PIXELS_TO_METERS;
+        float round = 0.033f;//((1f/60f) * Assets.PLAYER_SPEED);
 
         if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
-            body.setActive(true);
-            body.setType(BodyDef.BodyType.DynamicBody);
-            if (body.getPosition().x > wantedPosition.x) {
-                if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
-                    if (body.getPosition().y > wantedPosition.y) {
-                        body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                    } else if (body.getPosition().y < wantedPosition.y) {
-                        body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
-                    } else {
-                        body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+            if (Math.abs(body.getPosition().x - wantedPosition.x) > round) {
+                body.setActive(true);
+                body.setType(BodyDef.BodyType.DynamicBody);
+                if (body.getPosition().x > wantedPosition.x) {
+                    if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
+                        if (body.getPosition().y > wantedPosition.y) {
+                            body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                        } else if (body.getPosition().y < wantedPosition.y) {
+                            body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                        }
+                    }else{
+                        body.setLinearVelocity(-Assets.PLAYER_SPEED,0f);
                     }
-                } else {
-                    if (body.getPosition().y > wantedPosition.y) {
-                        body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
-                    } else if (body.getPosition().y < wantedPosition.y) {
-                        body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
+
+                } else if (body.getPosition().x < wantedPosition.x) {
+                    if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
+                        if (body.getPosition().y > wantedPosition.y) {
+                            body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                        } else if (body.getPosition().y < wantedPosition.y) {
+                            body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                        }                     }
+                    else{
+                        body.setLinearVelocity(Assets.PLAYER_SPEED,0f);
                     }
                 }
-            } else if (body.getPosition().x < wantedPosition.x) {
-                if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
-
-                    if (body.getPosition().y > wantedPosition.y) {
-                        body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                    } else if (body.getPosition().y < wantedPosition.y) {
-                        body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
-                    } else {
-                        body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
-                    }
-
+            } else {
+                if (body.getPosition().y > wantedPosition.y) {
+                    body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
+                } else if (body.getPosition().y < wantedPosition.y) {
+                    body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
                 } else {
-
-                    if (body.getPosition().y > wantedPosition.y) {
-                        body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
-                    } else if (body.getPosition().y < wantedPosition.y) {
-                        body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
-                    }
-
+                    body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
                 }
+
             }
         } else {
             body.setLinearVelocity(0f, 0f);
