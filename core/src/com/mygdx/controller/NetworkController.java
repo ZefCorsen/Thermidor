@@ -64,7 +64,9 @@ public class NetworkController {
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);
         kryo.register(Object[].class);
+        kryo.register(byte[].class);
         kryo.register(ArrayList.class);
+        kryo.register(java.net.Inet4Address.class);
         kryo.register(com.mygdx.player.Player.class);
         kryo.register(com.mygdx.models.PeerList.class);
 
@@ -151,6 +153,30 @@ public class NetworkController {
 
     }
 
+    public void sendPeers(){
+        for (Peer peer:peers.getPeerList()){
+
+            try {
+
+
+                if(!client.isConnected()) {
+                    System.out.print("Peer connection is " + peer.IP);
+                    client.connect(5000, peer.IP, TCP, UDP);
+
+                }
+                Log.info("peers number is : "+peers.getPeerList().size());
+                System.out.println("peers number is : " + peers.getPeerList().size());
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.print("\nerreur lors de l'envoi des peers: "+e.getMessage()+"\n");
+            }
+            System.out.print("\nEnvoi des peers\n");
+            client.sendTCP(peers);
+        }
+    }
+
     public void sendPosition(String id){
         for (Peer peer:peers.getPeerList()){
 
@@ -211,7 +237,6 @@ public class NetworkController {
             Log.info("Trying to bind reicever at these ports, UDP: "+UDP+"///TCP: "+TCP);
             server.bind(TCP, UDP);
 
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,7 +249,7 @@ public class NetworkController {
                     System.out.println("Get initial position");
                     World request = (World) object;
                     myWorld=request;
-                    System.out.println(myWorld.toString());
+                    System.out.println("World du rsx : "+myWorld.toString());
 
                 }
 
@@ -249,14 +274,12 @@ public class NetworkController {
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
 
-                    connection.sendTCP(peers);
                     peers.getPeerList().add(new Peer(connection.getRemoteAddressTCP().getAddress()));
+                    sendPeers();
                     myWorld.addPlayer(new Player(new Vector2(0, 0), messageJoin.getId()));
                     System.out.print("Player Joining " + messageJoin.getId());
                     sendGameState(myWorld);
 
-
-                    sendGameState(myWorld);
                 }
 
             }
@@ -291,6 +314,11 @@ public class NetworkController {
 
         peers.getPeerList().add(new Peer(addr));
     }
+
+    public World getWorld(){
+        return myWorld;
+    }
+
     public String getLocalPeer(){
         System.out.println("============================================Builder=================================:");
 
@@ -327,7 +355,9 @@ public class NetworkController {
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);
         kryo.register(Object[].class);
+        kryo.register(byte[].class);
         kryo.register(ArrayList.class);
+        kryo.register(java.net.Inet4Address.class);
         kryo.register(com.mygdx.player.Player.class);
         kryo.register(com.mygdx.models.PeerList.class);
 

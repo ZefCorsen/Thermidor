@@ -29,11 +29,11 @@ public class PeerList {
 
     }
 
-    public void removePeer(InetAddress adress) {
+    public void removePeer(InetAddress address) {
 
         for (Peer peer : peerList) {
 
-            if (adress.equals(peer.getAdress())) {
+            if (address.equals(peer.getAdress())) {
 
                 peerList.remove(peer);
 

@@ -30,14 +30,16 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(MyGdxGame game) {
         this.game = game;
         Gdx.input.setCatchBackKey(true);
+    }
 
-
+    public void setWorld(World world){
+        this.monde=world;
     }
 
     @Override
     public void render(float delta) {
-        System.out.println("monde : "+monde.toString());
-        System.out.println("myWorld : "+NetworkController.getInstance().myWorld);
+        //System.out.println("monde : "+monde.toString());
+        //System.out.println("myWorld : "+NetworkController.getInstance().myWorld);
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
@@ -54,12 +56,16 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         monde = new World();
-        NetworkController.getInstance().startReceiver(monde);
-        mondeRender = new MondeRenderTexture(monde, false);
-        controller = new MondeControlleur(monde);
         if (NetworkController.getInstance().myWorld==null){
             NetworkController.getInstance().myWorld=monde;
+            NetworkController.getInstance().startReceiver(monde);
         }
+        else{
+            NetworkController.getInstance().startReceiver(NetworkController.getInstance().myWorld);
+        }
+        mondeRender = new MondeRenderTexture(monde, false);
+        controller = new MondeControlleur(monde);
+
 
         Player player = new Player(new Vector2(1, 1), game.id);
         monde.addPlayer(player);
