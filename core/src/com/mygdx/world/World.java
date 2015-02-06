@@ -52,4 +52,16 @@ public class World {
     private void createDemoWorld() {
 
     }
+
+    public String toString(){
+        String chaine="World is :";
+
+        for(Player player : players){
+
+            chaine=chaine+"///"+player.getId()+player.getWantedPosition().toString();
+        }
+
+        return chaine;
+    }
+
 }

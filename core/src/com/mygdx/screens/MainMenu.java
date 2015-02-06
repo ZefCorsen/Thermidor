@@ -78,17 +78,6 @@ public class MainMenu implements Screen {
                 NetworkController.getInstance().myId=game.id;
                 game.setScreen(new GameScreen(game));
 
-
-
-                //  Kryo kryo = server.getKryo();
-                //kryo.register(SomeRequest.class);
-                //kryo.register(SomeResponse.class);
-                //server.start();
-                //try {
-                //server.bind(MyGdxGame.TCP, MyGdxGame.UDP);
-                //} catch (IOException e) {
-                //e.printStackTrace();
-                //}
                 return;
             }
             if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -104,11 +93,8 @@ public class MainMenu implements Screen {
                     NetworkController.getInstance().sendMessage("Trouvé");
                     NetworkController.getInstance().sendJoinMessage(game.id);
 
+                    game.setScreen(new GameScreen(game));
 
-                System.out.println("Touch Screen GAME");
-                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                System.out.print("\nMAJ du gamescreen\n");
-                game.setScreen(new GameScreen(game));
 
 
 

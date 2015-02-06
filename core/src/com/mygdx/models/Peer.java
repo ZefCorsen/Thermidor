@@ -15,8 +15,17 @@ public class Peer {
 
 
     }
+    public InetAddress getAdress(){
+
+        return IP;
+
+    }
     public Peer(){
 
+    }
+
+    public String toString(){
+        return IP.toString();
     }
 
 }

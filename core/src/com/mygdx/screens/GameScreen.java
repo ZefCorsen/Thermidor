@@ -36,12 +36,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        System.out.println("monde : "+monde.toString());
+        System.out.println("myWorld : "+NetworkController.getInstance().myWorld);
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         controller.update(delta);
         mondeRender.render();
-        NetworkController.getInstance().myWorld=monde;
-        NetworkController.getInstance().sendPosition(game.id);
     }
 
     @Override
@@ -115,6 +115,8 @@ public class GameScreen implements Screen, InputProcessor {
         x = screenX / (width / Assets.CAMERA_WIDTH);
         y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
         controller.setPlayerInPosition(game.id ,x, y);
+        NetworkController.getInstance().sendPosition(game.id);
+
         return true;
 
     }
@@ -130,6 +132,8 @@ public class GameScreen implements Screen, InputProcessor {
         x = screenX / (width / Assets.CAMERA_WIDTH);
         y = (height - screenY) / (height / Assets.CAMERA_HEIGHT);
         controller.setPlayerInPosition(game.id, x, y);
+        NetworkController.getInstance().sendPosition(game.id);
+
 
         return true;
     }

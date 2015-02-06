@@ -45,6 +45,9 @@ public class Player {
     public Vector2 getPosition() {
         return position;
     }
+    public Vector2 getWantedPosition() {
+        return wantedPosition;
+    }
 
 
     public Vector2 getVelocity() {
@@ -106,4 +109,5 @@ public class Player {
         if(sapX)position.x = wantedPosition.x;
         if(sapY)position.y = wantedPosition.y;
     }
+
 }
