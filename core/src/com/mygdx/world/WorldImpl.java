@@ -1,6 +1,5 @@
 package com.mygdx.world;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,19 +17,28 @@ import java.util.ArrayList;
  * Contient l'ensemble des informations sur la partie
  */
 public class WorldImpl {
-    float w = Assets.ppuX/Assets.PIXELS_TO_METERS;
-    float h = Assets.ppuY/Assets.PIXELS_TO_METERS;
+    private static WorldImpl instance;
+    float w = Assets.ppuX / Assets.PIXELS_TO_METERS;
+    float h = Assets.ppuY / Assets.PIXELS_TO_METERS;
     private FixtureDef fixtureDef;
     private ChainShape myChain;
     private World world;
     private Body bodyEdgeScreen;
     private BodyDef bodyDef;
-
-
     private ArrayList<Player> players = new ArrayList();
-    private ArrayList<Bomb> bombs= new ArrayList();
+    private ArrayList<Bomb> bombs = new ArrayList();
 
-    public WorldImpl() {
+
+    public static WorldImpl getInstance() {
+        if(instance == null){
+            instance = new WorldImpl();
+        }
+        return instance;
+    }
+   public static void setInstance(WorldImpl worldImpl){
+       instance=worldImpl;
+   }
+    private WorldImpl() {
 
         world = new World(new Vector2(0f, 0f), false);
         world.setContactListener(new ListenerClass());
@@ -62,8 +70,8 @@ public class WorldImpl {
                 new Vector2((-w) / 2, (h) / 2),
                 new Vector2((-w) / 2, (-h) / 2),
 
-                new Vector2((w / 2)-(w/8), (-h) / 2),
-                new Vector2((w / 2)-(w/8), (h) / 2),
+                new Vector2((w / 2) - (w / 8), (-h) / 2),
+                new Vector2((w / 2) - (w / 8), (h) / 2),
                 new Vector2((-w) / 2, (h) / 2)
         };
 
@@ -92,7 +100,7 @@ public class WorldImpl {
     }
 
     public Player getPlayer(String id) throws Exception {
-        if(id == null ||id.isEmpty())throw new Exception("Id passer vide");
+        if (id == null || id.isEmpty()) throw new Exception("Id passer vide");
         for (Player player : players) {
             if (player.getId().equals(id)) {
                 return player;
@@ -100,4 +108,5 @@ public class WorldImpl {
         }
         throw new Exception("Player not Found");
     }
+
 }

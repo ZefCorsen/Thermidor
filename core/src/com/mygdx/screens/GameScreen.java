@@ -39,7 +39,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Rectangle musketBound, bombBound;
 
     public GameScreen(MyGdxGame game) {
-        this(game, new WorldImpl());
+        this(game, WorldImpl.getInstance());
         player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
         bomb1 = new Bomb(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
     }
@@ -155,8 +155,6 @@ public class GameScreen implements Screen, InputProcessor {
 
             System.out.println("Touche Musket");
         } else {
-
-
             controller.setPlayerInPosition(game.id, x, y);
         }
         return true;

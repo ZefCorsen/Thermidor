@@ -5,17 +5,21 @@ package com.mygdx.controller;
  */
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
 import com.mygdx.world.WorldImpl;
 
-public class MondeControlleur {
+public class MondeControlleur implements ContactListener {
 
 
     private WorldImpl world;
 
 
-    public MondeControlleur(WorldImpl world) {
+    public MondeControlleur(WorldImpl world)  {
         this.world = world;
     }
 
@@ -54,4 +58,33 @@ public class MondeControlleur {
     }
 
 
+    /**
+     * Called when two fixtures begin to touch.
+     *
+     * @param contact
+     */
+    @Override
+    public void beginContact(Contact contact) {
+
+    }
+
+    /**
+     * Called when two fixtures cease to touch.
+     *
+     * @param contact
+     */
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
 }
