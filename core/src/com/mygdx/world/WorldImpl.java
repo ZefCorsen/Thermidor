@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.controller.ListenerClass;
 import com.mygdx.player.Bomb;
+import com.mygdx.player.Bullet;
 import com.mygdx.player.Player;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class WorldImpl {
     private BodyDef bodyDef;
     private ArrayList<Player> players = new ArrayList();
     private ArrayList<Bomb> bombs = new ArrayList();
-
+private ArrayList<Bullet> bullets = new ArrayList();
 
     public static WorldImpl getInstance() {
         if(instance == null){
@@ -98,6 +99,17 @@ public class WorldImpl {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void addBullet(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
+
 
     public Player getPlayer(String id) throws Exception {
         if (id == null || id.isEmpty()) throw new Exception("Id passer vide");

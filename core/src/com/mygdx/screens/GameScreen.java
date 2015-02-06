@@ -151,9 +151,11 @@ public class GameScreen implements Screen, InputProcessor {
             System.out.println("Touche Bombe");
             controller.createBomb(game.id);
         } else if (musketBound.contains(x, y)) {
+
             //TODO dispose musket
 
             System.out.println("Touche Musket");
+            controller.createBullet(game.id);
         } else {
             controller.setPlayerInPosition(game.id, x, y);
         }

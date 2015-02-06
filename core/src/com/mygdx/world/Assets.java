@@ -24,7 +24,7 @@ public class Assets {
     public static float round = 0.001f;
     public static BitmapFont buton;
     public static float SIZE = 0.03f;
-    public static Sprite sprite,spriteBomb;
+    public static Sprite sprite,spriteBomb,spriteBullet;
 
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
@@ -65,7 +65,7 @@ public class Assets {
         joinGame = loadTexture(prefix + "images/buton2.png");
         //player = loadTexture(prefix + "images/bonhomme.png");
         player = loadTexture(prefix + "images/fanTran.png");
-
+        bullet = loadTexture(prefix + "images/bullet.gif");
         musket = loadTexture(prefix + "images/musket.gif");
         bomb = loadTexture(prefix + "images/poudre.gif");
 
@@ -83,6 +83,11 @@ public class Assets {
 
         spriteBomb.setSize(widthBomb,heightBomb);
 
+        spriteBullet = new Sprite(bullet);
+        //heightBomb= heightPlayer/2;
+        //widthBomb = (heightBomb * spriteBullet.getWidth()) / spriteBullet.getHeight();
+
+        spriteBullet.setSize(spriteBullet.getWidth()/PIXELS_TO_METERS,spriteBullet.getHeight()/PIXELS_TO_METERS);
 
     }
 

@@ -10,10 +10,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.player.Bomb;
+import com.mygdx.player.Bullet;
 import com.mygdx.player.Player;
 import com.mygdx.world.WorldImpl;
 
-public class MondeControlleur implements ContactListener {
+public class MondeControlleur{
 
 
     private WorldImpl world;
@@ -39,6 +40,16 @@ public class MondeControlleur implements ContactListener {
         return true;
     }
 
+    public boolean createBullet(String id) {
+        try {
+            new Bullet(world.getPlayer(id), world);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return true;
+    }
+
     public boolean setPlayerInPosition(String id, float x, float y) {
         try {
             world.getPlayer(id).setWantedPosition(new Vector2(x, y));
@@ -55,36 +66,5 @@ public class MondeControlleur implements ContactListener {
             }
         }
         new Player(player.getPosition(),world,player.getId());
-    }
-
-
-    /**
-     * Called when two fixtures begin to touch.
-     *
-     * @param contact
-     */
-    @Override
-    public void beginContact(Contact contact) {
-
-    }
-
-    /**
-     * Called when two fixtures cease to touch.
-     *
-     * @param contact
-     */
-    @Override
-    public void endContact(Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 }
