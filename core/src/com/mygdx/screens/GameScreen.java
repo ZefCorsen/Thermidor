@@ -12,6 +12,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
@@ -31,9 +32,9 @@ public class GameScreen implements Screen, InputProcessor {
     private int width, height;
     private WorldImpl worldImpl;
     private Player player1;
-    SpriteBatch spriteBatch;
-    OrthographicCamera camera;
-
+    private SpriteBatch spriteBatch;
+    private OrthographicCamera camera;
+    private Rectangle musketBound, bombBound;
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
@@ -47,8 +48,13 @@ public class GameScreen implements Screen, InputProcessor {
         worldImpl = new WorldImpl();
         mondeRender = new MondeRenderTexture(worldImpl, spriteBatch);
         controller = new MondeControlleur(worldImpl);
+        musketBound = new Rectangle(Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
+        bombBound = new Rectangle(Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
+
         player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl);
         player1.setId(game.id);
+
+
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / Assets.PIXELS_TO_METERS, Gdx.graphics.
                 getHeight() / Assets.PIXELS_TO_METERS);
         NetworkController.getInstance().startReceiver(worldImpl);
@@ -136,8 +142,19 @@ public class GameScreen implements Screen, InputProcessor {
         float x, y;
         x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
         y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
-        controller.setPlayerInPosition(game.id, x, y);
+        if (bombBound.contains(x, y)) {
+            //TODO dispose Bombe
 
+            System.out.println("Touche Bombe");
+        } else if (musketBound.contains(x, y)) {
+            //TODO dispose musket
+
+            System.out.println("Touche Musket");
+        } else {
+
+
+            controller.setPlayerInPosition(game.id, x, y);
+        }
         return true;
 
     }
@@ -152,7 +169,14 @@ public class GameScreen implements Screen, InputProcessor {
         float x, y;
         x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
         y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
-        controller.setPlayerInPosition(game.id, x, y);
+
+        if (bombBound.contains(x, y)) {
+            //TODO dispose Bombe
+        } else if (musketBound.contains(x, y)) {
+            //TODO dispose musket
+        } else {
+            controller.setPlayerInPosition(game.id, x, y);
+        }
         return true;
     }
 

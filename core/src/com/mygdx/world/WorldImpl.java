@@ -28,6 +28,7 @@ public class WorldImpl {
     private ArrayList<Player> players = new ArrayList();
 
     public WorldImpl() {
+
         world = new World(new Vector2(0f, 0f), false);
         setBody();
         setFixture();
@@ -56,8 +57,8 @@ public class WorldImpl {
                 new Vector2((-w) / 2, (h) / 2),
                 new Vector2((-w) / 2, (-h) / 2),
 
-                new Vector2((w) / 2, (-h) / 2),
-                new Vector2((w) / 2, (h) / 2),
+                new Vector2((w / 2)-(w/8), (-h) / 2),
+                new Vector2((w / 2)-(w/8), (h) / 2),
                 new Vector2((-w) / 2, (h) / 2)
         };
 

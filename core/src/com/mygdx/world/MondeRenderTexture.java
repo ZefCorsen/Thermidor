@@ -24,6 +24,9 @@ public class MondeRenderTexture {
 
     public void render() {
         spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2/Assets.PIXELS_TO_METERS, -Assets.ppuY/2/Assets.PIXELS_TO_METERS, Assets.ppuX/Assets.PIXELS_TO_METERS, Assets.ppuY/Assets.PIXELS_TO_METERS);
+        spriteBatch.draw(Assets.bomb,Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
+        spriteBatch.draw(Assets.musket,Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
+
         drawPlayer();
 
     }
