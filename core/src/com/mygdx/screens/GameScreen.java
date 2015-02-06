@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
 import com.mygdx.world.Assets;
 import com.mygdx.world.MondeRenderTexture;
@@ -32,11 +33,18 @@ public class GameScreen implements Screen, InputProcessor {
     private int width, height;
     private WorldImpl worldImpl;
     private Player player1;
+    private Bomb bomb1;
     private SpriteBatch spriteBatch;
     private OrthographicCamera camera;
     private Rectangle musketBound, bombBound;
 
     public GameScreen(MyGdxGame game) {
+        this(game, new WorldImpl());
+        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
+        bomb1 = new Bomb(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
+    }
+
+    public GameScreen(MyGdxGame game, WorldImpl worldImpl) {
         this.game = game;
         if (game.id == null || game.id.isEmpty()) {
             SecureRandom random = new SecureRandom();
@@ -45,16 +53,11 @@ public class GameScreen implements Screen, InputProcessor {
 
         spriteBatch = new SpriteBatch();
         Gdx.input.setCatchBackKey(true);
-        worldImpl = new WorldImpl();
+        this.worldImpl = worldImpl;
         mondeRender = new MondeRenderTexture(worldImpl, spriteBatch);
         controller = new MondeControlleur(worldImpl);
-        musketBound = new Rectangle(Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
-        bombBound = new Rectangle(Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
-
-        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl);
-        player1.setId(game.id);
-
-
+        bombBound = new Rectangle(Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
+        musketBound = new Rectangle(Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / Assets.PIXELS_TO_METERS, Gdx.graphics.
                 getHeight() / Assets.PIXELS_TO_METERS);
         NetworkController.getInstance().startReceiver(worldImpl);
@@ -146,6 +149,7 @@ public class GameScreen implements Screen, InputProcessor {
             //TODO dispose Bombe
 
             System.out.println("Touche Bombe");
+            controller.createBomb(game.id);
         } else if (musketBound.contains(x, y)) {
             //TODO dispose musket
 
@@ -169,14 +173,8 @@ public class GameScreen implements Screen, InputProcessor {
         float x, y;
         x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
         y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
+        controller.setPlayerInPosition(game.id, x, y);
 
-        if (bombBound.contains(x, y)) {
-            //TODO dispose Bombe
-        } else if (musketBound.contains(x, y)) {
-            //TODO dispose musket
-        } else {
-            controller.setPlayerInPosition(game.id, x, y);
-        }
         return true;
     }
 

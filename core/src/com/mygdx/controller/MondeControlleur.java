@@ -5,6 +5,7 @@ package com.mygdx.controller;
  */
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
 import com.mygdx.world.WorldImpl;
 
@@ -22,6 +23,16 @@ public class MondeControlleur {
         for (Player player : world.getPlayers()) {
             player.update(delta);
         }
+    }
+
+    public boolean createBomb(String id) {
+        try {
+            new Bomb(world.getPlayer(id).getPosition(), world, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return true;
     }
 
     public boolean setPlayerInPosition(String id, float x, float y) {

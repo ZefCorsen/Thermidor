@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.controller.ListenerClass;
+import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
 
 import java.util.ArrayList;
@@ -26,10 +28,12 @@ public class WorldImpl {
 
 
     private ArrayList<Player> players = new ArrayList();
+    private ArrayList<Bomb> bombs= new ArrayList();
 
     public WorldImpl() {
 
         world = new World(new Vector2(0f, 0f), false);
+        world.setContactListener(new ListenerClass());
         setBody();
         setFixture();
         setEdge();
@@ -44,12 +48,13 @@ public class WorldImpl {
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
+        bodyEdgeScreen = world.createBody(bodyDef);
     }
 
     private void setFixture() {
         fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = Assets.WORLD_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY;
+        fixtureDef.filter.maskBits = Assets.PHYSICS_ENTITY;
     }
 
     private void setEdge() {
@@ -65,16 +70,21 @@ public class WorldImpl {
         myChain = new ChainShape();
         myChain.createChain(myCoordinates);
         fixtureDef.shape = myChain;
-
-        bodyEdgeScreen = world.createBody(bodyDef);
         bodyEdgeScreen.createFixture(fixtureDef);
         myChain.dispose();
 
     }
 
     public void addPlayer(Player player) {
-
         players.add(player);
+    }
+
+    public void addBomb(Bomb bomb) {
+        bombs.add(bomb);
+    }
+
+    public ArrayList<Bomb> getBombs() {
+        return bombs;
     }
 
     public ArrayList<Player> getPlayers() {

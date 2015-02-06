@@ -18,17 +18,20 @@ public class Assets {
 
     public static Texture player;
     public static Texture musket, bomb;
+    public static Texture bullet, bombGame;
     public static TextureRegion mainMenu;
 
     public static float round = 0.001f;
     public static BitmapFont buton;
     public static float SIZE = 0.03f;
-    public static Sprite sprite;
+    public static Sprite sprite,spriteBomb;
 
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
-    public static final short PHYSICS_ENTITY = 0x1;    // 0001
-    public static final short WORLD_ENTITY = 0x1 << 1; // 0010 or 0x2 in hex
+    public static final short PHYSICS_ENTITY = 0001;    // 0001
+    public static final short WORLD_ENTITY = 0010;
+    public static final short BOMB_ENTITY = 0100;
+    public static final short BULLET_ENTITY = 1000;// 0010 or 0x2 in hex
     public static float widthPlayer = (SIZE * ppuX) / Assets.PIXELS_TO_METERS;
     public static float heightPlayer = (SIZE * ppuY) / Assets.PIXELS_TO_METERS;
 
@@ -63,14 +66,22 @@ public class Assets {
         //player = loadTexture(prefix + "images/bonhomme.png");
         player = loadTexture(prefix + "images/fanTran.png");
 
-        bomb = loadTexture(prefix + "images/musket.gif");
-        musket = loadTexture(prefix + "images/poudre.gif");
+        musket = loadTexture(prefix + "images/musket.gif");
+        bomb = loadTexture(prefix + "images/poudre.gif");
 
+        bombGame = loadTexture(prefix + "images/poudreGame.gif");
 
         mainMenu = new TextureRegion(start);
         sprite = new Sprite(player);
         heightPlayer = (widthPlayer * sprite.getHeight()) / sprite.getWidth();
         sprite.setSize(widthPlayer, heightPlayer);
+
+
+        spriteBomb = new Sprite(bombGame);
+        float heightBomb= heightPlayer/2;
+        float widthBomb = (heightBomb * spriteBomb.getWidth()) / spriteBomb.getHeight();
+
+        spriteBomb.setSize(widthBomb,heightBomb);
 
 
     }
