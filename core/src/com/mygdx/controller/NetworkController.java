@@ -111,7 +111,7 @@ public class NetworkController {
                 if(!client.isConnected())
                     client.connect(5000,peer.IP,TCP,UDP);
                 Log.info("peers number is : "+peers.size());
-                System.out.println("peers number is : " + peers.size());
+                System.out.println("envoi join, peers number is : " + peers.size());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -131,11 +131,13 @@ public class NetworkController {
                 if(!client.isConnected())
                     client.connect(5000,peer.IP,TCP,UDP);
                 Log.info("peers number is : "+peers.size());
-                System.out.println("peers number is : " + peers.size());
+                //System.out.println("peers number is : " + peers.size());
 
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.print("\nerreur lors de l'envoi du world: "+e.getMessage()+"\n");
             }
+            System.out.print("\nEnvoi du monde\n");
             client.sendTCP(world);
         }
 
@@ -158,7 +160,7 @@ public class NetworkController {
                     client.connect(5000,peer.IP,TCP,UDP);
                 // Log.info("peers number is : "+peers.size());
                 if(myWorld!=null) {
-                    System.out.println("Sending position");
+                    //System.out.println("Sending position");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -177,14 +179,14 @@ public class NetworkController {
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (object instanceof SomeRequest) {
+               /* if (object instanceof SomeRequest) {
                     SomeRequest request = (SomeRequest) object;
                     System.out.println(request.text);
                     startEmitter();
                     SomeResponse response = new SomeResponse();
                     response.text = "Rep";
                     connection.sendTCP(response);
-                }
+                }*/
                 if (object instanceof World) {
                     World messageWorld = (World) object;
                     myWorld = messageWorld;
@@ -233,10 +235,17 @@ public class NetworkController {
                 if (object instanceof PositionMessage) {
                     PositionMessage positionMessage = (PositionMessage) object;
                     String id = positionMessage.getId();
-                    System.out.println("From "+positionMessage.getId()+" Position reiceived" + positionMessage.getPosition().toString());
+                    //System.out.println("From "+positionMessage.getId()+" Position reiceived" + positionMessage.getPosition().toString());
 
                     try {
                        Player player;
+                       List<Player> players = myWorld.getPlayers();
+                        System.out.print("========\nLes joueurs : ");
+                        for(Player theplayer : players){
+                            System.out.print(theplayer.getId()+" ; ");
+                        }
+                        System.out.print("\n========\n");
+
                        player = myWorld.getPlayer(id);
                        player.setWantedPosition(positionMessage.getPosition());
                     } catch (Exception e) {
@@ -247,14 +256,17 @@ public class NetworkController {
                 if (object instanceof JoinMessage) {
                     JoinMessage messageJoin = (JoinMessage) object;
                     System.out.println("Adding new player");
-                    discoverPeers();
+                    //discoverPeers();
+                    // Ajout du joiner à la liste des peers
+                    System.out.print("Adresse résupérée au join : "+connection.getRemoteAddressTCP().getAddress());
+                    peers.add(new Peer(connection.getRemoteAddressTCP().getAddress()));
+                    //peers.add(new Peer(adress));
                     myWorld.addPlayer(new Player(new Vector2(0,0),messageJoin.getId()));
-                    connection.sendTCP(myWorld);
-                    System.out.print("Player Joining " + messageJoin.getId());
+                    //connection.sendTCP(myWorld);
+                    System.out.print("Player Joining " + messageJoin.getId()+"\n");
                     sendJoinMessage(myId);
+
                     sendGameState(myWorld);
-
-
                 }
 
             }
@@ -279,7 +291,7 @@ public class NetworkController {
         }catch(Exception e){
             Log.info(e.toString());
         }
-        System.out.println(addr);
+        System.out.println("Peer trouvé à l'adresse : "+addr);
         if(addr == null) {
             System.exit(0);
         }

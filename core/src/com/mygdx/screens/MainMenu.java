@@ -107,7 +107,8 @@ public class MainMenu implements Screen {
 
                 System.out.println("Touch Screen GAME");
                     System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
-                    game.setScreen(new GameScreen(game));
+                System.out.print("\nMAJ du gamescreen\n");
+                game.setScreen(new GameScreen(game));
 
 
 
