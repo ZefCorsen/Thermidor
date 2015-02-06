@@ -92,10 +92,6 @@ public class MainMenu implements Screen {
                     NetworkController.getInstance().discoverPeers();
                     NetworkController.getInstance().sendMessage("Trouvé");
                     NetworkController.getInstance().sendJoinMessage(game.id);
-
-
-                System.out.println("Touch Screen GAME");
-                    System.out.println("X :" + touchPoint.x + ",Y :" + touchPoint.y);
                     game.setScreen(new GameScreen(game));
 
 

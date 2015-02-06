@@ -36,7 +36,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        monde=NetworkController.getInstance().myWorld;
         System.out.println("monde : "+monde.toString());
         System.out.println("myWorld : "+NetworkController.getInstance().myWorld);
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
