@@ -54,7 +54,7 @@ public class MondeControlleur implements ContactListener {
                 throw new Exception("Player existe déjà");
             }
         }
-        world.addPlayer(player);
+        new Player(player.getPosition(),world,player.getId());
     }
 
 
