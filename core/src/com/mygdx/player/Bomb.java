@@ -66,7 +66,7 @@ public class Bomb {
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
         fixtureDef.filter.categoryBits = Assets.BOMB_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY;
+       // fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY;
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
         shape.dispose();

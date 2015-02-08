@@ -67,8 +67,9 @@ public class Bullet {
         fixtureDef.density = 1f;
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
-        fixtureDef.filter.categoryBits = Assets.BOMB_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY;
+        fixtureDef.filter.categoryBits = Assets.BULLET_ENTITY;
+        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY ;
+        //fixtureDef.filter.groupIndex = player.getReference();
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
         shape.dispose();

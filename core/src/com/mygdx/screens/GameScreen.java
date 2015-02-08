@@ -32,7 +32,7 @@ public class GameScreen implements Screen, InputProcessor {
     private MondeControlleur controller;
     private int width, height;
     private WorldImpl worldImpl;
-    private Player player1;
+    private Player player1, player2;
     private Bomb bomb1;
     private SpriteBatch spriteBatch;
     private OrthographicCamera camera;
@@ -40,7 +40,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(MyGdxGame game) {
         this(game, WorldImpl.getInstance());
-        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
+        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, "Testeur");
+        player2 = new Player(-100 / Assets.PIXELS_TO_METERS, -110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
         bomb1 = new Bomb(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
     }
 
@@ -124,8 +125,7 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
             controller.createBullet(game.id);
-        }else
-        if (keycode == Input.Keys.F) {
+        } else if (keycode == Input.Keys.F) {
             controller.createBomb(game.id);
         }
         return true;
@@ -138,7 +138,7 @@ public class GameScreen implements Screen, InputProcessor {
             game.setScreen(new MainMenu(game));
 
         }
-            return true;
+        return true;
     }
 
     @Override

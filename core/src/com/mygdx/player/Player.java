@@ -22,7 +22,7 @@ public class Player {
     private Vector2 oldLinareVelocity;
     private String id;
     private FixtureDef fixtureDef;
-
+    //private short reference = (short)this.hashCode();
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -53,7 +53,6 @@ public class Player {
      */
     public Player(Vector2 vectorPosition, WorldImpl world, String id) {
         this(vectorPosition.x, vectorPosition.y, world, id);
-
     }
 
     /**
@@ -61,7 +60,7 @@ public class Player {
      */
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
@@ -80,8 +79,7 @@ public class Player {
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
         fixtureDef.filter.categoryBits = Assets.PHYSICS_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY | Assets.BOMB_ENTITY;
-
+        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY;// | Assets.PHYSICS_ENTITY | Assets.BOMB_ENTITY | Assets.BULLET_ENTITY;
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
 
@@ -173,6 +171,11 @@ public class Player {
     public Vector2 getOldLinareVelocity() {
         return oldLinareVelocity;
     }
+/*
+    public short getReference() {
+        return reference;
+    }
+*/
 
 
 }
