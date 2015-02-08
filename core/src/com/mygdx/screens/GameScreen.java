@@ -122,6 +122,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.SPACE) {
+            controller.createBullet(game.id);
+        }else
+        if (keycode == Input.Keys.F) {
+            controller.createBomb(game.id);
+        }
         return true;
     }
 
@@ -132,7 +138,7 @@ public class GameScreen implements Screen, InputProcessor {
             game.setScreen(new MainMenu(game));
 
         }
-        return true;
+            return true;
     }
 
     @Override

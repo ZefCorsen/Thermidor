@@ -19,8 +19,10 @@ public class Player {
     private Body body;
     private WorldImpl world;
     private Vector2 wantedPosition;
+    private Vector2 oldLinareVelocity;
     private String id;
     private FixtureDef fixtureDef;
+
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -38,6 +40,7 @@ public class Player {
         setBodyDef();
         setFixture();
         wantedPosition = body.getPosition();
+        oldLinareVelocity = new Vector2();
         world.addPlayer(this);
     }
 
@@ -107,6 +110,7 @@ public class Player {
         float round = 0.02f;//((1f/60f) * Assets.PLAYER_SPEED);
 
         if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
+            oldLinareVelocity = body.getLinearVelocity();
             if (Math.abs(body.getPosition().x - wantedPosition.x) > round) {
                 body.setActive(true);
                 body.setType(BodyDef.BodyType.DynamicBody);
@@ -165,4 +169,10 @@ public class Player {
     public boolean isSameFixture(Fixture fix) {
         return body.getFixtureList().get(0).equals(fix);
     }
+
+    public Vector2 getOldLinareVelocity() {
+        return oldLinareVelocity;
+    }
+
+
 }

@@ -34,8 +34,6 @@ public class Bullet {
         this.idPlayer = player.getId();
         this.player =player;
         sprite = Assets.spriteBullet;
-        System.out.println("Angle du player :" +player.getBody().getAngle());
-        System.out.println("Inertie du player :" +player.getBody().getInertia());
         sprite.setPosition(player.getPosition().x - (sprite.getWidth() / 2), player.getPosition().y - (sprite.getHeight() / 2));
         //sprite.setRotation(player.getBody().getAngle());
         setBodyDef();
@@ -50,7 +48,6 @@ public class Bullet {
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-
         bodyDef.bullet = true;
      //   bodyDef.angle = player.getBody().getAngle();
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),

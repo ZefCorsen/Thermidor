@@ -28,6 +28,7 @@ public class WorldImpl {
     private BodyDef bodyDef;
     private ArrayList<Player> players = new ArrayList();
     private ArrayList<Bomb> bombs = new ArrayList();
+
 private ArrayList<Bullet> bullets = new ArrayList();
 
     public static WorldImpl getInstance() {

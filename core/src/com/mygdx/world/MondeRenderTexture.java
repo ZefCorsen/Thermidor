@@ -2,6 +2,7 @@ package com.mygdx.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Bullet;
@@ -57,8 +58,9 @@ public class MondeRenderTexture {
 
     public void drawBullet() {
         for (Bullet bullet : world.getBullets()) {
-            spriteBatch.draw(Assets.bullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
-         //   spriteBatch.draw(Assets.bullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
+            Sprite spriteBullet = new Sprite(Assets.bullet);
+            spriteBullet.setRotation((float)Math.toDegrees((bullet.getBody().getAngle())));
+            spriteBatch.draw(spriteBullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
         }
     }
 
