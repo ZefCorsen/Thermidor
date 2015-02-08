@@ -85,7 +85,6 @@ public class WorldImpl {
         myChain.createChain(myCoordinates);
         fixtureDef.shape = myChain;
         bodyEdgeScreen.createFixture(fixtureDef);
-        bodyEdgeScreen.setUserData(this);
         myChain.dispose();
 
     }

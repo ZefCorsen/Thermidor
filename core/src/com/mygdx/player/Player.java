@@ -1,11 +1,8 @@
 package com.mygdx.player;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
@@ -13,10 +10,11 @@ import com.mygdx.world.WorldImpl;
 /**
  * Created by Jerem on 04/02/2015.
  */
-public class Player extends BodyModel{
+public class Player extends BodyModel {
 
     private Vector2 wantedPosition;
     private Vector2 oldLinareVelocity;
+    private int life = 5;
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -26,7 +24,7 @@ public class Player extends BodyModel{
      * @param world WorldImp dans lequel sera créé le body du joueur
      */
     public Player(float px, float py, WorldImpl world, String id) {
-        super(world , id);
+        super(world, id);
         sprite = Assets.sprite;
         sprite.setPosition(px, py);
         setBodyDef();
@@ -53,7 +51,7 @@ public class Player extends BodyModel{
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.active= true;
+        bodyDef.active = true;
 
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
@@ -144,6 +142,9 @@ public class Player extends BodyModel{
         return oldLinareVelocity;
     }
 
-
+    public int removeLife() throws Exception {
+        if(life <= 0) throw new Exception("Vie négative");
+        return --life;
+    }
 
 }
