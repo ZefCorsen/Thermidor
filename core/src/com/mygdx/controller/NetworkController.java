@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.KryoSerialization;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
@@ -44,11 +45,12 @@ public class NetworkController {
 
 
     private NetworkController() {
-        client = new Client();
-        server = new Server();
+        client = new Client(16384,16384);
+        server = new Server(16384,16384);
         peers = new PeerList();
         // Registering methods
         Kryo kryo = server.getKryo();
+        kryo.setReferences(true);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
@@ -70,6 +72,11 @@ public class NetworkController {
         kryo.register(com.badlogic.gdx.utils.Array.class);
         kryo.register(com.badlogic.gdx.physics.box2d.Body.class);
         kryo.register(com.mygdx.player.Player.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.ChainShape.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.World.class);
+        kryo.register(com.mygdx.controller.ListenerClass.class);
+        kryo.register(com.mygdx.player.Bomb.class);
+        kryo.register(com.mygdx.player.Bullet.class);
 
 
     }
@@ -347,6 +354,11 @@ public class NetworkController {
         kryo.register(com.badlogic.gdx.utils.Array.class);
         kryo.register(com.badlogic.gdx.physics.box2d.Body.class);
         kryo.register(com.mygdx.player.Player.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.ChainShape.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.World.class);
+        kryo.register(com.mygdx.controller.ListenerClass.class);
+        kryo.register(com.mygdx.player.Bomb.class);
+        kryo.register(com.mygdx.player.Bullet.class);
 
 
     }

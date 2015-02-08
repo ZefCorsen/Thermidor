@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * Created by Jerem on 04/02/2015.
  * Contient l'ensemble des informations sur la partie
  */
+
 public class WorldImpl {
     private static WorldImpl instance;
     float w = Assets.ppuX / Assets.PIXELS_TO_METERS;
@@ -31,6 +32,7 @@ public class WorldImpl {
 
 private ArrayList<Bullet> bullets = new ArrayList();
 
+
     public static WorldImpl getInstance() {
         if(instance == null){
             instance = new WorldImpl();
@@ -40,6 +42,7 @@ private ArrayList<Bullet> bullets = new ArrayList();
    public static void setInstance(WorldImpl worldImpl){
        instance=worldImpl;
    }
+
     private WorldImpl() {
 
         world = new World(new Vector2(0f, 0f), false);
