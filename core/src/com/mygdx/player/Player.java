@@ -14,7 +14,8 @@ public class Player extends BodyModel {
 
     private Vector2 wantedPosition;
     private Vector2 oldLinareVelocity;
-    private int life = 5;
+    private int life = 6;
+    private int bulletPosition; // 0gauche ;2 haut; 4 droit ; 6 bas
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -32,6 +33,7 @@ public class Player extends BodyModel {
         wantedPosition = body.getPosition();
         oldLinareVelocity = new Vector2();
         world.addPlayer(this);
+        bulletPosition = 0;
     }
 
     /**
@@ -103,37 +105,45 @@ public class Player extends BodyModel {
                     if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
                         if (body.getPosition().y > wantedPosition.y) {
                             body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                            bulletPosition = 7;
                         } else if (body.getPosition().y < wantedPosition.y) {
                             body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                            bulletPosition = 1;
                         }
                     } else {
                         body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+                        bulletPosition = 0;
                     }
 
                 } else if (body.getPosition().x < wantedPosition.x) {
                     if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
                         if (body.getPosition().y > wantedPosition.y) {
                             body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
+                            bulletPosition = 5;
                         } else if (body.getPosition().y < wantedPosition.y) {
                             body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
+                            bulletPosition = 3;
                         }
                     } else {
                         body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
+                        bulletPosition = 4;
                     }
                 }
             } else {
                 if (body.getPosition().y > wantedPosition.y) {
                     body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
+                    bulletPosition = 6;
                 } else if (body.getPosition().y < wantedPosition.y) {
+                    bulletPosition = 2;
                     body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
                 } else {
                     body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+                    bulletPosition = 0;
                 }
 
             }
         } else {
             body.setLinearVelocity(0f, 0f);
-            //  body.setActive(false);
         }
 
     }
@@ -143,8 +153,14 @@ public class Player extends BodyModel {
     }
 
     public int removeLife() throws Exception {
-        if(life <= 0) throw new Exception("Vie négative");
+        if (life <= 0) throw new Exception("Vie négative");
         return --life;
+    }
+    public int getBulletPosition(){
+        return bulletPosition;
+    }
+    public int getLife(){
+        return life;
     }
 
 }

@@ -20,16 +20,60 @@ public class Bullet extends BodyModel {
      * @param world  WorldImp dans lequel sera créé le body du bomb
      */
     public Bullet(Player player, WorldImpl world) {
-        super(world,player.getId());
+        super(world, player.getId());
         fixtureDef = new FixtureDef();
         this.world = world;
         this.player = player;
         sprite = Assets.spriteBullet;
-        sprite.setPosition(player.getPosition().x - (sprite.getWidth() / 2), player.getPosition().y - (sprite.getHeight() / 2));
-        //sprite.setRotation(player.getBody().getAngle());
+        float bX=0,bY=0;
+        switch (player.getBulletPosition()) {
+            case 0: {
+                bX=-Assets.sprite.getWidth()/1.75f;
+                bY=0;
+                break;
+            }
+            case 1: {
+                bX=-Assets.sprite.getWidth()/1.75f;
+                bY=Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+            case 2: {
+                bX=0;
+                bY=Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+            case 3: {
+                bX=Assets.sprite.getWidth()/1.75f;
+                bY=Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+            case 4: {
+                bX=Assets.sprite.getWidth()/1.75f;
+                bY=0;
+                break;
+            }
+            case 5: {
+                bX=Assets.sprite.getWidth()/1.75f;
+                bY=-Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+            case 6: {
+                bX=0;
+                bY=-Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+            case 7: {
+                bX=-Assets.sprite.getWidth()/1.75f;
+                bY=-Assets.sprite.getHeight()/1.75f;
+                break;
+            }
+        }
+
+
+        sprite.setPosition(player.getPosition().x+bX, player.getPosition().y+bY);
         setBodyDef();
         setFixture();
-        body.setLinearVelocity(player.getOldLinareVelocity().x * 2, player.getOldLinareVelocity().y * 2);
+        body.setLinearVelocity(player.getOldLinareVelocity().x * 2.5f, player.getOldLinareVelocity().y * 2.5f);
         world.addBullet(this);
     }
 
@@ -39,7 +83,7 @@ public class Bullet extends BodyModel {
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-       // bodyDef.bullet = true;
+        // bodyDef.bullet = true;
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);

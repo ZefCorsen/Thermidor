@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets {
     public static final float PLAYER_SPEED = 2.5f;
     public static final float PIXELS_TO_METERS = 100f;
-    public static Texture backgroundMain, backgroundGame;
+    public static Texture backgroundMain, backgroundGame ,life;
     public static TextureRegion backgroundRegionMain, backgroundRegionGame;
     public static Texture start, logo, joinGame, help;
 
@@ -32,8 +32,6 @@ public class Assets {
     public static final short WORLD_ENTITY = 0x0004;
     public static final short BOMB_ENTITY = 0x0002;
 
-    //public static final short MASK_PLAYER = -1; // or ~CATEGORY_PLAYER
-    // public static final short MASK_BULLET = -1; // or ~CATEGORY_MONSTER
     public static final short MASK_PLAYER = BOMB_ENTITY | WORLD_ENTITY | PHYSICS_ENTITY; // or ~CATEGORY_PLAYER
     public static final short MASK_BULLET = PHYSICS_ENTITY | WORLD_ENTITY | BOMB_ENTITY; // or ~CATEGORY_MONSTER
     public static final short MASK_WORLD = -1;
@@ -77,6 +75,8 @@ public class Assets {
         bombGame = loadTexture(prefix + "images/poudreGame.gif");
 
         mainMenu = new TextureRegion(start);
+        life = loadTexture(prefix + "images/hearth.jpg");
+
         sprite = new Sprite(player);
         heightPlayer = (widthPlayer * sprite.getHeight()) / sprite.getWidth();
         sprite.setSize(widthPlayer, heightPlayer);

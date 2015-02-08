@@ -62,6 +62,7 @@ public class WorldImpl {
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
         bodyEdgeScreen = world.createBody(bodyDef);
+
     }
 
     private void setFixture() {
@@ -85,6 +86,7 @@ public class WorldImpl {
         myChain.createChain(myCoordinates);
         fixtureDef.shape = myChain;
         bodyEdgeScreen.createFixture(fixtureDef);
+        bodyEdgeScreen.setUserData("World");
         myChain.dispose();
 
     }

@@ -8,6 +8,8 @@ import com.mygdx.player.Bullet;
 import com.mygdx.player.Player;
 import com.mygdx.world.WorldImpl;
 
+import java.util.Objects;
+
 
 /**
  * Created by Jerem on 06/02/2015.
@@ -19,14 +21,22 @@ public class ListenerClass implements ContactListener {
         System.out.println("Things touch !!!");
         Object obA = contact.getFixtureA().getUserData();
         if (obA != null)
-            System.out.println("System :" + obA.getClass());
+            System.out.println("System A:" + obA.getClass());
 
         Object obB = contact.getFixtureB().getUserData();
         if (obB != null)
-            System.out.println("System :" + obB.getClass());
+            System.out.println("System B:" + obB.getClass());
 
+
+        if (obA == null && obB != null && obB instanceof Bullet) {
+            System.out.println("Bullet VS World");
+            Bullet bulletB = (Bullet) obB;
+            WorldImpl.getInstance().deleteBullet(bulletB);
+
+        }
 
         if (obA != null && obB != null) {
+            System.out.println("idA : " + obA + " ,idB : " + obB);
             if (obA instanceof Bullet && obB instanceof Bullet) {
                 Bullet bulletA = (Bullet) obA;
                 Bullet bulletB = (Bullet) obB;
@@ -37,33 +47,27 @@ public class ListenerClass implements ContactListener {
             } else if (obA instanceof Bullet && obB instanceof Player) {
                 Bullet bulletA = (Bullet) obA;
                 Player player = (Player) obB;
-                System.out.println("Bullet VS Player ");
-                WorldImpl.getInstance().deleteBullet(bulletA);
-                try {
-                    player.removeLife();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!bulletA.getId().equals(player.getId())) {
+                    WorldImpl.getInstance().deleteBullet(bulletA);
+                    try {
+                        player.removeLife();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
             } else if (obB instanceof Bullet && obA instanceof Player) {
                 Bullet bulletA = (Bullet) obB;
                 Player player = (Player) obA;
-                System.out.println("Player VS bullet ");
-                WorldImpl.getInstance().deleteBullet(bulletA);
-                try {
-                    player.removeLife();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!bulletA.getId().equals(player.getId())) {
+                    WorldImpl.getInstance().deleteBullet(bulletA);
+                    try {
+                        player.removeLife();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-            if (obB instanceof Bullet) {
-                Bullet pA = (Bullet) obB;
-                //out.println("Bullet B: "+pA.getId());
-            }
-
         }
-
-
     }
 
     @Override
