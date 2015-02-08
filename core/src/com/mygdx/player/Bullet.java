@@ -37,8 +37,10 @@ public class Bullet {
         System.out.println("Angle du player :" +player.getBody().getAngle());
         System.out.println("Inertie du player :" +player.getBody().getInertia());
         sprite.setPosition(player.getPosition().x - (sprite.getWidth() / 2), player.getPosition().y - (sprite.getHeight() / 2));
+        //sprite.setRotation(player.getBody().getAngle());
         setBodyDef();
         setFixture();
+        body.setLinearVelocity(player.getOldLinareVelocity().x*2,player.getOldLinareVelocity().y*2);
         world.addBullet(this);
     }
 
@@ -47,12 +49,14 @@ public class Bullet {
      */
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.angle = player.getBody().getAngle();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+
+        bodyDef.bullet = true;
+     //   bodyDef.angle = player.getBody().getAngle();
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
-        body.setBullet(true);
+
     }
 
     /**
@@ -131,6 +135,9 @@ public class Bullet {
 
     public void setIdPlayer(String idPlayer) {
         this.idPlayer = idPlayer;
+    }
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public Vector2 getPosition() {
