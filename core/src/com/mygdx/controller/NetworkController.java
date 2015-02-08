@@ -49,8 +49,6 @@ public class NetworkController {
         peers = new PeerList();
         // Registering methods
         Kryo kryo = server.getKryo();
-        kryo.register(SomeRequest.class);
-        kryo.register(SomeResponse.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
@@ -89,28 +87,6 @@ public class NetworkController {
         return NetworkControllerHolder.instance;
     }
 
-    public void sendMessage(String message) {
-
-
-        for (Peer peer:peers.getPeerList()){
-
-
-            SomeResponse sent = new SomeResponse();
-            sent.text = message;
-            try {
-
-                if(!client.isConnected())
-                client.connect(5000,peer.IP,TCP,UDP);
-                if(myWorld!=null) {
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            client.sendTCP(sent);
-        }
-
-    }
 
     public void sendJoinMessage(String id){
         for (Peer peer:peers.getPeerList()){
@@ -126,6 +102,7 @@ public class NetworkController {
                 e.printStackTrace();
             }
             client.sendTCP(new JoinMessage(id));
+            System.out.println("Sent Join message");
         }
 
 
@@ -256,8 +233,6 @@ public class NetworkController {
                     System.out.println("Get initial position");
                     WorldImpl request = (WorldImpl) object;
                     myWorld = request;
-
-
                 }
 
 
@@ -303,12 +278,6 @@ public class NetworkController {
         InetAddress addr;
 
         addr = null;
-      /*  try {
-            addr = InetAddress.getByName("172.22.201.136");
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
 
@@ -357,8 +326,6 @@ public class NetworkController {
     private static void RegisterClient(Client client) {
 
         Kryo kryo = client.getKryo();
-        kryo.register(SomeRequest.class);
-        kryo.register(SomeResponse.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);

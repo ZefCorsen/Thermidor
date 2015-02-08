@@ -72,7 +72,6 @@ public class MainMenu implements Screen {
                 System.out.println("Click on Join");
                 NetworkController.getInstance().startEmitter();
                 NetworkController.getInstance().discoverPeers();
-                NetworkController.getInstance().sendMessage("Trouvé");
                 NetworkController.getInstance().sendJoinMessage(game.id);
                 game.setScreen(new GameScreen(game));
 
