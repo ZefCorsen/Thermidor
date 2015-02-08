@@ -13,78 +13,64 @@ import com.mygdx.world.WorldImpl;
 /**
  * Created by Jerem on 04/02/2015.
  */
-public class Player {
+public class Bullet {
 
     private Sprite sprite;
     private Body body;
     private WorldImpl world;
-    private Vector2 wantedPosition;
-    private Vector2 oldLinareVelocity;
-    private String id;
+    private String idPlayer;
+    private Player player;
     private FixtureDef fixtureDef;
 
-
     /**
-     * Construit un joueur, ces limites, ses collision
+     * Construit une bomb, ces limites, ses collision
      *
-     * @param px    position x
-     * @param py    position y
-     * @param world WorldImp dans lequel sera créé le body du joueur
+     * @param player Vector2 de la position du joueur
+     * @param world          WorldImp dans lequel sera créé le body du bomb
      */
-    public Player(float px, float py, WorldImpl world, String id) {
+    public Bullet(Player player, WorldImpl world) {
         fixtureDef = new FixtureDef();
-        this.id = id;
         this.world = world;
-        sprite = Assets.sprite;
-        sprite.setPosition(px, py);
+        this.idPlayer = player.getId();
+        this.player =player;
+        sprite = Assets.spriteBullet;
+        sprite.setPosition(player.getPosition().x - (sprite.getWidth() / 2), player.getPosition().y - (sprite.getHeight() / 2));
+        //sprite.setRotation(player.getBody().getAngle());
         setBodyDef();
         setFixture();
-        wantedPosition = body.getPosition();
-        oldLinareVelocity = new Vector2();
-        world.addPlayer(this);
+        body.setLinearVelocity(player.getOldLinareVelocity().x*2,player.getOldLinareVelocity().y*2);
+        world.addBullet(this);
     }
 
     /**
-     * Construit un joueur, ces limites, ses collision
-     *
-     * @param vectorPosition Vector2 de la position du joueur
-     * @param world          WorldImp dans lequel sera créé le body du joueur
-     * @param id             Id du joueur à ajouter
-     */
-    public Player(Vector2 vectorPosition, WorldImpl world, String id) {
-        this(vectorPosition.x, vectorPosition.y, world, id);
-
-    }
-
-    /**
-     * Defini le corp du joueur
+     * Defini le corp de la bomb
      */
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.bullet = true;
+     //   bodyDef.angle = player.getBody().getAngle();
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
+
     }
 
     /**
-     * Defini les collision,la masse, d'un joueur
+     * Defini les collision,la masse, d'une bomb
      */
     private void setFixture() {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight()
                 / 2);
-
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
-        fixtureDef.filter.categoryBits = Assets.PHYSICS_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY | Assets.BOMB_ENTITY;
-
+        fixtureDef.filter.categoryBits = Assets.BOMB_ENTITY;
+        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY;
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
-
         shape.dispose();
     }
 
@@ -93,27 +79,12 @@ public class Player {
     }
 
     /**
-     * Donne la position voulu d'un joueur
-     *
-     * @param wantedPosition
-     */
-    public void setWantedPosition(Vector2 wantedPosition) {
-        this.wantedPosition = wantedPosition;
-    }
-    public Vector2 getWantedPosition() {
-        return wantedPosition;
-    }
-
-    /**
      * Met à jour la velocité d'un joueur si la position voulu n'est pas encore atteinte
-     *
-     * @param delta
      */
-    public void update(float delta) {
+   /* public void update(float delta) {
         float round = 0.02f;//((1f/60f) * Assets.PLAYER_SPEED);
 
         if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
-            oldLinareVelocity = body.getLinearVelocity();
             if (Math.abs(body.getPosition().x - wantedPosition.x) > round) {
                 body.setActive(true);
                 body.setType(BodyDef.BodyType.DynamicBody);
@@ -124,8 +95,8 @@ public class Player {
                         } else if (body.getPosition().y < wantedPosition.y) {
                             body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
                         }
-                    } else {
-                        body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
+                    }else{
+                        body.setLinearVelocity(-Assets.PLAYER_SPEED,0f);
                     }
 
                 } else if (body.getPosition().x < wantedPosition.x) {
@@ -134,9 +105,9 @@ public class Player {
                             body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
                         } else if (body.getPosition().y < wantedPosition.y) {
                             body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
-                        }
-                    } else {
-                        body.setLinearVelocity(Assets.PLAYER_SPEED, 0f);
+                        }                     }
+                    else{
+                        body.setLinearVelocity(Assets.PLAYER_SPEED,0f);
                     }
                 }
             } else {
@@ -154,29 +125,19 @@ public class Player {
             body.setActive(false);
         }
 
+    }*/
+    public String getIdPlayer() {
+        return idPlayer;
     }
 
-
-    public String getId() {
-        return id;
+    public void setIdPlayer(String idPlayer) {
+        this.idPlayer = idPlayer;
     }
-
-    public void setId(String id) {
-        this.id = id;
+    public Sprite getSprite() {
+        return sprite;
     }
 
     public Vector2 getPosition() {
         return body.getPosition();
     }
-
-    public boolean isSameFixture(Fixture fix) {
-        return body.getFixtureList().get(0).equals(fix);
-    }
-
-    public Vector2 getOldLinareVelocity() {
-        return oldLinareVelocity;
-    }
-
-
-
 }

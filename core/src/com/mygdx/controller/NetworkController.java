@@ -2,11 +2,9 @@ package com.mygdx.controller;
 
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.Serializer;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -19,10 +17,8 @@ import com.mygdx.models.PositionMessage;
 import com.mygdx.models.SomeRequest;
 import com.mygdx.models.SomeResponse;
 import com.mygdx.models.State;
-
 import com.mygdx.player.Player;
-import com.mygdx.world.Block;
-import com.mygdx.world.World;
+import com.mygdx.world.WorldImpl;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -43,7 +39,7 @@ public class NetworkController {
     private Client client;
     private PeerList peers;
     private ArrayList<Client> clients;
-    public World myWorld;
+    public WorldImpl myWorld;
     public String myId;
 
 
@@ -55,11 +51,10 @@ public class NetworkController {
         Kryo kryo = server.getKryo();
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
-        kryo.register(com.mygdx.world.Block.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
-        kryo.register(com.mygdx.world.World.class);
+        kryo.register(WorldImpl.class);
         kryo.register(JoinMessage.class);
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);
@@ -69,8 +64,14 @@ public class NetworkController {
         kryo.register(java.net.Inet4Address.class);
         kryo.register(com.mygdx.player.Player.class);
         kryo.register(com.mygdx.models.PeerList.class);
-
-
+        //Add by Jerem
+        kryo.register(com.badlogic.gdx.physics.box2d.BodyDef.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.BodyDef.BodyType.class);
+        kryo.register(Fixture.class);
+        kryo.register(FixtureDef.class);
+        kryo.register(com.badlogic.gdx.utils.Array.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.Body.class);
+        kryo.register(com.mygdx.player.Player.class);
 
 
     }
@@ -88,16 +89,20 @@ public class NetworkController {
         return NetworkControllerHolder.instance;
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
+
 
         for (Peer peer:peers.getPeerList()){
+
 
             SomeResponse sent = new SomeResponse();
             sent.text = message;
             try {
+
                 if(!client.isConnected())
                 client.connect(5000,peer.IP,TCP,UDP);
                 if(myWorld!=null) {
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -106,6 +111,7 @@ public class NetworkController {
         }
 
     }
+
     public void sendJoinMessage(String id){
         for (Peer peer:peers.getPeerList()){
 
@@ -116,7 +122,6 @@ public class NetworkController {
                 Log.info("peers number is : "+peers.getPeerList().size());
                 System.out.println("peers number is : " + peers.getPeerList().size());
 
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -124,11 +129,9 @@ public class NetworkController {
         }
 
 
-
-
     }
-    public void sendGameState(World world){
 
+    public void sendGameState(WorldImpl world) {
         for (Peer peer:peers.getPeerList()){
 
             try {
@@ -143,6 +146,8 @@ public class NetworkController {
                 System.out.println("peers number is : " + peers.getPeerList().size());
 
 
+
+
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.print("\nerreur lors de l'envoi du world: "+e.getMessage()+"\n");
@@ -152,6 +157,7 @@ public class NetworkController {
         }
 
     }
+
 
     public void sendPeers(){
         for (Peer peer:peers.getPeerList()){
@@ -184,17 +190,20 @@ public class NetworkController {
             try {
                 if (myWorld!=null){
                 pos = new PositionMessage(id,myWorld.getPlayer(id).getWantedPosition());}
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
             try {
-                if(!client.isConnected())
-                    client.connect(5000,peer.IP,TCP,UDP);
+                if (!client.isConnected())
+                    client.connect(5000, peer.IP, TCP, UDP);
                 // Log.info("peers number is : "+peers.size());
-                if(myWorld!=null) {
-                    //System.out.println("Sending position");
+
+                if (myWorld != null) {
+                    System.out.println("Sending position");
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -205,17 +214,16 @@ public class NetworkController {
     }
 
 
-
     public void startEmitter() {
-        client.start() ;
+        client.start();
         RegisterClient(client);
         System.out.println("Starting Emitter");
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
 
-                if (object instanceof World) {
-                    World messageWorld = (World) object;
+                if (object instanceof WorldImpl) {
+                    WorldImpl messageWorld = (WorldImpl) object;
                     myWorld = messageWorld;
                     connection.sendTCP(myWorld);
                 }
@@ -229,12 +237,12 @@ public class NetworkController {
         });
     }
 
-    public void startReceiver(World world) {
-        this.myWorld=world;
+    public void startReceiver(WorldImpl world) {
+        this.myWorld = world;
         server.start();
         try {
-            System.out.println("Trying to bind reicever at these ports, UDP: "+UDP+"///TCP: "+TCP);
-            Log.info("Trying to bind reicever at these ports, UDP: "+UDP+"///TCP: "+TCP);
+            System.out.println("Trying to bind reicever at these ports, UDP: " + UDP + "///TCP: " + TCP);
+            Log.info("Trying to bind reicever at these ports, UDP: " + UDP + "///TCP: " + TCP);
             server.bind(TCP, UDP);
 
         } catch (IOException e) {
@@ -244,12 +252,11 @@ public class NetworkController {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
 
-
-                if (object instanceof World) {
+                if (object instanceof WorldImpl) {
                     System.out.println("Get initial position");
-                    World request = (World) object;
-                    myWorld=request;
-                    System.out.println("World du rsx : "+myWorld.toString());
+                    WorldImpl request = (WorldImpl) object;
+                    myWorld = request;
+
 
                 }
 
@@ -257,13 +264,13 @@ public class NetworkController {
                 if (object instanceof PositionMessage) {
                     PositionMessage positionMessage = (PositionMessage) object;
                     String id = positionMessage.getId();
-                    //System.out.println("From "+positionMessage.getId()+" Position reiceived" + positionMessage.getPosition().toString());
+
+                    System.out.println("From " + positionMessage.getId() + " Position reiceived" + positionMessage.getPosition().toString());
 
                     try {
-
-                        myWorld.getPlayer(id).setWantedPosition(positionMessage.getPosition());
-
-
+                        Player player;
+                        player = myWorld.getPlayer(id);
+                        player.setWantedPosition(positionMessage.getPosition());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -276,7 +283,10 @@ public class NetworkController {
 
                     peers.getPeerList().add(new Peer(connection.getRemoteAddressTCP().getAddress()));
                     sendPeers();
-                    myWorld.addPlayer(new Player(new Vector2(0, 0), messageJoin.getId()));
+
+
+                    myWorld.addPlayer(new Player(new Vector2(0, 0), myWorld, messageJoin.getId()));
+
                     System.out.print("Player Joining " + messageJoin.getId());
                     sendGameState(myWorld);
 
@@ -289,7 +299,9 @@ public class NetworkController {
     }
 
     public void discoverPeers() {
+
         InetAddress addr;
+
         addr = null;
       /*  try {
             addr = InetAddress.getByName("172.22.201.136");
@@ -299,7 +311,9 @@ public class NetworkController {
         }*/
         try {
             Log.info("Trying to discover host at port " + UDP);
+
             addr = client.discoverHost(UDP, 1000);
+
             //addr = InetAddress.getByName("192.168.1.1");
         } catch (Exception e) {
             Log.info(e.toString());
@@ -308,18 +322,17 @@ public class NetworkController {
         System.out.println(addr);
         if (addr == null) {
 
+
             System.exit(0);
         }
+
 
 
         peers.getPeerList().add(new Peer(addr));
     }
 
-    public World getWorld(){
-        return myWorld;
-    }
-
     public String getLocalPeer(){
+
         System.out.println("============================================Builder=================================:");
 
         StringBuilder sb = new StringBuilder();
@@ -328,11 +341,11 @@ public class NetworkController {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             server.toString();
             System.out.println(interfaces.hasMoreElements());
-           NetworkInterface ni= interfaces.nextElement();
+            NetworkInterface ni = interfaces.nextElement();
             byte[] mac = ni.getHardwareAddress();
-                for (int i = 0; i < mac.length; i++) {
-                   sb.append( String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-                }
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
 
         } catch (SocketException e) {
             e.printStackTrace();
@@ -341,16 +354,15 @@ public class NetworkController {
         return sb.toString();
     }
 
-    private static void RegisterClient(Client client){
+    private static void RegisterClient(Client client) {
 
         Kryo kryo = client.getKryo();
         kryo.register(SomeRequest.class);
         kryo.register(SomeResponse.class);
-        kryo.register(com.mygdx.world.Block.class);
         kryo.register(com.badlogic.gdx.math.Rectangle.class);
         kryo.register(Peer.class);
         kryo.register(State.class);
-        kryo.register(com.mygdx.world.World.class);
+        kryo.register(WorldImpl.class);
         kryo.register(JoinMessage.class);
         kryo.register(com.mygdx.models.PositionMessage.class);
         kryo.register(com.badlogic.gdx.math.Vector2.class);
@@ -360,12 +372,14 @@ public class NetworkController {
         kryo.register(java.net.Inet4Address.class);
         kryo.register(com.mygdx.player.Player.class);
         kryo.register(com.mygdx.models.PeerList.class);
-
-
-
-
-
-
+        //Add by Jerem
+        kryo.register(com.badlogic.gdx.physics.box2d.BodyDef.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.BodyDef.BodyType.class);
+        kryo.register(Fixture.class);
+        kryo.register(FixtureDef.class);
+        kryo.register(com.badlogic.gdx.utils.Array.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.Body.class);
+        kryo.register(com.mygdx.player.Player.class);
 
 
     }

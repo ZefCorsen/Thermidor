@@ -1,10 +1,11 @@
 package com.mygdx.world;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.player.Bomb;
+import com.mygdx.player.Bullet;
 import com.mygdx.player.Player;
 
 /**
@@ -13,54 +14,53 @@ import com.mygdx.player.Player;
 public class MondeRenderTexture {
 
 
-    private World world;
-    private OrthographicCamera cam;
-
-    /**
-     * debug
-     */
-    ShapeRenderer debugRenderer = new ShapeRenderer();
-
-
+    private WorldImpl world;
     private SpriteBatch spriteBatch;
-    private boolean debug = false;
-    private int width;
-    private int height;
-    public float ppuX;
-    public float ppuY;
 
-    public void setSize(int w, int h) {
-        this.width = w;
-        this.height = h;
-        ppuX = (float) width / Assets.CAMERA_WIDTH;
-        ppuY = (float) height / Assets.CAMERA_HEIGHT;
+
+    public MondeRenderTexture(WorldImpl world, SpriteBatch spriteBatch) {
+        this.world = world;
+      this.spriteBatch = spriteBatch;
+      spriteBatch.enableBlending();
+
     }
 
-    public MondeRenderTexture(World world, boolean debug) {
-        this.world = world;
-        this.cam = new OrthographicCamera(Assets.CAMERA_WIDTH, Assets.CAMERA_HEIGHT);
-        this.cam.position.set(Assets.CAMERA_WIDTH / 2f, Assets.CAMERA_HEIGHT / 2f, 0);
-        this.cam.update();
-        this.debug = debug;
-        spriteBatch = new SpriteBatch();
+    public MondeRenderTexture(SpriteBatch spriteBatch) {
+        this.world = WorldImpl.getInstance();
+        this.spriteBatch = spriteBatch;
+        spriteBatch.enableBlending();
+
     }
 
     public void render() {
-        spriteBatch.begin();
-
-        spriteBatch.draw(Assets.background,0,0,width,height);
+        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2/Assets.PIXELS_TO_METERS, -Assets.ppuY/2/Assets.PIXELS_TO_METERS, Assets.ppuX/Assets.PIXELS_TO_METERS, Assets.ppuY/Assets.PIXELS_TO_METERS);
+        spriteBatch.draw(Assets.bomb,Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
+        spriteBatch.draw(Assets.musket,Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
+        drawBombs();
+        drawBullet();
         drawPlayer();
-        spriteBatch.end();
-
 
     }
 
 
-
-    private void drawPlayer() {
-
+    public void drawPlayer() {
         for (Player player : world.getPlayers()) {
-            spriteBatch.draw(Assets.player, player.getPosition().x * ppuX, player.getPosition().y * ppuY, Player.SIZE * ppuX, Player.SIZE * ppuY);
+            spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), Assets.widthPlayer, Assets.heightPlayer);
+        }
+    }
+
+    public void drawBombs() {
+        for (Bomb bomb : world.getBombs()) {
+           // spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x), (bomb.getBody().getPosition().y), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
+            spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x - Assets.spriteBomb.getWidth() / 2), (bomb.getBody().getPosition().y - Assets.spriteBomb.getHeight() / 2), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
+        }
+    }
+
+    public void drawBullet() {
+        for (Bullet bullet : world.getBullets()) {
+            Sprite spriteBullet = new Sprite(Assets.bullet);
+            spriteBullet.setRotation((float)Math.toDegrees((bullet.getBody().getAngle())));
+            spriteBatch.draw(spriteBullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
         }
     }
 
