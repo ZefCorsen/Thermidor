@@ -24,12 +24,19 @@ public class MondeRenderTexture {
 
     }
 
+    public MondeRenderTexture(SpriteBatch spriteBatch) {
+        this.world = WorldImpl.getInstance();
+        this.spriteBatch = spriteBatch;
+        spriteBatch.enableBlending();
+
+    }
+
     public void render() {
         spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2/Assets.PIXELS_TO_METERS, -Assets.ppuY/2/Assets.PIXELS_TO_METERS, Assets.ppuX/Assets.PIXELS_TO_METERS, Assets.ppuY/Assets.PIXELS_TO_METERS);
         spriteBatch.draw(Assets.bomb,Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
         spriteBatch.draw(Assets.musket,Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
         drawBombs();
-       // drawBullet();
+        drawBullet();
         drawPlayer();
 
     }
@@ -50,7 +57,7 @@ public class MondeRenderTexture {
 
     public void drawBullet() {
         for (Bullet bullet : world.getBullets()) {
-            // spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x), (bomb.getBody().getPosition().y), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
+            spriteBatch.draw(Assets.bullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
          //   spriteBatch.draw(Assets.bullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
         }
     }

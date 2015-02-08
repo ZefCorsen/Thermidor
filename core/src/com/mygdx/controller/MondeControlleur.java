@@ -23,6 +23,9 @@ public class MondeControlleur{
     public MondeControlleur(WorldImpl world)  {
         this.world = world;
     }
+    public MondeControlleur()  {
+        this.world = WorldImpl.getInstance();
+    }
 
     public void update(float delta) {
         for (Player player : world.getPlayers()) {

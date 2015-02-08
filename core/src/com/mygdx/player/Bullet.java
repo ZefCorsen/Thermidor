@@ -52,6 +52,7 @@ public class Bullet {
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
+        body.setBullet(true);
     }
 
     /**

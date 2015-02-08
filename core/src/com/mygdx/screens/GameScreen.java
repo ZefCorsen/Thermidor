@@ -54,8 +54,8 @@ public class GameScreen implements Screen, InputProcessor {
         spriteBatch = new SpriteBatch();
         Gdx.input.setCatchBackKey(true);
         this.worldImpl = worldImpl;
-        mondeRender = new MondeRenderTexture(worldImpl, spriteBatch);
-        controller = new MondeControlleur(worldImpl);
+        mondeRender = new MondeRenderTexture(spriteBatch);
+        controller = new MondeControlleur();
         bombBound = new Rectangle(Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
         musketBound = new Rectangle(Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / Assets.PIXELS_TO_METERS, Gdx.graphics.

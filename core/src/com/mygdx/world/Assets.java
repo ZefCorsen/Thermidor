@@ -87,7 +87,7 @@ public class Assets {
         //heightBomb= heightPlayer/2;
         //widthBomb = (heightBomb * spriteBullet.getWidth()) / spriteBullet.getHeight();
 
-        spriteBullet.setSize(spriteBullet.getWidth()/PIXELS_TO_METERS,spriteBullet.getHeight()/PIXELS_TO_METERS);
+        spriteBullet.setSize(widthBomb/5,heightBomb/5);
 
     }
 
