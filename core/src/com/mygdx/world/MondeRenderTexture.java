@@ -1,7 +1,5 @@
 package com.mygdx.world;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.player.Bomb;
@@ -20,8 +18,8 @@ public class MondeRenderTexture {
 
     public MondeRenderTexture(WorldImpl world, SpriteBatch spriteBatch) {
         this.world = world;
-      this.spriteBatch = spriteBatch;
-      spriteBatch.enableBlending();
+        this.spriteBatch = spriteBatch;
+        spriteBatch.enableBlending();
 
     }
 
@@ -33,9 +31,9 @@ public class MondeRenderTexture {
     }
 
     public void render() {
-        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX/2/Assets.PIXELS_TO_METERS, -Assets.ppuY/2/Assets.PIXELS_TO_METERS, Assets.ppuX/Assets.PIXELS_TO_METERS, Assets.ppuY/Assets.PIXELS_TO_METERS);
-        spriteBatch.draw(Assets.bomb,Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
-        spriteBatch.draw(Assets.musket,Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
+        spriteBatch.draw(Assets.backgroundRegionGame, -Assets.ppuX / 2 / Assets.PIXELS_TO_METERS, -Assets.ppuY / 2 / Assets.PIXELS_TO_METERS, Assets.ppuX / Assets.PIXELS_TO_METERS, Assets.ppuY / Assets.PIXELS_TO_METERS);
+        spriteBatch.draw(Assets.bomb, Assets.actionBordX, Assets.actionBordY, Assets.tailleActionX, Assets.tailleActionY);
+        spriteBatch.draw(Assets.musket, Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
         drawBombs();
         drawBullet();
         drawPlayer();
@@ -51,7 +49,6 @@ public class MondeRenderTexture {
 
     public void drawBombs() {
         for (Bomb bomb : world.getBombs()) {
-           // spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x), (bomb.getBody().getPosition().y), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
             spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x - Assets.spriteBomb.getWidth() / 2), (bomb.getBody().getPosition().y - Assets.spriteBomb.getHeight() / 2), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
         }
     }
@@ -59,7 +56,7 @@ public class MondeRenderTexture {
     public void drawBullet() {
         for (Bullet bullet : world.getBullets()) {
             Sprite spriteBullet = new Sprite(Assets.bullet);
-            spriteBullet.setRotation((float)Math.toDegrees((bullet.getBody().getAngle())));
+            spriteBullet.setRotation((float) Math.toDegrees((bullet.getBody().getAngle())));
             spriteBatch.draw(spriteBullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
         }
     }

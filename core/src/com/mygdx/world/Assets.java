@@ -24,23 +24,28 @@ public class Assets {
     public static float round = 0.001f;
     public static BitmapFont buton;
     public static float SIZE = 0.03f;
-    public static Sprite sprite,spriteBomb,spriteBullet;
+    public static Sprite sprite, spriteBomb, spriteBullet;
 
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
-    public static final short PHYSICS_ENTITY = 0001;    // 0001
-    public static final short WORLD_ENTITY = 0010;
-    public static final short BOMB_ENTITY = 0100;
-    public static final short BULLET_ENTITY = 1000;// 0010 or 0x2 in hex
+    public static final short PHYSICS_ENTITY = 0x0001;    // 0001
+    public static final short WORLD_ENTITY = 0x0004;
+    public static final short BOMB_ENTITY = 0x0002;
+
+    //public static final short MASK_PLAYER = -1; // or ~CATEGORY_PLAYER
+    // public static final short MASK_BULLET = -1; // or ~CATEGORY_MONSTER
+    public static final short MASK_PLAYER = BOMB_ENTITY | WORLD_ENTITY | PHYSICS_ENTITY; // or ~CATEGORY_PLAYER
+    public static final short MASK_BULLET = PHYSICS_ENTITY | WORLD_ENTITY | BOMB_ENTITY; // or ~CATEGORY_MONSTER
+    public static final short MASK_WORLD = -1;
+
+
     public static float widthPlayer = (SIZE * ppuX) / Assets.PIXELS_TO_METERS;
     public static float heightPlayer = (SIZE * ppuY) / Assets.PIXELS_TO_METERS;
 
-    public static  float tailleActionX = (Assets.ppuX / Assets.PIXELS_TO_METERS) / 8;
-    public static  float tailleActionY = (Assets.ppuY / Assets.PIXELS_TO_METERS) / 5;
-    public static  float actionBordX = (Assets.ppuX / Assets.PIXELS_TO_METERS) / 2 - tailleActionX;
-    public static  float actionBordY = -(Assets.ppuY / Assets.PIXELS_TO_METERS) / 2;
-
-
+    public static float tailleActionX = (Assets.ppuX / Assets.PIXELS_TO_METERS) / 8;
+    public static float tailleActionY = (Assets.ppuY / Assets.PIXELS_TO_METERS) / 5;
+    public static float actionBordX = (Assets.ppuX / Assets.PIXELS_TO_METERS) / 2 - tailleActionX;
+    public static float actionBordY = -(Assets.ppuY / Assets.PIXELS_TO_METERS) / 2;
 
 
     public static Texture loadTexture(String file) {
@@ -78,16 +83,16 @@ public class Assets {
 
 
         spriteBomb = new Sprite(bombGame);
-        float heightBomb= heightPlayer/2;
+        float heightBomb = heightPlayer / 2;
         float widthBomb = (heightBomb * spriteBomb.getWidth()) / spriteBomb.getHeight();
 
-        spriteBomb.setSize(widthBomb,heightBomb);
+        spriteBomb.setSize(widthBomb, heightBomb);
 
         spriteBullet = new Sprite(bullet);
         //heightBomb= heightPlayer/2;
         //widthBomb = (heightBomb * spriteBullet.getWidth()) / spriteBullet.getHeight();
 
-        spriteBullet.setSize(widthBomb/5,heightBomb/5);
+        spriteBullet.setSize(widthBomb / 5, heightBomb / 5);
 
     }
 

@@ -13,16 +13,10 @@ import com.mygdx.world.WorldImpl;
 /**
  * Created by Jerem on 04/02/2015.
  */
-public class Player {
+public class Player extends BodyModel{
 
-    private Sprite sprite;
-    private Body body;
-    private WorldImpl world;
     private Vector2 wantedPosition;
     private Vector2 oldLinareVelocity;
-    private String id;
-    private FixtureDef fixtureDef;
-    //private short reference = (short)this.hashCode();
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -32,9 +26,7 @@ public class Player {
      * @param world WorldImp dans lequel sera créé le body du joueur
      */
     public Player(float px, float py, WorldImpl world, String id) {
-        fixtureDef = new FixtureDef();
-        this.id = id;
-        this.world = world;
+        super(world , id);
         sprite = Assets.sprite;
         sprite.setPosition(px, py);
         setBodyDef();
@@ -61,6 +53,8 @@ public class Player {
     private void setBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.active= true;
+
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
         body = world.getWorld().createBody(bodyDef);
@@ -79,15 +73,10 @@ public class Player {
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
         fixtureDef.filter.categoryBits = Assets.PHYSICS_ENTITY;
-        fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.PHYSICS_ENTITY;// | Assets.PHYSICS_ENTITY | Assets.BOMB_ENTITY | Assets.BULLET_ENTITY;
+        fixtureDef.filter.maskBits = Assets.MASK_PLAYER;
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
-
         shape.dispose();
-    }
-
-    public Body getBody() {
-        return body;
     }
 
     /**
@@ -146,36 +135,15 @@ public class Player {
             }
         } else {
             body.setLinearVelocity(0f, 0f);
-            body.setActive(false);
+            //  body.setActive(false);
         }
 
-    }
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Vector2 getPosition() {
-        return body.getPosition();
-    }
-
-    public boolean isSameFixture(Fixture fix) {
-        return body.getFixtureList().get(0).equals(fix);
     }
 
     public Vector2 getOldLinareVelocity() {
         return oldLinareVelocity;
     }
-/*
-    public short getReference() {
-        return reference;
-    }
-*/
+
 
 
 }

@@ -13,13 +13,8 @@ import com.mygdx.world.WorldImpl;
 /**
  * Created by Jerem on 04/02/2015.
  */
-public class Bomb {
+public class Bomb extends BodyModel{
 
-    private Sprite sprite;
-    private Body body;
-    private WorldImpl world;
-    private String idPlayer;
-    private FixtureDef fixtureDef;
 
     /**
      * Construit une bomb, ces limites, ses collision
@@ -29,9 +24,7 @@ public class Bomb {
      * @param idPlayer       Id du joueur à ajouter
      */
     public Bomb(Vector2 vectorPosition, WorldImpl world, String idPlayer) {
-        fixtureDef = new FixtureDef();
-        this.world = world;
-        this.idPlayer = idPlayer;
+        super(world,idPlayer);
         sprite = Assets.spriteBomb;
         sprite.setPosition(vectorPosition.x - (Assets.sprite.getWidth() / 2), vectorPosition.y - (Assets.sprite.getHeight() / 2) + sprite.getHeight() / 2);
         setBodyDef();
@@ -66,73 +59,10 @@ public class Bomb {
         fixtureDef.restitution = 0.0f;
         fixtureDef.friction = 0.0f;
         fixtureDef.filter.categoryBits = Assets.BOMB_ENTITY;
-       // fixtureDef.filter.maskBits = Assets.WORLD_ENTITY | Assets.BOMB_ENTITY | Assets.PHYSICS_ENTITY;
+        fixtureDef.filter.maskBits = Assets.MASK_BULLET;
         Fixture fix = body.createFixture(fixtureDef);
         fix.setUserData(this);
         shape.dispose();
     }
 
-    public Body getBody() {
-        return body;
-    }
-
-    /**
-     * Met à jour la velocité d'un joueur si la position voulu n'est pas encore atteinte
-     */
-   /* public void update(float delta) {
-        float round = 0.02f;//((1f/60f) * Assets.PLAYER_SPEED);
-
-        if (!body.getPosition().epsilonEquals(wantedPosition, round)) {
-            if (Math.abs(body.getPosition().x - wantedPosition.x) > round) {
-                body.setActive(true);
-                body.setType(BodyDef.BodyType.DynamicBody);
-                if (body.getPosition().x > wantedPosition.x) {
-                    if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
-                        if (body.getPosition().y > wantedPosition.y) {
-                            body.setLinearVelocity(-Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                        } else if (body.getPosition().y < wantedPosition.y) {
-                            body.setLinearVelocity(-Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
-                        }
-                    }else{
-                        body.setLinearVelocity(-Assets.PLAYER_SPEED,0f);
-                    }
-
-                } else if (body.getPosition().x < wantedPosition.x) {
-                    if (Math.abs(body.getPosition().y - wantedPosition.y) > round) {
-                        if (body.getPosition().y > wantedPosition.y) {
-                            body.setLinearVelocity(Assets.PLAYER_SPEED, -Assets.PLAYER_SPEED);
-                        } else if (body.getPosition().y < wantedPosition.y) {
-                            body.setLinearVelocity(Assets.PLAYER_SPEED, Assets.PLAYER_SPEED);
-                        }                     }
-                    else{
-                        body.setLinearVelocity(Assets.PLAYER_SPEED,0f);
-                    }
-                }
-            } else {
-                if (body.getPosition().y > wantedPosition.y) {
-                    body.setLinearVelocity(0f, -Assets.PLAYER_SPEED);
-                } else if (body.getPosition().y < wantedPosition.y) {
-                    body.setLinearVelocity(0f, Assets.PLAYER_SPEED);
-                } else {
-                    body.setLinearVelocity(-Assets.PLAYER_SPEED, 0f);
-                }
-
-            }
-        } else {
-            body.setLinearVelocity(0f, 0f);
-            body.setActive(false);
-        }
-
-    }*/
-    public String getIdPlayer() {
-        return idPlayer;
-    }
-
-    public void setIdPlayer(String idPlayer) {
-        this.idPlayer = idPlayer;
-    }
-
-    public Vector2 getPosition() {
-        return body.getPosition();
-    }
 }
