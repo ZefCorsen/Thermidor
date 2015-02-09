@@ -291,29 +291,6 @@ public class NetworkController {
 
 
     }
-
-    public String getLocalPeer() {
-        System.out.println("============================================Builder=================================:");
-
-        StringBuilder sb = new StringBuilder();
-        try {
-            System.out.println("Interfaces :");
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            server.toString();
-            System.out.println(interfaces.hasMoreElements());
-            NetworkInterface ni = interfaces.nextElement();
-            byte[] mac = ni.getHardwareAddress();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-            }
-
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
-    }
-
     private static void RegisterClient(Client client) {
 
         Kryo kryo = client.getKryo();

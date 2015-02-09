@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * Created by Jerem on 22/01/2015.
  */
 public class Assets {
-    public static final float PLAYER_SPEED = 2.5f;
+    public static final float PLAYER_SPEED = 3f;
     public static final float PIXELS_TO_METERS = 100f;
     public static Texture backgroundMain, backgroundGame ,life;
     public static TextureRegion backgroundRegionMain, backgroundRegionGame;
@@ -55,9 +55,7 @@ public class Assets {
 
     public static void load() {
         backgroundMain = loadTexture(prefix + "images/MainBackground.jpg");
-        // backgroundGame = loadTexture(prefix + "images/herbe2.png");
-        // backgroundGame = loadTexture(prefix + "images/herbe4.png");
-        backgroundGame = loadTexture(prefix + "images/herbe5.png");
+        backgroundGame = loadTexture(prefix + "images/herbe.png");
         backgroundRegionMain = new TextureRegion(backgroundMain);
         backgroundRegionGame = new TextureRegion(backgroundGame);
         buton = new BitmapFont();
@@ -66,7 +64,6 @@ public class Assets {
         help = loadTexture(prefix + "images/buton3.png");
 
         joinGame = loadTexture(prefix + "images/buton2.png");
-        //player = loadTexture(prefix + "images/bonhomme.png");
         player = loadTexture(prefix + "images/fanTran.png");
         bullet = loadTexture(prefix + "images/bullet.gif");
         musket = loadTexture(prefix + "images/musket.gif");
