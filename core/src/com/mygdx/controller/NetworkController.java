@@ -206,16 +206,8 @@ public class NetworkController {
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
 
-                if (object instanceof WorldImpl) {
-                    WorldImpl messageWorld = (WorldImpl) object;
-                    myWorld = messageWorld;
-                    connection.sendTCP(myWorld);
-                }
-                if (object instanceof PeerList) {
-                    PeerList peerMessage = (PeerList) object;
-                    peers.MergePeerList(peerMessage);
-                    System.out.println("Peer received : " + peers.getPeerList().toString());
-                }
+
+
             }
 
         });
@@ -238,8 +230,9 @@ public class NetworkController {
 
                 if (object instanceof WorldImpl) {
                     System.out.println("Get initial position");
-                    WorldImpl request = (WorldImpl) object;
-                    myWorld = request;
+                    WorldImpl messageWorld = (WorldImpl) object;
+                    WorldImpl.setInstance(messageWorld);
+
                 }
 
 
@@ -273,6 +266,11 @@ public class NetworkController {
                     sendGameState(myWorld);
 
                 }
+                if (object instanceof PeerList) {
+                    PeerList peerMessage = (PeerList) object;
+                    peers.MergePeerList(peerMessage);
+                    System.out.println("Peer received : " + peers.getPeerList().toString());
+                }
 
             }
 
@@ -305,6 +303,10 @@ public class NetworkController {
 
 
         peers.getPeerList().add(new Peer(addr));
+    }
+
+    public WorldImpl getWorld(){
+        return WorldImpl.getInstance();
     }
 
     public String getLocalPeer(){

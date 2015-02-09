@@ -54,7 +54,7 @@ public class Assets {
         backgroundMain = loadTexture(prefix + "images/MainBackground.jpg");
         // backgroundGame = loadTexture(prefix + "images/herbe2.png");
         // backgroundGame = loadTexture(prefix + "images/herbe4.png");
-        backgroundGame = loadTexture(prefix + "images/herbe5.png");
+        backgroundGame = loadTexture(prefix + "images/herbe.png");
         backgroundRegionMain = new TextureRegion(backgroundMain);
         backgroundRegionGame = new TextureRegion(backgroundGame);
         buton = new BitmapFont();

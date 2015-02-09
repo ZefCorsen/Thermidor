@@ -73,7 +73,7 @@ public class MainMenu implements Screen {
                 NetworkController.getInstance().startEmitter();
                 NetworkController.getInstance().discoverPeers();
                 NetworkController.getInstance().sendJoinMessage(game.id);
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, NetworkController.getInstance().getWorld()));
 
 
 
