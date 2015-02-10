@@ -141,6 +141,7 @@ public class NetworkController {
                     }
                 }
                 System.out.println("SERVER : Nouvelle connexion :" + connection.getRemoteAddressTCP());
+                System.out.println("Plyer 1 : "+WorldImpl.getInstance().getPlayersTab()[0]);
                 connection.sendTCP(WorldImpl.getInstance().getPlayersTab());
                 connection.sendTCP(WorldImpl.getInstance().getBombsTab());
                 connection.sendTCP(WorldImpl.getInstance().getBulletsTab());

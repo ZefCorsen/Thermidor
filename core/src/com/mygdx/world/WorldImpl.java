@@ -50,10 +50,11 @@ public class WorldImpl {
         System.out.println("Size Player : " + playersTab.length);
         for (int i = 0; i < playersTab.length; i++) {
             PlayerMessage player = playersTab[i];
-            System.out.println("Player id: " + player.getIdPlayer() );
+            System.out.println(player);
+            //System.out.println("Player id: " + player.getIdPlayer() );
             //System.out.println("Player : " + player.getPosition() );
-            System.out.println("Player : " + player.getBulletPosition() );
-            System.out.println("Player : " + player.getLife() );
+            //System.out.println("Player : " + player.getBulletPosition() );
+           // System.out.println("Player : " + player.getLife() );
             //System.out.println("Player : " + player.getWantedPosition() );
             //System.out.println("Player : " + player.getOldLinareVelocity() );
 
