@@ -63,7 +63,6 @@ public class MainMenu implements Screen {
                 game.setScreen(new GameScreen(game));
                 try {
                     MondeControlleur.getInstance().addPlayerToWorld(game.id);
-
                     MondeControlleur.getInstance().addPlayerToWorld("Test");
                 } catch (Exception e) {
                     e.printStackTrace();

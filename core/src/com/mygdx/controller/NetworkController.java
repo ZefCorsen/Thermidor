@@ -71,19 +71,13 @@ public class NetworkController {
                 public void received(Connection connection, Object object) {
                     if (!getWorldInfo) {
                         if (object instanceof PlayerMessage[]) {
-                            System.out.println("EMMITER :Players receive");
                             WorldImpl.setPlayers((PlayerMessage[]) object);
-                            System.out.println("EMMITER :Players push");
                             getPlayer = true;
                         } else if (object instanceof BombMessage[]) {
-                            System.out.println("EMMITER :Bombs receive");
                             WorldImpl.setBombs((BombMessage[]) object);
-                            System.out.println("EMMITER :Bomb push");
                             getBomb = true;
                         } else if (object instanceof BulletMessage[]) {
-                            System.out.println("EMMITER :Bullets receive");
                             WorldImpl.setBullets((BulletMessage[]) object);
-                            System.out.println("EMMITER :Bullets push");
                             getBullet = true;
                         }
 
@@ -242,6 +236,7 @@ public class NetworkController {
 
     public void sendToAll(Object message) {
         for (Client client : endPoints) {
+            System.out.println("Envoi message :"+message.getClass());
             client.sendTCP(message);
         }
     }

@@ -12,12 +12,11 @@ import com.mygdx.player.Player;
 public class MondeRenderTexture {
 
 
-    private WorldImpl world;
     private SpriteBatch spriteBatch;
     private String gameID;
 
     public MondeRenderTexture(SpriteBatch spriteBatch, String gameID) {
-        this.world = WorldImpl.getInstance();
+
         this.spriteBatch = spriteBatch;
         this.gameID = gameID;
         spriteBatch.enableBlending();
@@ -37,19 +36,19 @@ public class MondeRenderTexture {
 
 
     private void drawPlayer() {
-        for (Player player : world.getPlayers()) {
+        for (Player player : WorldImpl.getInstance().getPlayers()) {
             spriteBatch.draw(Assets.player, (player.getBody().getPosition().x - Assets.sprite.getWidth() / 2), (player.getBody().getPosition().y - Assets.sprite.getHeight() / 2), Assets.widthPlayer, Assets.heightPlayer);
         }
     }
 
     private void drawBombs() {
-        for (Bomb bomb : world.getBombs()) {
+        for (Bomb bomb : WorldImpl.getInstance().getBombs()) {
             spriteBatch.draw(Assets.bombGame, (bomb.getBody().getPosition().x - Assets.spriteBomb.getWidth() / 2), (bomb.getBody().getPosition().y - Assets.spriteBomb.getHeight() / 2), Assets.spriteBomb.getWidth(), Assets.spriteBomb.getHeight());
         }
     }
 
     private void drawBullet() {
-        for (Bullet bullet : world.getBullets()) {
+        for (Bullet bullet : WorldImpl.getInstance().getBullets()) {
             Sprite spriteBullet = new Sprite(Assets.bullet);
             spriteBullet.setRotation((float) Math.toDegrees((bullet.getBody().getAngle())));
             spriteBatch.draw(spriteBullet, (bullet.getBody().getPosition().x - Assets.spriteBullet.getWidth() / 2), (bullet.getBody().getPosition().y - Assets.spriteBullet.getHeight() / 2), Assets.spriteBullet.getWidth(), Assets.spriteBullet.getHeight());
@@ -59,7 +58,7 @@ public class MondeRenderTexture {
     private void drawLife() {
         int life = 0;
         try {
-            life =  world.getPlayer(gameID).getLife();
+            life =  WorldImpl.getInstance().getPlayer(gameID).getLife();
         } catch (Exception e) {
             e.printStackTrace();
         }

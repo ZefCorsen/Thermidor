@@ -13,9 +13,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.models.PositionMessage;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
 import com.mygdx.world.Assets;
@@ -158,6 +160,7 @@ public class GameScreen implements Screen, InputProcessor {
             System.out.println("Touche Musket");
             controller.createBullet(game.id);
         } else {
+            NetworkController.getInstance().sendToAll(new PositionMessage(game.id,new Vector2(x,y)));
             controller.setPlayerInPosition(game.id, x, y);
         }
         return true;
@@ -174,6 +177,7 @@ public class GameScreen implements Screen, InputProcessor {
         float x, y;
         x = (screenX - width / 2) / Assets.PIXELS_TO_METERS;
         y = (height - screenY - height / 2) / Assets.PIXELS_TO_METERS;
+        NetworkController.getInstance().sendToAll(new PositionMessage(game.id,new Vector2(x,y)));
         controller.setPlayerInPosition(game.id, x, y);
 
         return true;

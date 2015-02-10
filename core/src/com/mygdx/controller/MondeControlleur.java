@@ -5,10 +5,12 @@ package com.mygdx.controller;
  */
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.models.PositionMessage;
 import com.mygdx.player.BodyModel;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Bullet;
 import com.mygdx.player.Player;
+import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
 public class MondeControlleur {
@@ -77,6 +79,6 @@ public class MondeControlleur {
                 throw new Exception("Player existe déjà");
             }
         }
-        new Player(0,0, world,idPlayer);
+        new Player(10/ Assets.PIXELS_TO_METERS,10/Assets.PIXELS_TO_METERS, world,idPlayer);
     }
 }

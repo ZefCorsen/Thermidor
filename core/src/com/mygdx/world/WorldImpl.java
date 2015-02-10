@@ -46,9 +46,7 @@ public class WorldImpl {
     public static void setPlayers(PlayerMessage[] playersTab) {
         if (instance == null) {
             instance = new WorldImpl();
-        }
-        System.out.println("Size Player : " + playersTab.length);
-        for (int i = 0; i < playersTab.length; i++) {
+        }        for (int i = 0; i < playersTab.length; i++) {
             PlayerMessage player = playersTab[i];
             new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition());
         }

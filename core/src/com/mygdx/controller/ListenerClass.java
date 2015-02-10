@@ -18,29 +18,29 @@ public class ListenerClass implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        System.out.println("Things touch !!!");
+   //     System.out.println("Things touch !!!");
         Object obA = contact.getFixtureA().getUserData();
-        if (obA != null)
-            System.out.println("System A:" + obA.getClass());
+    //    if (obA != null)
+    //        System.out.println("System A:" + obA.getClass());
 
         Object obB = contact.getFixtureB().getUserData();
-        if (obB != null)
-            System.out.println("System B:" + obB.getClass());
+   //     if (obB != null)
+     //       System.out.println("System B:" + obB.getClass());
 
 
         if (obA == null && obB != null && obB instanceof Bullet) {
-            System.out.println("Bullet VS World");
+    //        System.out.println("Bullet VS World");
             Bullet bulletB = (Bullet) obB;
             WorldImpl.getInstance().deleteBullet(bulletB);
 
         }
 
         if (obA != null && obB != null) {
-            System.out.println("idA : " + obA + " ,idB : " + obB);
+        //    System.out.println("idA : " + obA + " ,idB : " + obB);
             if (obA instanceof Bullet && obB instanceof Bullet) {
                 Bullet bulletA = (Bullet) obA;
                 Bullet bulletB = (Bullet) obB;
-                System.out.println("Bullet VS Bullet ");
+          //      System.out.println("Bullet VS Bullet ");
                 WorldImpl.getInstance().deleteBullet(bulletA);
                 WorldImpl.getInstance().deleteBullet(bulletB);
 
