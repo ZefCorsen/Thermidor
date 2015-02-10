@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.models.ItemMessage;
 import com.mygdx.models.PositionMessage;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Player;
@@ -121,8 +122,10 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.SPACE) {
+            NetworkController.getInstance().sendToAll(new ItemMessage(game.id,1));
             controller.createBullet(game.id);
         } else if (keycode == Input.Keys.F) {
+            NetworkController.getInstance().sendToAll(new ItemMessage(game.id,2));
             controller.createBomb(game.id);
         }
         return true;
@@ -131,6 +134,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.BACK) {
+            NetworkController.stopEndPoints();
             this.dispose();
             game.setScreen(new MainMenu(game));
 
@@ -152,12 +156,14 @@ public class GameScreen implements Screen, InputProcessor {
             //TODO dispose Bombe
 
             System.out.println("Touche Bombe");
+            NetworkController.getInstance().sendToAll(new ItemMessage(game.id,2));
             controller.createBomb(game.id);
         } else if (musketBound.contains(x, y)) {
 
             //TODO dispose musket
 
             System.out.println("Touche Musket");
+            NetworkController.getInstance().sendToAll(new ItemMessage(game.id,1));
             controller.createBullet(game.id);
         } else {
             NetworkController.getInstance().sendToAll(new PositionMessage(game.id,new Vector2(x,y)));

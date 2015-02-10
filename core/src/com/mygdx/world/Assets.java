@@ -28,6 +28,9 @@ public class Assets {
 
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
+ //   public static float ppuX = 1280.0f;
+ //   public static float ppuY = 720.0f;
+
     public static final short PHYSICS_ENTITY = 0x0001;    // 0001
     public static final short WORLD_ENTITY = 0x0004;
     public static final short BOMB_ENTITY = 0x0002;
@@ -54,6 +57,10 @@ public class Assets {
     private static String prefix = "";
 
     public static void load() {
+
+        System.out.println("GDX Width :" + ppuX);
+        System.out.println("GDX Height :" + ppuY);
+
         backgroundMain = loadTexture(prefix + "images/MainBackground.jpg");
         backgroundGame = loadTexture(prefix + "images/herbe.png");
         backgroundRegionMain = new TextureRegion(backgroundMain);

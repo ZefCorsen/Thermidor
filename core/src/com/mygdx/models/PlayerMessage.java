@@ -2,6 +2,8 @@ package com.mygdx.models;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.net.InetAddress;
+
 /**
  * Created by Jerem on 10/02/2015.
  */
@@ -13,17 +15,19 @@ public class PlayerMessage {
     private int life = 6;
     private int bulletPosition;
     private String idPlayer;
+    private InetAddress addr;
 
     public PlayerMessage() {
     }
 
-    public PlayerMessage(Vector2 position, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition, String idPlayer) {
+    public PlayerMessage(Vector2 position, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition, String idPlayer, InetAddress addr) {
         this.position = position;
         this.wantedPosition = wantedPosition;
         this.oldLinareVelocity = oldLinareVelocity;
         this.life = life;
         this.bulletPosition = bulletPosition;
         this.idPlayer = idPlayer;
+        this.addr = addr;
     }
 
     public Vector2 getPosition() {
@@ -49,4 +53,10 @@ public class PlayerMessage {
     public String getIdPlayer() {
         return idPlayer;
     }
+
+    public InetAddress getAddr() {
+        return addr;
+    }
+
+
 }

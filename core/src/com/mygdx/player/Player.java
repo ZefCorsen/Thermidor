@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 
 /**
@@ -19,6 +18,7 @@ public class Player extends BodyModel {
     private Vector2 oldLinareVelocity;
     private int life = 6;
     private int bulletPosition; // 0gauche ;2 haut; 4 droit ; 6 bas
+    private InetAddress addr;
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -46,12 +46,13 @@ public class Player extends BodyModel {
      * @param world          WorldImp dans lequel sera créé le body du joueur
      * @param id             Id du joueur à ajouter
      */
-    public Player(Vector2 vectorPosition, WorldImpl world, String id , Vector2 wantedPosition, Vector2 oldLinareVelocity, int life , int bulletPosition) {
+    public Player(Vector2 vectorPosition, WorldImpl world, String id, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition, InetAddress addr) {
         this(vectorPosition.x, vectorPosition.y, world, id);
-        this.wantedPosition =wantedPosition;
-        this.oldLinareVelocity=oldLinareVelocity;
-        this.life=life;
+        this.wantedPosition = wantedPosition;
+        this.oldLinareVelocity = oldLinareVelocity;
+        this.life = life;
         this.bulletPosition = bulletPosition;
+        this.addr = addr;
     }
 
     /**
@@ -174,13 +175,24 @@ public class Player extends BodyModel {
         if (life <= 0) throw new Exception("Vie négative");
         return --life;
     }
-    public int getBulletPosition(){
+
+    public int getBulletPosition() {
         return bulletPosition;
     }
-    public int getLife(){
+
+    public int getLife() {
         return life;
     }
+
     public Vector2 getWantedPosition() {
         return wantedPosition;
+    }
+
+    public InetAddress getAddr() {
+        return addr;
+    }
+
+    public void setAddr(InetAddress addr) {
+        this.addr = addr;
     }
 }

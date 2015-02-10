@@ -11,6 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.models.BombMessage;
 import com.mygdx.models.BulletMessage;
+import com.mygdx.models.ConnexionInv;
 import com.mygdx.models.ItemMessage;
 import com.mygdx.models.PlayerMessage;
 import com.mygdx.models.PositionMessage;
@@ -37,7 +38,7 @@ public class NetworkController {
     private Timer timer;
     private static boolean getWorldInfo = true;
     private boolean getPlayer, getBomb, getBullet, getBodyModel = false;
-
+private ConnexionInv connexionInv= new ConnexionInv();
 
     private NetworkController() {
         timer = new Timer();
@@ -85,13 +86,19 @@ public class NetworkController {
                         getWorldInfo = getPlayer && getBomb && getBullet;
                     }
                 }
+                @Override
+                public void disconnected(Connection connection) {
+                    super.disconnected(connection);
+                    System.out.println("EMMITER : IP disconnected "+ connection.getRemoteAddressTCP());
+
+                }
             });
             try {
                 client.connect(5000, add, TCP, UDP);
                 System.out.println("Ajout du nouveau client");
                 client.sendTCP(new ItemMessage(MyGdxGame.getInstance().id, 3));
                 try {
-                    MondeControlleur.getInstance().addPlayerToWorld(MyGdxGame.getInstance().id);
+                    MondeControlleur.getInstance().addPlayerToWorld(MyGdxGame.getInstance().id, null );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -120,18 +127,19 @@ public class NetworkController {
             @Override
             public void connected(Connection connection) {
                 super.connected(connection);
-
+                connexionInv.addNewConnexion(connection,connection.getRemoteAddressTCP().getAddress());
                 if (!addr.contains(connection.getRemoteAddressTCP().getAddress())) {
                     Client client = new Client();
                     startEndPoint(client);
                     register(client.getKryo());
                     try {
                         client.connect(5000, connection.getRemoteAddressTCP().getAddress(), TCP, UDP);
+                        client.sendTCP(new ItemMessage(MyGdxGame.getInstance().id,0));
                     } catch (IOException e) {
                         System.out.println("Server Can't launch a Client connection to " + connection.getRemoteAddressTCP().getAddress());
                         e.printStackTrace();
-                        addr.add(connection.getRemoteAddressTCP().getAddress());
                     }
+                    addr.add(connection.getRemoteAddressTCP().getAddress());
                 }
                 System.out.println("SERVER : Nouvelle connexion :" + connection.getRemoteAddressTCP());
                 connection.sendTCP(WorldImpl.getInstance().getPlayersTab());
@@ -142,13 +150,20 @@ public class NetworkController {
             @Override
             public void received(Connection connection, Object object) {
                 System.out.println("SERVER :Message recu de :" + connection.getRemoteAddressTCP());
+
                 if (object instanceof PositionMessage) {
+
                     PositionMessage positionMessage = (PositionMessage) object;
+                    connexionInv.setId(positionMessage.getId(),connection);
                     MondeControlleur.getInstance().setPlayerInPosition(positionMessage.getId(), positionMessage.getPosition().x, positionMessage.getPosition().y);
 
                 } else if (object instanceof ItemMessage) {
                     ItemMessage itemMessage = (ItemMessage) object;
+                    connexionInv.setId(itemMessage.getId(),connection);
                     switch (itemMessage.getType()) {
+                        case 0:
+                            //Controle Message
+                            break;
                         //bullet
                         case 1:
                             MondeControlleur.getInstance().createBullet(itemMessage.getId());
@@ -159,7 +174,7 @@ public class NetworkController {
                             break;
                         case 3:
                             try {
-                                MondeControlleur.getInstance().addPlayerToWorld(itemMessage.getId());
+                                MondeControlleur.getInstance().addPlayerToWorld(itemMessage.getId(), connection.getRemoteAddressTCP().getAddress());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -174,6 +189,14 @@ public class NetworkController {
                 }
             }
 
+            @Override
+            public void disconnected(Connection connection) {
+                super.disconnected(connection);
+                System.out.println("SERVER : IP disconnected " +connexionInv.getConnexionImp(connection).getAddr());
+                addr.remove(connexionInv.getConnexionImp(connection).getAddr());
+                MondeControlleur.getInstance().deletePlayerToWorld(connexionInv.getConnexionImp(connection).getPlayerId());
+
+            }
         });
 
     }
@@ -220,8 +243,8 @@ public class NetworkController {
         thread.start();
     }
 
-    public void stopEndPoints() {
-        stopEndPoints(0);
+    public static void stopEndPoints() {
+        getInstance().stopEndPoints(0);
     }
 
     public void stopEndPoints(int stopAfterMillis) {
@@ -230,6 +253,7 @@ public class NetworkController {
                 for (EndPoint endPoint : endPoints)
                     endPoint.stop();
                 endPoints.clear();
+                server.stop();
             }
         }, stopAfterMillis);
     }

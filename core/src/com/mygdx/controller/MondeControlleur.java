@@ -5,7 +5,6 @@ package com.mygdx.controller;
  */
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.models.PositionMessage;
 import com.mygdx.player.BodyModel;
 import com.mygdx.player.Bomb;
 import com.mygdx.player.Bullet;
@@ -13,9 +12,10 @@ import com.mygdx.player.Player;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
+import java.net.InetAddress;
+
 public class MondeControlleur {
     private static MondeControlleur instance;
-    private WorldImpl world;
 
     public static MondeControlleur getInstance() {
         if (instance == null) {
@@ -24,29 +24,25 @@ public class MondeControlleur {
         return instance;
     }
 
-    public MondeControlleur(WorldImpl world) {
-        this.world = world;
-    }
-
     public MondeControlleur() {
-        this.world = WorldImpl.getInstance();
+        WorldImpl.getInstance();
     }
 
     public void update(float delta) {
-        if (!world.getWorld().isLocked() && !world.getRemoveList().isEmpty()) {
-            for (BodyModel model : world.getRemoveList()) {
-                world.getWorld().destroyBody(model.getBody());
+        if (!WorldImpl.getInstance().getWorld().isLocked() && !WorldImpl.getInstance().getRemoveList().isEmpty()) {
+            for (BodyModel model : WorldImpl.getInstance().getRemoveList()) {
+                WorldImpl.getInstance().getWorld().destroyBody(model.getBody());
             }
-            world.getRemoveList().clear();
+            WorldImpl.getInstance().getRemoveList().clear();
         }
-        for (Player player : world.getPlayers()) {
+        for (Player player : WorldImpl.getInstance().getPlayers()) {
             player.update(delta);
         }
     }
 
     public boolean createBomb(String id) {
         try {
-            new Bomb(world.getPlayer(id).getPosition(), world, id);
+            new Bomb(WorldImpl.getInstance().getPlayer(id).getPosition(), WorldImpl.getInstance(), id);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -56,7 +52,7 @@ public class MondeControlleur {
 
     public boolean createBullet(String id) {
         try {
-            new Bullet(world.getPlayer(id), world);
+            new Bullet(WorldImpl.getInstance().getPlayer(id), WorldImpl.getInstance());
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -66,19 +62,29 @@ public class MondeControlleur {
 
     public boolean setPlayerInPosition(String id, float x, float y) {
         try {
-            world.getPlayer(id).setWantedPosition(new Vector2(x, y));
+            WorldImpl.getInstance().getPlayer(id).setWantedPosition(new Vector2(x, y));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
     }
 
-    public void addPlayerToWorld(String idPlayer) throws Exception {
-        for (Player playerExist : world.getPlayers()) {
+    public void addPlayerToWorld(String idPlayer, InetAddress addr) throws Exception {
+        for (Player playerExist : WorldImpl.getInstance().getPlayers()) {
             if (playerExist.getId().equals(idPlayer)) {
-                throw new Exception("Player existe déjà");
+                throw new Exception("Player existe déjà : " + idPlayer);
             }
         }
-        new Player(10/ Assets.PIXELS_TO_METERS,10/Assets.PIXELS_TO_METERS, world,idPlayer);
+        Player p = new Player(10 / Assets.PIXELS_TO_METERS, 10 / Assets.PIXELS_TO_METERS, WorldImpl.getInstance(), idPlayer);
+        p.setAddr(addr);
+    }
+
+    public void deletePlayerToWorld(String idPlayer) {
+
+        try {
+            WorldImpl.getInstance().deletePlayer(WorldImpl.getInstance().getPlayer(idPlayer));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

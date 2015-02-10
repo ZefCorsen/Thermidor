@@ -59,11 +59,12 @@ public class MainMenu implements Screen {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Click on Play");
+                WorldImpl.getNewInstance();
                 NetworkController.getInstance().startReceiver();
                 game.setScreen(new GameScreen(game));
                 try {
-                    MondeControlleur.getInstance().addPlayerToWorld(game.id);
-                    MondeControlleur.getInstance().addPlayerToWorld("Test");
+                    MondeControlleur.getInstance().addPlayerToWorld(game.id,null);
+                    MondeControlleur.getInstance().addPlayerToWorld("Test",null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -78,7 +79,7 @@ public class MainMenu implements Screen {
             if (joinGame.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Click on Join");
                 try {
-                    WorldImpl.getInstance();
+                    WorldImpl.getNewInstance();
                     NetworkController.getInstance().discoverPeers();
                     NetworkController.getInstance().startReceiver();
                     NetworkController.getInstance().startEmitters();

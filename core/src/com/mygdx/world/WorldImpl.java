@@ -39,6 +39,11 @@ public class WorldImpl {
         return instance;
     }
 
+    public static WorldImpl getNewInstance() {
+        instance = new WorldImpl();
+        return instance;
+    }
+
     public static void setInstance(WorldImpl worldImpl) {
         instance = worldImpl;
     }
@@ -46,9 +51,10 @@ public class WorldImpl {
     public static void setPlayers(PlayerMessage[] playersTab) {
         if (instance == null) {
             instance = new WorldImpl();
-        }        for (int i = 0; i < playersTab.length; i++) {
+        }
+        for (int i = 0; i < playersTab.length; i++) {
             PlayerMessage player = playersTab[i];
-            new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition());
+            new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition(), player.getAddr());
         }
     }
 
@@ -148,7 +154,7 @@ public class WorldImpl {
         PlayerMessage[] playerMessages = new PlayerMessage[players.size()];
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
-            playerMessages[i] = new PlayerMessage(p.getPosition(), p.getWantedPosition(), p.getOldLinareVelocity(), p.getLife(), p.getBulletPosition(), p.getId());
+            playerMessages[i] = new PlayerMessage(p.getPosition(), p.getWantedPosition(), p.getOldLinareVelocity(), p.getLife(), p.getBulletPosition(), p.getId(), p.getAddr());
         }
         return playerMessages;
     }
