@@ -36,6 +36,10 @@ public class Bomb extends BodyModel{
         this(new Vector2(x, y), world, idPlayer);
     }
 
+    public Bomb(WorldImpl world, String idPlayer) {
+        this(world.getPlayerNS(idPlayer).getPosition(), world, idPlayer);
+    }
+
     /**
      * Defini le corp de la bomb
      */

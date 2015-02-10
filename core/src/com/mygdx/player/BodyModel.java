@@ -11,7 +11,8 @@ import com.mygdx.world.WorldImpl;
  */
 public class BodyModel {
 
-    protected Player player;
+
+ //   protected Player player;
     protected Sprite sprite;
     protected Body body;
     protected WorldImpl world;
@@ -42,4 +43,7 @@ public class BodyModel {
         return body.getPosition();
     }
 
+  /*  public Player getPlayer() {
+        return player;
+    }*/
 }

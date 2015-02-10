@@ -12,7 +12,6 @@ import com.mygdx.world.WorldImpl;
  */
 public class Bullet extends BodyModel {
 
-
     /**
      * Construit une bomb, ces limites, ses collision
      *
@@ -23,7 +22,6 @@ public class Bullet extends BodyModel {
         super(world, player.getId());
         fixtureDef = new FixtureDef();
         this.world = world;
-        this.player = player;
         sprite = Assets.spriteBullet;
         float bX=0,bY=0;
         switch (player.getBulletPosition()) {
@@ -77,6 +75,9 @@ public class Bullet extends BodyModel {
         world.addBullet(this);
     }
 
+    public Bullet(String idPlayer , WorldImpl world){
+        this(world.getPlayerNS(idPlayer),world);
+    }
     /**
      * Defini le corp de la bomb
      */

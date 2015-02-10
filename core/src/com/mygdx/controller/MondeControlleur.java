@@ -12,10 +12,15 @@ import com.mygdx.player.Player;
 import com.mygdx.world.WorldImpl;
 
 public class MondeControlleur {
-
-
+    private static MondeControlleur instance;
     private WorldImpl world;
 
+    public static MondeControlleur getInstance() {
+        if (instance == null) {
+            instance = new MondeControlleur();
+        }
+        return instance;
+    }
 
     public MondeControlleur(WorldImpl world) {
         this.world = world;
@@ -66,12 +71,12 @@ public class MondeControlleur {
         return true;
     }
 
-    public void addPlayerToWorld(Player player) throws Exception {
+    public void addPlayerToWorld(String idPlayer) throws Exception {
         for (Player playerExist : world.getPlayers()) {
-            if (playerExist.getId().equals(player.getId())) {
+            if (playerExist.getId().equals(idPlayer)) {
                 throw new Exception("Player existe déjà");
             }
         }
-        new Player(player.getPosition(), world, player.getId());
+        new Player(0,0, world,idPlayer);
     }
 }

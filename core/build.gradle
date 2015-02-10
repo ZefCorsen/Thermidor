@@ -7,4 +7,5 @@ eclipse.project {
 }
 dependencies {
     compile files('debug/onejar/kryonet-2.21-all.jar')
+    compile 'junit:junit:4.12'
 }

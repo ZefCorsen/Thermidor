@@ -7,6 +7,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+
 /**
  * Created by Jerem on 04/02/2015.
  */
@@ -34,6 +37,21 @@ public class Player extends BodyModel {
         oldLinareVelocity = new Vector2();
         world.addPlayer(this);
         bulletPosition = 0;
+    }
+
+    /**
+     * Construit un joueur, ces limites, ses collision
+     *
+     * @param vectorPosition Vector2 de la position du joueur
+     * @param world          WorldImp dans lequel sera créé le body du joueur
+     * @param id             Id du joueur à ajouter
+     */
+    public Player(Vector2 vectorPosition, WorldImpl world, String id , Vector2 wantedPosition, Vector2 oldLinareVelocity, int life , int bulletPosition) {
+        this(vectorPosition.x, vectorPosition.y, world, id);
+        this.wantedPosition =wantedPosition;
+        this.oldLinareVelocity=oldLinareVelocity;
+        this.life=life;
+        this.bulletPosition = bulletPosition;
     }
 
     /**
@@ -162,5 +180,7 @@ public class Player extends BodyModel {
     public int getLife(){
         return life;
     }
-
+    public Vector2 getWantedPosition() {
+        return wantedPosition;
+    }
 }

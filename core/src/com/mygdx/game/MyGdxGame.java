@@ -11,14 +11,22 @@ public class MyGdxGame extends Game {
     public static int TCP = 6970;
     public String id;
 
+    private static MyGdxGame instance;
+
+    public static MyGdxGame getInstance() {
+        if (instance == null) {
+            instance = new MyGdxGame();
+        }
+        return instance;
+    }
+
     public MyGdxGame() {
 
     }
 
     public void create() {
+        this.instance = this;
         Assets.load();
-
-
         Gdx.input.getTextInput(new Input.TextInputListener() {
 
             @Override

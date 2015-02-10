@@ -10,9 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.controller.MondeControlleur;
 import com.mygdx.controller.NetworkController;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.world.Assets;
+import com.mygdx.world.WorldImpl;
 
 
 /**
@@ -42,9 +44,9 @@ public class MainMenu implements Screen {
         guiCam = new OrthographicCamera(Assets.ppuY, Assets.ppuX);
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(guiCam.combined);
-        playBounds = new Rectangle( bord, -60, 120, 60);
+        playBounds = new Rectangle(bord, -60, 120, 60);
         helpBounds = new Rectangle(bord, -130, 120, 60);
-        joinGame = new Rectangle( bord, -200, 120, 60);
+        joinGame = new Rectangle(bord, -200, 120, 60);
         touchPoint = new Vector3();
         font = new BitmapFont();
         font.setColor(Color.ORANGE);
@@ -57,8 +59,15 @@ public class MainMenu implements Screen {
             guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (playBounds.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Click on Play");
-                NetworkController.getInstance().myId = game.id;
+                NetworkController.getInstance().startReceiver();
                 game.setScreen(new GameScreen(game));
+                try {
+                    MondeControlleur.getInstance().addPlayerToWorld(game.id);
+
+                    MondeControlleur.getInstance().addPlayerToWorld("Test");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 return;
             }
@@ -69,12 +78,18 @@ public class MainMenu implements Screen {
             }
             if (joinGame.contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Click on Join");
-                NetworkController.getInstance().startEmitter();
-                NetworkController.getInstance().discoverPeers();
-                NetworkController.getInstance().sendMessage("Trouvé");
-                NetworkController.getInstance().sendJoinMessage(game.id);
-                game.setScreen(new GameScreen(game));
+                try {
+                    WorldImpl.getInstance();
+                    NetworkController.getInstance().discoverPeers();
+                    NetworkController.getInstance().startReceiver();
+                    NetworkController.getInstance().startEmitters();
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (NetworkController.worldIsLoad()) {
+                    game.setScreen(new GameScreen(game));
+                }
 
                 return;
             }
@@ -91,7 +106,7 @@ public class MainMenu implements Screen {
         batcher.setProjectionMatrix(guiCam.combined);
         batcher.disableBlending();
         batcher.begin();
-        batcher.draw(Assets.backgroundRegionMain, -Assets.ppuY/2 ,-Assets.ppuX/2, Assets.ppuY,Assets.ppuX);
+        batcher.draw(Assets.backgroundRegionMain, -Assets.ppuY / 2, -Assets.ppuX / 2, Assets.ppuY, Assets.ppuX);
         int bord = -60;
         batcher.draw(Assets.start, bord, -60, 120, 60);
         batcher.draw(Assets.joinGame, bord, -130, 120, 60);

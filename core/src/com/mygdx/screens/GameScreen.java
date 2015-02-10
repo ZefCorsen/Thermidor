@@ -40,9 +40,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(MyGdxGame game) {
         this(game, WorldImpl.getInstance());
-        player1 = new Player(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, "Testeur");
-        player2 = new Player(-100 / Assets.PIXELS_TO_METERS, -110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
-     //   bomb1 = new Bomb(100 / Assets.PIXELS_TO_METERS, 110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
+
+//        player2 = new Player(-100 / Assets.PIXELS_TO_METERS, -110 / Assets.PIXELS_TO_METERS, worldImpl, game.id);
     }
 
     public GameScreen(MyGdxGame game, WorldImpl worldImpl) {
@@ -61,10 +60,6 @@ public class GameScreen implements Screen, InputProcessor {
         musketBound = new Rectangle(Assets.actionBordX, Assets.actionBordY + Assets.tailleActionY, Assets.tailleActionX, Assets.tailleActionY);
         camera = new OrthographicCamera(Gdx.graphics.getWidth() / Assets.PIXELS_TO_METERS, Gdx.graphics.
                 getHeight() / Assets.PIXELS_TO_METERS);
-        NetworkController.getInstance().startReceiver(worldImpl);
-        if (NetworkController.getInstance().myWorld == null) {
-            NetworkController.getInstance().myWorld = worldImpl;
-        }
 
         Gdx.input.setInputProcessor(this);
         // TODO Auto-generated method stub
