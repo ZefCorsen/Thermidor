@@ -50,15 +50,7 @@ public class WorldImpl {
         System.out.println("Size Player : " + playersTab.length);
         for (int i = 0; i < playersTab.length; i++) {
             PlayerMessage player = playersTab[i];
-            System.out.println(player);
-            //System.out.println("Player id: " + player.getIdPlayer() );
-            //System.out.println("Player : " + player.getPosition() );
-            //System.out.println("Player : " + player.getBulletPosition() );
-           // System.out.println("Player : " + player.getLife() );
-            //System.out.println("Player : " + player.getWantedPosition() );
-            //System.out.println("Player : " + player.getOldLinareVelocity() );
-
-         //   new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition());
+            new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition());
         }
     }
 
@@ -156,7 +148,7 @@ public class WorldImpl {
 
     public PlayerMessage[] getPlayersTab() {
         PlayerMessage[] playerMessages = new PlayerMessage[players.size()];
-        for (int i = 0; i < bombs.size(); i++) {
+        for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
             playerMessages[i] = new PlayerMessage(p.getPosition(), p.getWantedPosition(), p.getOldLinareVelocity(), p.getLife(), p.getBulletPosition(), p.getId());
         }

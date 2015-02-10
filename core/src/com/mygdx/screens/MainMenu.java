@@ -87,9 +87,9 @@ public class MainMenu implements Screen {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (NetworkController.worldIsLoad()) {
+        //        if (NetworkController.worldIsLoad()) {
                     game.setScreen(new GameScreen(game));
-                }
+              //  }
 
                 return;
             }

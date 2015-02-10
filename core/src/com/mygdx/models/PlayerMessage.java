@@ -14,6 +14,8 @@ public class PlayerMessage {
     private int bulletPosition;
     private String idPlayer;
 
+    public PlayerMessage() {
+    }
 
     public PlayerMessage(Vector2 position, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition, String idPlayer) {
         this.position = position;

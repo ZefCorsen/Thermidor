@@ -9,9 +9,9 @@ public class PositionMessage {
     String id;
     Vector2 position = new Vector2();
 
-    public PositionMessage(){
-
+    public PositionMessage() {
     }
+
     public PositionMessage(String id,Vector2 position){
         this.id=id;
         this.position=position;

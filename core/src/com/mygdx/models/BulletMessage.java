@@ -6,6 +6,9 @@ package com.mygdx.models;
 public class BulletMessage {
     private String id;
 
+    public BulletMessage() {
+    }
+
     public BulletMessage(String id) {
         this.id = id;
     }

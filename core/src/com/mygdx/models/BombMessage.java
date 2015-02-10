@@ -6,6 +6,8 @@ package com.mygdx.models;
 public class BombMessage {
     String id;
 
+    public BombMessage(){};
+
     public BombMessage(String id) {
         this.id = id;
     }
