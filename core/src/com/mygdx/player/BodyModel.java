@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.world.WorldImpl;
 
 /**
@@ -12,20 +13,24 @@ import com.mygdx.world.WorldImpl;
 public class BodyModel {
 
 
- //   protected Player player;
     protected Sprite sprite;
     protected Body body;
-    protected WorldImpl world;
+//    protected WorldImpl world;
     protected FixtureDef fixtureDef;
     protected String id;
 
 
-    public BodyModel(WorldImpl world, String id) {
-        this.world = world;
+    public BodyModel(String id) {
+  //      this.world = world;
         this.id = id;
         fixtureDef = new FixtureDef();
 
     }
+
+    public BodyModel() {
+    }
+
+
 
     public Body getBody() {
         return body;

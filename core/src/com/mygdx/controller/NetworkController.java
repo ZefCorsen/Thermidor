@@ -1,6 +1,7 @@
 package com.mygdx.controller;
 
 
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -38,7 +39,7 @@ public class NetworkController {
     private Timer timer;
     private static boolean getWorldInfo = true;
     private boolean getPlayer, getBomb, getBullet, getBodyModel = false;
-private ConnexionInv connexionInv= new ConnexionInv();
+    private ConnexionInv connexionInv = new ConnexionInv();
 
     private NetworkController() {
         timer = new Timer();
@@ -71,13 +72,13 @@ private ConnexionInv connexionInv= new ConnexionInv();
             client.addListener(new Listener() {
                 public void received(Connection connection, Object object) {
                     if (!getWorldInfo) {
-                        if (object instanceof PlayerMessage[]) {
+                        if (object instanceof PlayerMessage[]&&!getPlayer) {
                             WorldImpl.setPlayers((PlayerMessage[]) object);
                             getPlayer = true;
-                        } else if (object instanceof BombMessage[]) {
+                        } else if (object instanceof BombMessage[]&&!getBomb) {
                             WorldImpl.setBombs((BombMessage[]) object);
                             getBomb = true;
-                        } else if (object instanceof BulletMessage[]) {
+                        } else if (object instanceof BulletMessage[]&&!getBullet) {
                             WorldImpl.setBullets((BulletMessage[]) object);
                             getBullet = true;
                         }
@@ -86,10 +87,11 @@ private ConnexionInv connexionInv= new ConnexionInv();
                         getWorldInfo = getPlayer && getBomb && getBullet;
                     }
                 }
+
                 @Override
                 public void disconnected(Connection connection) {
                     super.disconnected(connection);
-                    System.out.println("EMMITER : IP disconnected "+ connection.getRemoteAddressTCP());
+                    System.out.println("EMMITER : IP disconnected " + connection.getRemoteAddressTCP());
 
                 }
             });
@@ -98,7 +100,7 @@ private ConnexionInv connexionInv= new ConnexionInv();
                 System.out.println("Ajout du nouveau client");
                 client.sendTCP(new ItemMessage(MyGdxGame.getInstance().id, 3));
                 try {
-                    MondeControlleur.getInstance().addPlayerToWorld(MyGdxGame.getInstance().id, null );
+                    MondeControlleur.getInstance().addPlayerToWorld(MyGdxGame.getInstance().id, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -127,14 +129,14 @@ private ConnexionInv connexionInv= new ConnexionInv();
             @Override
             public void connected(Connection connection) {
                 super.connected(connection);
-                connexionInv.addNewConnexion(connection,connection.getRemoteAddressTCP().getAddress());
+                connexionInv.addNewConnexion(connection, connection.getRemoteAddressTCP().getAddress());
                 if (!addr.contains(connection.getRemoteAddressTCP().getAddress())) {
                     Client client = new Client();
                     startEndPoint(client);
                     register(client.getKryo());
                     try {
                         client.connect(5000, connection.getRemoteAddressTCP().getAddress(), TCP, UDP);
-                        client.sendTCP(new ItemMessage(MyGdxGame.getInstance().id,0));
+                        client.sendTCP(new ItemMessage(MyGdxGame.getInstance().id, 0));
                     } catch (IOException e) {
                         System.out.println("Server Can't launch a Client connection to " + connection.getRemoteAddressTCP().getAddress());
                         e.printStackTrace();
@@ -142,6 +144,8 @@ private ConnexionInv connexionInv= new ConnexionInv();
                     addr.add(connection.getRemoteAddressTCP().getAddress());
                 }
                 System.out.println("SERVER : Nouvelle connexion :" + connection.getRemoteAddressTCP());
+            //    connection.sendTCP(WorldImpl.getInstance().getPlayers().get(0).getBody());
+
                 connection.sendTCP(WorldImpl.getInstance().getPlayersTab());
                 connection.sendTCP(WorldImpl.getInstance().getBombsTab());
                 connection.sendTCP(WorldImpl.getInstance().getBulletsTab());
@@ -154,12 +158,12 @@ private ConnexionInv connexionInv= new ConnexionInv();
                 if (object instanceof PositionMessage) {
 
                     PositionMessage positionMessage = (PositionMessage) object;
-                    connexionInv.setId(positionMessage.getId(),connection);
+                    connexionInv.setId(positionMessage.getId(), connection);
                     MondeControlleur.getInstance().setPlayerInPosition(positionMessage.getId(), positionMessage.getPosition().x, positionMessage.getPosition().y);
 
                 } else if (object instanceof ItemMessage) {
                     ItemMessage itemMessage = (ItemMessage) object;
-                    connexionInv.setId(itemMessage.getId(),connection);
+                    connexionInv.setId(itemMessage.getId(), connection);
                     switch (itemMessage.getType()) {
                         case 0:
                             //Controle Message
@@ -192,7 +196,7 @@ private ConnexionInv connexionInv= new ConnexionInv();
             @Override
             public void disconnected(Connection connection) {
                 super.disconnected(connection);
-                System.out.println("SERVER : IP disconnected " +connexionInv.getConnexionImp(connection).getAddr());
+                System.out.println("SERVER : IP disconnected " + connexionInv.getConnexionImp(connection).getAddr());
                 addr.remove(connexionInv.getConnexionImp(connection).getAddr());
                 MondeControlleur.getInstance().deletePlayerToWorld(connexionInv.getConnexionImp(connection).getPlayerId());
 
@@ -216,9 +220,11 @@ private ConnexionInv connexionInv= new ConnexionInv();
         System.out.println("Serveur found at @:" + addr.size());
         if (addr == null) {
             System.out.println("Serveur NOT found ");
-            stopEndPoints();
+            //stopEndPoints();
             System.exit(0);
         }
+
+
         client.close();
 
     }
@@ -234,6 +240,18 @@ private ConnexionInv connexionInv= new ConnexionInv();
         kryo.register(PlayerMessage.class);
         kryo.register(BulletMessage.class);
 
+
+        //test
+        kryo.register(com.mygdx.player.Player.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.FixtureDef.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.Filter.class);
+        kryo.register(com.badlogic.gdx.math.Vector2.class);
+        kryo.register(com.badlogic.gdx.physics.box2d.Body.class);
+        kryo.register(BodyDef.class);
+        kryo.register(com.badlogic.gdx.utils.Array.class);
+        kryo.register(Object[].class);
+        kryo.register(com.badlogic.gdx.physics.box2d.Fixture.class);
+
     }
 
     public void startEndPoint(EndPoint endPoint) {
@@ -243,24 +261,9 @@ private ConnexionInv connexionInv= new ConnexionInv();
         thread.start();
     }
 
-    public static void stopEndPoints() {
-        getInstance().stopEndPoints(0);
-    }
-
-    public void stopEndPoints(int stopAfterMillis) {
-        timer.schedule(new TimerTask() {
-            public void run() {
-                for (EndPoint endPoint : endPoints)
-                    endPoint.stop();
-                endPoints.clear();
-                server.stop();
-            }
-        }, stopAfterMillis);
-    }
-
     public void sendToAll(Object message) {
         for (Client client : endPoints) {
-            System.out.println("Envoi message :"+message.getClass());
+            System.out.println("Envoi message :" + message.getClass());
             client.sendTCP(message);
         }
     }

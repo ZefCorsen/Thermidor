@@ -1,9 +1,11 @@
 package com.mygdx.player;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.world.Assets;
 import com.mygdx.world.WorldImpl;
 
@@ -18,7 +20,10 @@ public class Player extends BodyModel {
     private Vector2 oldLinareVelocity;
     private int life = 6;
     private int bulletPosition; // 0gauche ;2 haut; 4 droit ; 6 bas
-    private InetAddress addr;
+
+    public Player() {
+        super();
+    }
 
     /**
      * Construit un joueur, ces limites, ses collision
@@ -28,10 +33,10 @@ public class Player extends BodyModel {
      * @param world WorldImp dans lequel sera créé le body du joueur
      */
     public Player(float px, float py, WorldImpl world, String id) {
-        super(world, id);
+        super(id);
         sprite = Assets.sprite;
         sprite.setPosition(px, py);
-        setBodyDef();
+        setBodyDef(world.getWorld());
         setFixture();
         wantedPosition = body.getPosition();
         oldLinareVelocity = new Vector2();
@@ -46,13 +51,12 @@ public class Player extends BodyModel {
      * @param world          WorldImp dans lequel sera créé le body du joueur
      * @param id             Id du joueur à ajouter
      */
-    public Player(Vector2 vectorPosition, WorldImpl world, String id, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition, InetAddress addr) {
+    public Player(Vector2 vectorPosition, WorldImpl world, String id, Vector2 wantedPosition, Vector2 oldLinareVelocity, int life, int bulletPosition) {
         this(vectorPosition.x, vectorPosition.y, world, id);
         this.wantedPosition = wantedPosition;
         this.oldLinareVelocity = oldLinareVelocity;
         this.life = life;
         this.bulletPosition = bulletPosition;
-        this.addr = addr;
     }
 
     /**
@@ -69,14 +73,14 @@ public class Player extends BodyModel {
     /**
      * Defini le corp du joueur
      */
-    private void setBodyDef() {
+    private void setBodyDef(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.active = true;
 
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),
                 (sprite.getY() + sprite.getHeight() / 2));
-        body = world.getWorld().createBody(bodyDef);
+        body = world.createBody(bodyDef);
     }
 
     /**
@@ -188,11 +192,4 @@ public class Player extends BodyModel {
         return wantedPosition;
     }
 
-    public InetAddress getAddr() {
-        return addr;
-    }
-
-    public void setAddr(InetAddress addr) {
-        this.addr = addr;
-    }
 }

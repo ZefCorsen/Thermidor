@@ -54,7 +54,7 @@ public class WorldImpl {
         }
         for (int i = 0; i < playersTab.length; i++) {
             PlayerMessage player = playersTab[i];
-            new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition(), player.getAddr());
+            new Player(player.getPosition(), instance, player.getIdPlayer(), player.getWantedPosition(), player.getOldLinareVelocity(), player.getLife(), player.getBulletPosition());
         }
     }
 
@@ -154,7 +154,7 @@ public class WorldImpl {
         PlayerMessage[] playerMessages = new PlayerMessage[players.size()];
         for (int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
-            playerMessages[i] = new PlayerMessage(p.getPosition(), p.getWantedPosition(), p.getOldLinareVelocity(), p.getLife(), p.getBulletPosition(), p.getId(), p.getAddr());
+            playerMessages[i] = new PlayerMessage(p.getPosition(), p.getWantedPosition(), p.getOldLinareVelocity(), p.getLife(), p.getBulletPosition(), p.getId());
         }
         return playerMessages;
     }

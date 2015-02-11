@@ -24,10 +24,10 @@ public class Bomb extends BodyModel{
      * @param idPlayer       Id du joueur à ajouter
      */
     public Bomb(Vector2 vectorPosition, WorldImpl world, String idPlayer) {
-        super(world,idPlayer);
+        super(idPlayer);
         sprite = Assets.spriteBomb;
         sprite.setPosition(vectorPosition.x - (Assets.sprite.getWidth() / 2), vectorPosition.y - (Assets.sprite.getHeight() / 2) + sprite.getHeight() / 2);
-        setBodyDef();
+        setBodyDef(world);
         setFixture();
         world.addBomb(this);
     }
@@ -43,7 +43,7 @@ public class Bomb extends BodyModel{
     /**
      * Defini le corp de la bomb
      */
-    private void setBodyDef() {
+    private void setBodyDef(WorldImpl world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2),

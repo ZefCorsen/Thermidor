@@ -76,7 +76,6 @@ public class MondeControlleur {
             }
         }
         Player p = new Player(10 / Assets.PIXELS_TO_METERS, 10 / Assets.PIXELS_TO_METERS, WorldImpl.getInstance(), idPlayer);
-        p.setAddr(addr);
     }
 
     public void deletePlayerToWorld(String idPlayer) {

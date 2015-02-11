@@ -134,7 +134,6 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.BACK) {
-            NetworkController.stopEndPoints();
             this.dispose();
             game.setScreen(new MainMenu(game));
 

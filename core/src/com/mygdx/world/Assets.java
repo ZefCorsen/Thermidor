@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets {
     public static final float PLAYER_SPEED = 3f;
     public static final float PIXELS_TO_METERS = 100f;
-    public static Texture backgroundMain, backgroundGame ,life;
+    public static Texture backgroundMain, backgroundGame, life;
     public static TextureRegion backgroundRegionMain, backgroundRegionGame;
     public static Texture start, logo, joinGame, help;
 
@@ -28,8 +28,8 @@ public class Assets {
 
     public static float ppuX = Gdx.graphics.getWidth();
     public static float ppuY = Gdx.graphics.getHeight();
- //   public static float ppuX = 1280.0f;
- //   public static float ppuY = 720.0f;
+    // public static float ppuX = 1280.0f;
+    //  public static float ppuY = 720.0f;
 
     public static final short PHYSICS_ENTITY = 0x0001;    // 0001
     public static final short WORLD_ENTITY = 0x0004;

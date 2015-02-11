@@ -19,9 +19,8 @@ public class Bullet extends BodyModel {
      * @param world  WorldImp dans lequel sera créé le body du bomb
      */
     public Bullet(Player player, WorldImpl world) {
-        super(world, player.getId());
+        super(player.getId());
         fixtureDef = new FixtureDef();
-        this.world = world;
         sprite = Assets.spriteBullet;
         float bX=0,bY=0;
         switch (player.getBulletPosition()) {
@@ -69,7 +68,7 @@ public class Bullet extends BodyModel {
 
 
         sprite.setPosition(player.getPosition().x+bX, player.getPosition().y+bY);
-        setBodyDef();
+        setBodyDef(world);
         setFixture();
         body.setLinearVelocity(player.getOldLinareVelocity().x * 2.5f, player.getOldLinareVelocity().y * 2.5f);
         world.addBullet(this);
@@ -81,7 +80,7 @@ public class Bullet extends BodyModel {
     /**
      * Defini le corp de la bomb
      */
-    private void setBodyDef() {
+    private void setBodyDef(WorldImpl world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         // bodyDef.bullet = true;
